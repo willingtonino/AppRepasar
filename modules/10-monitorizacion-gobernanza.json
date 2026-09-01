@@ -1,0 +1,130 @@
+{
+  "id": "aws-m10",
+  "modulo": 10,
+  "titulo": "Monitorización y gobernanza",
+  "descripcion": "CloudWatch, CloudTrail, Config, Artifact, Organizations y Trusted Advisor.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "Cuál es el propósito de una zona de aterrizaje de AWS Control Tower?",
+      "opciones": [
+        "Filtra el tráfico entrante y saliente a las instancias de Amazon EC2 en una nube virtual privada (VPC).",
+        "Es una subsección de una nube virtual privada (VPC) donde puede aislar los recursos y controlar el acceso.",
+        "Se trata de una sección aislada de forma lógica de la nube de AWS donde puede lanzar recursos de AWS en una red virtual que usted mismo defina.",
+        "Es el contenedor de toda la empresa que alberga todas las unidades organizativas (UO), cuentas, usuarios y recursos que desea regular para garantizar el cumplimiento."
+      ],
+      "correcta": "D",
+      "explicacion": "Una zona de aterrizaje es un entorno de cuentas múltiples bien diseñado que se basa en las prácticas recomendadas de seguridad y cumplimiento. Es el contenedor donde guarda todos los recursos que desea regular para su cumplimiento."
+    },
+    {
+      "pregunta": "Un cliente de investigación con un gran equipo de desarrolladores necesita una forma de garantizarles pautas de configuración específicas a la hora de crear recursos de AWS. Quiere una forma de evaluar y auditar los recursos de AWS para asegurarse de que el equipo utilice la lista aprobada de recursos de computación más rentable.\n\n¿Qué solución o característica cubriría sus necesidades?",
+      "opciones": [
+        "AWS Audit Manager",
+        "AWS Artifact",
+        "AWS CloudTrail",
+        "AWS Config"
+      ],
+      "correcta": "D",
+      "explicacion": "AWS Config es la mejor opción porque evaluará, auditará y evaluará las configuraciones de los recursos de AWS del desarrollador."
+    },
+    {
+      "pregunta": "Un cliente utiliza AWS Organizations para administrar de forma centralizada las cuentas de su empresa en cuanto a la facturación para optimizar y organizar los costos. Quiere establecer reglas o restricciones en los servicios, los recursos y las acciones individuales de la API de AWS a los que los usuarios pueden acceder.\n\n¿Qué característica cubriría sus necesidades?",
+      "opciones": [
+        "Una cuenta raíz",
+        "Usuario de AWS Identity and Access Management (AWS IAM)",
+        "Una unidad organizativa (UO)",
+        "Una política de control de servicios (SCP)"
+      ],
+      "correcta": "D",
+      "explicacion": "Una SCP es una política que le permite restringir los servicios, los recursos y las acciones individuales de la API de AWS a los que pueden acceder los usuarios y los roles de cada cuenta. Las SCP se pueden aplicar a las UO o a las cuentas de miembros individuales."
+    },
+    {
+      "pregunta": "Una empresa financiera con una solución de nube híbrida desea realizar un seguimiento de los cambios realizados en sus recursos de AWS tanto en la nube como en las instalaciones. En concreto, quieren saber quién hizo qué y cuándo.\n\n¿Qué servicio de AWS se adaptaría mejor a sus necesidades?",
+      "opciones": [
+        "AWS CloudTrail",
+        "AWS Trusted Advisor",
+        "Amazon CloudWatch",
+        "AWS Artifact"
+      ],
+      "correcta": "A",
+      "explicacion": "CloudTrail es un servicio de AWS que utiliza las API para rastrear quién hizo qué, cuándo se produjo la acción y en qué servicios y recursos de AWS."
+    },
+    {
+      "pregunta": "¿Qué servicio de AWS proporciona evaluaciones y comprobaciones continuas de sus recursos de AWS y ofrece sugerencias para optimizar los costos, el rendimiento, la seguridad y la resiliencia?",
+      "opciones": [
+        "AWS Trusted Advisor",
+        "AWS CloudTrail",
+        "AWS Artifact",
+        "Amazon CloudWatch"
+      ],
+      "correcta": "A",
+      "explicacion": "Trusted Advisor le ayuda a optimizar los costos, aumentar el rendimiento, mejorar la seguridad y la resiliencia y operar a escala en la nube."
+    },
+    {
+      "pregunta": "¿Qué servicio de AWS proporciona acceso gratuito y bajo demanda a los informes de seguridad y cumplimiento de AWS y a determinados acuerdos en línea?",
+      "opciones": [
+        "Amazon CloudWatch",
+        "AWS Artifact",
+        "AWS Trusted Advisor",
+        "AWS CloudTrail"
+      ],
+      "correcta": "B",
+      "explicacion": "AWS Artifact es un portal de autoservicio que proporciona acceso bajo demanda a la documentación de seguridad y cumplimiento de AWS, incluidos los informes."
+    },
+    {
+      "pregunta": "¿Dónde pueden los clientes encontrar recursos sobre el cumplimiento de AWS, por ejemplo, información sobre historias de cumplimiento de los clientes, respuestas a preguntas clave sobre cumplimiento y una lista de comprobación de seguridad para auditorías?",
+      "opciones": [
+        "AWS Organizations",
+        "AWS Artifact",
+        "Centro de conformidad para clientes",
+        "Consola de administración de AWS"
+      ],
+      "correcta": "C",
+      "explicacion": "El Centro de conformidad para clientes proporciona recursos que le ayudarán a obtener más información sobre el cumplimiento de AWS. Puede leer las historias de cumplimiento de los clientes para descubrir cómo las empresas de los sectores regulados resolvieron varios desafíos de cumplimiento, gobernanza y auditoría."
+    },
+    {
+      "pregunta": "Una empresa de ropa deportiva aloja su aplicación en instancias de Amazon EC2. Quiere recopilar métricas de sus instancias de EC2 y desea recibir notificaciones cuando la utilización supere los umbrales. También desea configurar una acción para automatizar el aumento vertical del número de instancias de EC2 cuando la utilización supere su umbral.\n\n¿Qué servicio de AWS se adaptaría mejor a sus necesidades?",
+      "opciones": [
+        "AWS Artifact",
+        "Amazon CloudWatch",
+        "AWS CloudTrail",
+        "AWS Trusted Advisor"
+      ],
+      "correcta": "B",
+      "explicacion": "CloudWatch puede recopilar las métricas de las instancias de EC2, proporcionar información mediante paneles, establecer alarmas en los umbrales y automatizar las instancias de EC2 adicionales."
+    },
+    {
+      "pregunta": "Un cliente empresarial creció rápidamente y tiene dificultades para administrar la facturación de sus cuentas y recursos de AWS. Todos los empleados crearon cuentas independientes sin una administración centralizada ni agrupaciones jerárquicas de cuentas. El cliente desea unificar la facturación y centralizar la administración en unidades organizativas.\n\n¿Qué servicio de AWS se adaptaría mejor a las necesidades de este cliente?",
+      "opciones": [
+        "AWS Organizations",
+        "AWS Service Catalog",
+        "Una zona de disponibilidad (AZ)",
+        "AWS Trusted Advisor"
+      ],
+      "correcta": "A",
+      "explicacion": "Con Organizations, puede administrar su entorno de forma centralizada a medida que escala sus recursos de AWS. Se puede usar para centralizar la administración, consolidar la facturación e implementar agrupaciones jerárquicas de cuentas."
+    },
+    {
+      "pregunta": "Una empresa financiera busca una solución con el fin de controlar un conjunto seleccionado de recursos de AWS para sus empleados. Cuando los empleados necesitan seleccionar e iniciar un nuevo recurso de AWS, la empresa quiere ofrecer una forma de autoservicio para crear, compartir e implementar los recursos de AWS.\n\n¿Qué servicio de AWS se adaptaría mejor a sus necesidades?",
+      "opciones": [
+        "AWS Health",
+        "AWS Service Catalog",
+        "AWS License Manager",
+        "AWS Artifact"
+      ],
+      "correcta": "B",
+      "explicacion": "Con Service Catalog, puede crear, compartir y organizar a partir de un catálogo seleccionado de recursos de AWS. Puede implementar herramientas de seguridad y recursos de red básicos para las nuevas cuentas de AWS, de modo que pueda controlar de manera coherente."
+    },
+    {
+      "pregunta": "Un cliente se está trasladando de un entorno en las instalaciones a la nube y decidió utilizar el enfoque del modelo Bring Your Own License (BYOL) para ahorrar costos. Le preocupa la administración de las licencias, quiere una forma de reducir el riesgo de incumplimiento y desea aplicar límites de uso para las licencias.\n\n¿Qué solución se adaptaría mejor a sus necesidades?",
+      "opciones": [
+        "AWS Organizations",
+        "AWS Service Catalog",
+        "AWS License Manager",
+        "AWS Control Tower"
+      ],
+      "correcta": "C",
+      "explicacion": "License Manager ayuda a reducir el riesgo de incumplimiento al aplicar los límites de uso de las licencias, bloquear los nuevos lanzamientos y utilizar otros controles."
+    }
+  ]
+}

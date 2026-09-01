@@ -1,0 +1,163 @@
+{
+  "id": "aws-m5",
+  "modulo": 5,
+  "titulo": "Networking",
+  "descripcion": "Amazon VPC, subredes, grupos de seguridad, ACL, Route 53 y conectividad híbrida.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "Un cliente está creando recursos de aplicaciones en sus subredes de nube virtual privada (VPC). Desea proteger sus recursos en la nube, sobre todo, las tareas de protección del tráfico de redes.\n\n¿De qué componente es responsable el cliente según el modelo de responsabilidad compartida?",
+      "opciones": [
+        "Proteger el hardware que ejecuta los servicios de la nube de AWS",
+        "Proteger el software que ejecuta los servicios de la nube de AWS",
+        "Proteger el tráfico de red con las subredes y los recursos con listas de control de acceso de red (ACL de red) y grupos de seguridad",
+        "Asegurar el acceso a los centros de datos e instalaciones de AWS que ejecutan los servicios de la nube de AWS"
+      ],
+      "correcta": "C",
+      "explicacion": "El cliente es responsable de proteger el tráfico de la red. Puede hacerlo con grupos de seguridad y ACL de red."
+    },
+    {
+      "pregunta": "Un cliente financiero necesita una solución de entrega de contenido para ofrecer los videos de formación y el contenido estático necesarios a sus consultores financieros de todo el mundo. Quiere asegurarse de que la solución ofrezca una latencia baja.\n\n¿Qué solución de AWS se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "AWS Global Accelerator",
+        "AWS Direct Connect",
+        "Amazon CloudFront",
+        "Amazon Route 53"
+      ],
+      "correcta": "C",
+      "explicacion": "CloudFront agiliza la distribución de contenido web estático y dinámico a los usuarios. Entrega el contenido de forma segura y con baja latencia por medio de una red mundial de centros de datos que reciben el nombre de ubicaciones perimetrales."
+    },
+    {
+      "pregunta": "¿Cuál es la función principal de una zona de disponibilidad en la nube de AWS?",
+      "opciones": [
+        "Le permite crear una subsección de una nube virtual privada (VPC) donde puede aislar los recursos y controlar el acceso.",
+        "Mejora la disponibilidad de las aplicaciones y la tolerancia a errores, ya que permite que los recursos se implementen en varias zonas.",
+        "Filtra el tráfico entrante y saliente de las instancias de EC2 de una VPC.",
+        "Aprovisiona una sección aislada de forma lógica de la nube de AWS, donde puede lanzar recursos de AWS en una red virtual que usted defina."
+      ],
+      "correcta": "B",
+      "explicacion": "Una zona de disponibilidad es un centro de datos o un conjunto de centros de datos aislado de forma física dentro de una región de AWS. Cada AZ cuenta con energía eléctrica, refrigeración y redes independientes, y están diseñadas para mejorar la disponibilidad y la tolerancia a errores de las aplicaciones, ya que permiten que los recursos se implementen en varias zonas de disponibilidad dentro de la misma región."
+    },
+    {
+      "pregunta": "Un cliente empresarial acaba de fusionarse con otra empresa y necesita una forma de escalar de manera rápida y ofrecer al nuevo equipo de ventas mundial una manera de acceder a sus recursos de AWS. Busca un servicio completamente administrado con autenticación avanzada para sus trabajadores remotos nuevos.\n\n¿Qué solución se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "AWS Client VPN",
+        "AWS Direct Connect",
+        "AWS Site-to-Site VPN",
+        "AWS PrivateLink"
+      ],
+      "correcta": "A",
+      "explicacion": "Amazon Client VPN es un servicio de redes que puede utilizar para conectar las redes en las instalaciones y los trabajadores remotos a la nube. Proporciona autenticación avanzada y acceso elástico y remoto en un servicio completamente administrado."
+    },
+    {
+      "pregunta": "Un cliente está explorando los servicios de redes periféricas para mejorar la disponibilidad, el rendimiento y la seguridad de las aplicaciones. Necesita una solución para enrutar el tráfico cuando haya problemas en una de las ubicaciones de su aplicación. En concreto, debe tener en cuenta el estado de los puntos de conexión, la ubicación del usuario y las políticas.\n\n¿Qué solución de AWS se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "Amazon Route 53",
+        "Amazon CloudFront",
+        "AWS Global Accelerator",
+        "AWS Direct Connect"
+      ],
+      "correcta": "C",
+      "explicacion": "Por qué no: CloudFront agiliza la distribución de contenido web estático y dinámico a los usuarios. Entrega el contenido por medio de una red mundial de centros de datos que reciben el nombre de ubicaciones perimetrales.\n\nGlobal Accelerator es un servicio de redes que está diseñado para mejorar los niveles de disponibilidad y rendimiento de las aplicaciones para los usuarios globales. Para ello, brinda direcciones IP estáticas, dirige el tráfico a través de la red global de AWS y lo enruta a puntos de conexión óptimos según el estado, la ubicación de los usuarios y las políticas"
+    },
+    {
+      "pregunta": "Un cliente está creando una Amazon VPC para su aplicación. Desea crear un segmento privado en la Amazon VPC para que los recursos lanzados puedan aislarse de los usuarios en internet.\n\n¿Qué componente de red se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "Tanto una subred pública como una privada sería una buena opción.",
+        "Una subred pública",
+        "Una zona de disponibilidad en lugar de una subred",
+        "Una subred privada"
+      ],
+      "correcta": "D",
+      "explicacion": "Una subred privada es un segmento de red dentro de una nube virtual privada (VPC) que no tiene una ruta directa a internet. Esto cubriría sus necesidades para la aplicación."
+    },
+    {
+      "pregunta": "Un cliente está trasladando su aplicación a una Amazon VPC y desea configurar un control de tráfico en el nivel de la subred. Requiere un control amplio sobre el tráfico entrante y saliente y le gustaría utilizar reglas de permiso y denegación.\n\n¿Qué solución o característica cubriría sus necesidades?",
+      "opciones": [
+        "Cambiar la subred pública a una subred privada para evitar el acceso público de internet.",
+        "Configurar una puerta de enlace privada virtual según los requisitos de la aplicación.",
+        "Utilizar listas de control de acceso de red (ACL de red).",
+        "Utilizar grupos de seguridad."
+      ],
+      "correcta": "C",
+      "explicacion": "Por qué no: Una puerta de enlace privada virtual restringiría el acceso a la nube virtual privada (VPC), pero no permitiría un control amplio en el nivel de la subred ni tendría reglas de permiso y denegación."
+    },
+    {
+      "pregunta": "Una empresa de medios necesita un servicio para administrar sus registros de dominio con diferentes proveedores. Además, utilizarán el servicio para dirigir el tráfico de internet a sus recursos alojados en la nube de AWS y en otros lugares.\n\n¿Qué solución de AWS se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "Amazon CloudFront",
+        "AWS Global Accelerator",
+        "Amazon Route 53",
+        "AWS Direct Connect"
+      ],
+      "correcta": "C",
+      "explicacion": "Route 53 es un servicio de sistema de nombres de dominio (DNS) que administra el registro de dominios, el enrutamiento de DNS y las comprobaciones de estado. Ofrece un enrutamiento fiable y eficiente de los usuarios a su sitio web o aplicaciones, ya sea que estén alojados en AWS o en otro lugar."
+    },
+    {
+      "pregunta": "Un cliente busca una forma de establecer una conexión dedicada desde su red en las instalaciones a una Amazon VPC. Necesita una solución que brinde una experiencia de red más uniforme con un ancho de banda mayor.\n\n¿Qué tipo de conexión a la nube de AWS se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "Puerta de enlace privada virtual",
+        "Puerta de enlace de internet",
+        "AWS Direct Connect",
+        "Amazon CloudFront"
+      ],
+      "correcta": "C",
+      "explicacion": "Direct Connect establecería una conexión dedicada desde una red en las instalaciones a una o más nubes virtuales privadas (VPC). También puede reducir los costos de redes, aumentar el rendimiento de ancho de banda y proporcionar una experiencia de red más uniforme que las conexiones basadas en internet."
+    },
+    {
+      "pregunta": "Un cliente minorista aloja su aplicación en una Amazon VPC y desea configurar las reglas de tráfico para las instancias de Amazon EC2 que se ejecutan en una subred pública. La aplicación requiere que se definan varias reglas en el nivel de la instancia.\n\n¿Qué solución o característica cubriría sus necesidades?",
+      "opciones": [
+        "Cambiar la subred pública a una subred privada para evitar el acceso público de internet.",
+        "Configurar grupos de seguridad para las instancias de Amazon EC2 en función de los requisitos de la aplicación.",
+        "Configurar listas de control de acceso de red (ACL de red) para las instancias de Amazon EC2 en función de los requisitos de la aplicación.",
+        "Configurar una puerta de enlace privada virtual según los requisitos de la aplicación."
+      ],
+      "correcta": "B",
+      "explicacion": "Los grupos de seguridad permitirían un control detallado en el nivel de la instancia. Se pueden definir reglas en la subred pública para las instancias individuales."
+    },
+    {
+      "pregunta": "¿Cuál es la función principal de un servicio de nombres de dominio (DNS)?",
+      "opciones": [
+        "Traduce nombres de dominio legibles para el ser humano a direcciones IP legibles por máquinas.",
+        "Aprovisiona una sección aislada de forma lógica de la nube de AWS, donde puede lanzar recursos de AWS en una red virtual que usted defina.",
+        "Le permite crear una subsección de una nube virtual privada (VPC) donde puede aislar los recursos y controlar el acceso.",
+        "Filtra el tráfico entrante y saliente de las instancias de Amazon EC2 en una nube virtual privada (VPC)."
+      ],
+      "correcta": "A",
+      "explicacion": "Un DNS traduce el nombre de dominio en el navegador y lo envía a un solucionador de DNS del cliente. Luego, solicita la dirección IP al servidor DNS de la empresa y la devuelve para que el usuario pueda acceder al sitio web."
+    },
+    {
+      "pregunta": "¿Qué son las redes en la nube de AWS?",
+      "opciones": [
+        "Una sección aislada de forma lógica de la nube de AWS donde puede lanzar recursos de AWS en una red virtual que usted mismo defina",
+        "Dispositivos interconectados que pueden intercambiar datos y recursos",
+        "Centros de datos o un conjunto de centros de datos aislados de forma física dentro de una región de AWS",
+        "Un sistema que traduce nombres de dominio legibles a direcciones IP"
+      ],
+      "correcta": "B",
+      "explicacion": "Por qué no: Una nube virtual privada (VPC) es el servicio que se utiliza para lanzar recursos de AWS en una red virtual aislada de forma lógica que se haya definido."
+    },
+    {
+      "pregunta": "una empresa desea establecer una conexión privada y segura entre su centro de datos en las instalaciones y su Amazon VPC para crear una arquitectura de nube híbrida.\n\n¿Qué componente debe utilizar para garantizar una conexión segura?",
+      "opciones": [
+        "Puerta de enlace privada virtual",
+        "Puerta de enlace de internet",
+        "Tabla de enrutamiento",
+        "Subred"
+      ],
+      "correcta": "A",
+      "explicacion": "Una puerta de enlace privada virtual es el punto de conexión de la red privada virtual (VPN) del lado de AWS. Ofrece una manera de establecer una conexión segura y cifrada entre la red en las instalaciones y la nube virtual privada (VPC)."
+    },
+    {
+      "pregunta": "Un cliente está explorando soluciones para establecer conexiones seguras y cifradas entre sus redes en las instalaciones en sus centros de datos y sucursales. Está buscando la forma MÁS rentable de conectar sus oficinas con otros sitios y sus servicios de AWS. No desea aumentar la cantidad de ancho de banda.\n\n¿Qué solución se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "AWS Site-to-Site VPN",
+        "AWS Client VPN",
+        "AWS Direct Connect",
+        "AWS PrivateLink"
+      ],
+      "correcta": "A",
+      "explicacion": "AWS Site-to-Site VPN crea una conexión segura entre el centro de datos o las sucursales y los recursos en la nube de AWS."
+    }
+  ]
+}

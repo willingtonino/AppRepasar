@@ -1,0 +1,124 @@
+{
+  "id": "aws-m9",
+  "modulo": 9,
+  "titulo": "Seguridad",
+  "descripcion": "IAM, MFA, KMS, Shield, WAF, GuardDuty, Inspector y Macie.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "Cuál es la responsabilidad que tiene AWS según el modelo de responsabilidad compartida?",
+      "opciones": [
+        "Configurar grupos de seguridad para instancias de Amazon EC2",
+        "Cifrar los datos en reposo de los clientes",
+        "Administrar la seguridad física de los centros de datos",
+        "Configurar los roles y las políticas de AWS Identity and Access Management (AWS IAM)"
+      ],
+      "correcta": "C",
+      "explicacion": "AWS administra todos los aspectos de la seguridad física de los centros de datos, incluidos los controles de acceso a las instalaciones, las medidas de protección del entorno, la redundancia de energía y los sistemas de vigilancia."
+    },
+    {
+      "pregunta": "Un empleado desea consultar el portal de empleados en línea de su empresa para ver cuántas horas de vacaciones acumuló. Antes de acceder a sus registros personales, ingresa su nombre de usuario y contraseña para iniciar sesión en el sitio.\n\n¿Qué sucede durante este proceso de inicio de sesión?",
+      "opciones": [
+        "Autenticación",
+        "Autorización",
+        "Detección",
+        "Cifrado"
+      ],
+      "correcta": "A",
+      "explicacion": "La autenticación es el proceso mediante el que se pide al usuario que proporcione credenciales, como un nombre de usuario y una contraseña, para verificar su identidad."
+    },
+    {
+      "pregunta": "El equipo de seguridad de una gran empresa de comercio electrónico necesita una forma centralizada de crear y administrar claves de cifrado que protejan sus datos en AWS.\n\n¿Cuál de estos servicios representa la MEJOR opción para esto?",
+      "opciones": [
+        "Amazon Macie",
+        "AWS Key Management Service (AWS KMS)",
+        "AWS WAF",
+        "AWS Certificate Manager (ACM)"
+      ],
+      "correcta": "B",
+      "explicacion": "AWS KMS está diseñado específicamente para crear y administrar claves de cifrado."
+    },
+    {
+      "pregunta": "El equipo de seguridad de una gran empresa de desarrollo de software necesita comprobar si hay vulnerabilidades de seguridad y desviaciones de las prácticas recomendadas de seguridad en varias aplicaciones. Las aplicaciones se ejecutan en Amazon EC2, AWS Lambda y en contenedores.\n\n¿Qué servicio de AWS deberían utilizar para estas evaluaciones de seguridad?",
+      "opciones": [
+        "Amazon Detective",
+        "Amazon Inspector",
+        "AWS Security Hub",
+        "Amazon GuardDuty"
+      ],
+      "correcta": "B",
+      "explicacion": "Amazon Inspector está diseñado específicamente para realizar evaluaciones automatizadas de vulnerabilidades en aplicaciones alojadas en AWS."
+    },
+    {
+      "pregunta": "Todas las cuentas de AWS reciben un usuario raíz. El usuario raíz es el propietario de la cuenta y tiene permiso para realizar cualquier acción.\n\n¿Cuáles son algunas maneras de proteger esta cuenta privilegiada? (Seleccione DOS opciones).",
+      "opciones": [
+        "Delegar el acceso del usuario raíz a otros usuarios.",
+        "Activar la autenticación multifactor (MFA).",
+        "Eliminar el usuario raíz después de configurar los usuarios de AWS Identity and Access Management (AWS IAM).",
+        "Asociar una contraseña segura a la cuenta.",
+        "Crear varios usuarios raíz para lograr redundancia."
+      ],
+      "correcta": [
+        "B",
+        "D"
+      ],
+      "tipo": "multiple",
+      "explicacion": "Para proteger al usuario raíz, se recomienda asociar una contraseña segura a la cuenta y activar la MFA. Una cuenta de AWS puede tener un solo usuario raíz. Este usuario raíz no se puede eliminar y su acceso no debe delegarse a otros nunca."
+    },
+    {
+      "pregunta": "La protección de los datos confidenciales de los clientes es un componente vital para mantener su confianza. Esto implica cifrar los datos tanto en reposo como en tránsito.\n\n¿Qué se utiliza para cifrar los datos en tránsito?",
+      "opciones": [
+        "Autenticación multifactor (MFA)",
+        "Los certificados SSL/TLS",
+        "Contraseñas seguras",
+        "Claves criptográficas"
+      ],
+      "correcta": "B",
+      "explicacion": "SSL y su sucesor, TLS, son protocolos diseñados específicamente para cifrar los datos a medida que se mueven por medio de redes entre sistemas."
+    },
+    {
+      "pregunta": "Con AWS Identity and Access Management (AWS IAM), todas las acciones se deniegan de forma predeterminada. Al conceder permisos, el acceso debe proporcionarse únicamente cuando sea necesario.\n\n¿Cómo se denomina este concepto?",
+      "opciones": [
+        "Política de denegación predeterminada",
+        "Control de acceso basado en roles",
+        "Marco de trabajo de los límites de permiso",
+        "Principio de mínimo privilegio"
+      ],
+      "correcta": "D",
+      "explicacion": "El principio de mínimo privilegio establece que las personas y los sistemas deben tener acceso únicamente a lo que necesitan y nada más."
+    },
+    {
+      "pregunta": "Una gran empresa de marketing tiene un conjunto estándar de permisos que se usan para conceder a los diseñadores acceso a determinados buckets de Amazon S3. La empresa agregó un nuevo bucket de S3 al que todos los diseñadores deben acceder.\n\n¿Qué control de AWS Identity and Access Management (AWS IAM) puede utilizar la empresa para asignar permisos que heredarán todos los diseñadores?",
+      "opciones": [
+        "Usuario de IAM",
+        "Grupo de IAM",
+        "Política de IAM",
+        "Rol de IAM"
+      ],
+      "correcta": "B",
+      "explicacion": "Los grupos de IAM están diseñados específicamente para estos casos. Se utilizan para dar permisos a varios usuarios a la vez."
+    },
+    {
+      "pregunta": "Recientemente, una pequeña empresa de servicios financieros trasladó sus recursos en línea a AWS. El equipo de seguridad estaba preocupado por la protección frente a los tipos más comunes y frecuentes de ataques de denegación de servicio distribuida (DDoS).\n\n¿Qué servicio de AWS protege a los clientes de los ataques DDoS de forma automática y sin costo alguno?",
+      "opciones": [
+        "AWS Systems Manager",
+        "Amazon Macie",
+        "AWS Shield",
+        "AWS Identity and Access Management (AWS IAM)"
+      ],
+      "correcta": "C",
+      "explicacion": "Shield es un servicio de protección frente a ataques DDoS administrado que protege las aplicaciones que se ejecutan en AWS de los tipos de ataques DDoS más comunes y frecuentes sin costo alguno."
+    },
+    {
+      "pregunta": "Una empresa de tecnología está trasladando algunos de sus recursos a AWS. La empresa quiere ofrecer acceso de inicio de sesión único a sus empleados en AWS mediante su fuente de identidad existente.\n\n¿Qué servicio ayudaría a la empresa a lograr esto?",
+      "opciones": [
+        "AWS Systems Manager",
+        "AWS IAM Identity Center",
+        "AWS Secrets Manager",
+        "AWS Identity and Access Management (AWS IAM)"
+      ],
+      "correcta": "B",
+      "explicacion": "IAM Identity Center está diseñado específicamente para ayudar a las organizaciones a implementar el inicio de sesión único para los recursos de AWS mediante sus proveedores de identidad existentes."
+    }
+  ]
+}

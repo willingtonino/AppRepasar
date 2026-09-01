@@ -1,0 +1,149 @@
+{
+  "id": "aws-m2",
+  "modulo": 2,
+  "titulo": "Computación en la nube",
+  "descripcion": "EC2, tipos y precios de instancias, escalado, balanceo y mensajería.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "Una empresa de medios está trabajando en un proyecto que implica renderizar simulaciones y efectos visuales complejos. El proceso de renderizado requiere una potencia de computación significativa y aceleradores de hardware para gestionar la intensa carga de trabajo de manera eficiente.\n\n¿Qué tipo de instancia de Amazon EC2 sería la MEJOR opción para esta tarea?",
+      "opciones": [
+        "Optimizadas para la computación",
+        "De computación acelerada",
+        "Optimizadas para memoria",
+        "De uso general"
+      ],
+      "correcta": "B"
+    },
+    {
+      "pregunta": "Un equipo de investigación universitario está realizando simulaciones de modelos climáticos que requieren una potencia de CPU considerable para procesar algoritmos complejos y analizar grandes conjuntos de datos.\n\n¿Por qué las instancias de Amazon EC2 optimizadas para la computación son ideales para esta tarea?",
+      "opciones": [
+        "Están optimizadas para gestionar tareas que requieren aceleradores de hardware.",
+        "Proporcionan un alto rendimiento de almacenamiento, lo que las hace ideales para tareas que requieren una recuperación y un almacenamiento rápidos para grandes conjuntos de datos.",
+        "Son ideales para tareas que requieren una potencia de CPU significativa para realizar los cálculos.",
+        "Están diseñadas para cargas de trabajo que requieren una gran cantidad de memoria para procesar grandes conjuntos de datos de manera eficiente."
+      ],
+      "correcta": "C"
+    },
+    {
+      "pregunta": "Una startup está creando una nueva aplicación web y elige instancias de Amazon EC2 de uso general para alojar la aplicación.\n\n¿Por qué eligieron este tipo de instancia?",
+      "opciones": [
+        "Están diseñadas para una alta capacidad de almacenamiento, que es necesaria para alojar bases de datos de gran tamaño.",
+        "Proporciona el máximo rendimiento para tareas que consumen muchos recursos de computación, como el renderizado de video o el machine learning.",
+        "Están diseñadas específicamente para aplicaciones con uso intensivo de memoria, lo que resulta ideal para alojar una aplicación web.",
+        "Proporciona una combinación equilibrada de recursos de computación, memoria y redes, a la vez que mantiene la eficiencia de los costos a medida que escalan su base de usuarios."
+      ],
+      "correcta": "D"
+    },
+    {
+      "pregunta": "Una empresa tiene cargas de trabajo críticas en estado estable y trabajos por lotes que no son urgentes.\n\n¿Cómo deberían optimizar los costos con Savings Plans y las instancias de spot de Amazon EC2?",
+      "opciones": [
+        "Usar Savings Plans para cargas de trabajo críticas e instancias de spot para trabajos que no sean urgentes a fin de maximizar los ahorros.",
+        "Usar instancias de spot para todas las cargas de trabajo a fin de maximizar los ahorros y evitar Savings Plans.",
+        "Usar Savings Plans para todas las cargas de trabajo y evitar las instancias de spot debido a los riesgos de interrupción.",
+        "Usar Savings Plans para cargas de trabajo que no son urgentes y las instancias de spot para trabajos críticos."
+      ],
+      "correcta": "A"
+    },
+    {
+      "pregunta": "Qué herramienta se puede utilizar para interactuar con los servicios de AWS a través de una interfaz gráfica de usuario (GUI)?",
+      "opciones": [
+        "Consola de administración de AWS",
+        "Amazon EC2",
+        "Kit de desarrollo de software de AWS (AWS SDK)",
+        "Interfaz de la línea de comandos de AWS (AWS CLI)"
+      ],
+      "correcta": "A"
+    },
+    {
+      "pregunta": "una empresa de desarrollo de software debe notificar al equipo de ingeniería cada vez que se informa de un nuevo error en su sistema de seguimiento de errores. Algunos miembros del equipo deben recibir una notificación inmediata, mientras que otros pueden procesar los informes de errores más adelante.\n\n¿Qué servicio debería elegir la empresa de desarrollo de software según los requisitos?",
+      "opciones": [
+        "Amazon EC2",
+        "Elastic Load Balancing (ELB)",
+        "Amazon Simple Notification Service (Amazon SNS)",
+        "Amazon Simple Queue Service (Amazon SQS)"
+      ],
+      "correcta": "C"
+    },
+    {
+      "pregunta": "una empresa de fabricación ejecutará un conjunto de cargas de trabajo predecibles para los próximos 3 años y quiere optimizar los costos.\n\n¿Qué opción deben elegir?",
+      "opciones": [
+        "Bajo demanda",
+        "Instancias de spot",
+        "Hosts dedicados",
+        "Instancias reservadas"
+      ],
+      "correcta": "D"
+    },
+    {
+      "pregunta": "¿Cómo funcionan en conjunto Amazon EC2 Auto Scaling y Elastic Load Balancing (ELB) en AWS?",
+      "opciones": [
+        "ELB escala automáticamente las instancias de EC2 y Amazon EC2 Auto Scaling ajusta el tráfico.",
+        "Amazon EC2 Auto Scaling ajusta la cantidad de instancias, mientras que ELB distribuye el tráfico de manera uniforme entre ellas.",
+        "Funcionan de forma independiente y no están conectados.",
+        "Amazon EC2 Auto Scaling gestiona el enrutamiento del tráfico, mientras que ELB administra el escalado de las instancias."
+      ],
+      "correcta": "B"
+    },
+    {
+      "pregunta": "¿Cuál es el rol principal de una imagen de máquina de Amazon (AMI) a la hora de escalar aplicaciones?",
+      "opciones": [
+        "Configura las políticas de escalado de las aplicaciones.",
+        "Almacena copias de seguridad de los datos de la aplicación.",
+        "Proporciona una imagen coherente para lanzar nuevas instancias.",
+        "Administra automáticamente el tráfico de red."
+      ],
+      "correcta": "C"
+    },
+    {
+      "pregunta": "Una agencia de marketing está desarrollando una nueva aplicación web y espera un crecimiento constante, pero no tiene certeza sobre el tráfico en los primeros meses. Quiere flexibilidad sin asumir un compromiso a largo plazo.\n\n¿Qué opción de precios debería usar?",
+      "opciones": [
+        "Instancias reservadas",
+        "Instancias de spot",
+        "Savings Plans",
+        "Bajo demanda"
+      ],
+      "correcta": "D"
+    },
+    {
+      "pregunta": "¿Cómo funciona Amazon EC2 Auto Scaling en AWS?",
+      "opciones": [
+        "Amazon EC2 Auto Scaling ajusta el tipo de instancia, pero no cambia el número de instancias.",
+        "Amazon EC2 Auto Scaling agrega o elimina instancias automáticamente según los datos de rendimiento y las métricas de las aplicaciones.",
+        "Amazon EC2 Auto Scaling agrega instancias cuando la carga de trabajo es demasiado alta, pero no se reduce verticalmente cuando la demanda disminuye.",
+        "Amazon EC2 Auto Scaling requiere una intervención manual para agregar o eliminar instancias según el tráfico."
+      ],
+      "correcta": "B"
+    },
+    {
+      "pregunta": "Qué ocurre si un componente falla en una arquitectura de acoplamiento débil?",
+      "opciones": [
+        "El sistema puede seguir funcionando ya que los demás componentes son independientes.",
+        "El error hace que todo el sistema falle.",
+        "El sistema cambia automáticamente a los componentes de respaldo sin necesidad de intervención.",
+        "Los demás componentes se deben reiniciar de forma manual."
+      ],
+      "correcta": "A"
+    },
+    {
+      "pregunta": "¿A qué se refiere la tenencia múltiple en el contexto de Amazon EC2?",
+      "opciones": [
+        "Instancias de EC2 dedicadas a clientes individuales",
+        "Instancias que están restringidas a una región geográfica",
+        "Cada instancia de EC2 se ejecuta en su propia red privada",
+        "Varios usuarios comparten la misma instancia de EC2 mientras mantienen el aislamiento"
+      ],
+      "correcta": "D"
+    },
+    {
+      "pregunta": "¿Qué opción describe MEJOR cómo se aprovisionan y administran los recursos de computación en la nube?",
+      "opciones": [
+        "Los recursos deben comprarse por adelantado e instalarse de manera local.",
+        "Los recursos de computación requieren una administración manual constante.",
+        "Los recursos de computación son fijos y no se pueden escalar.",
+        "Los recursos se aprovisionan según la demanda, lo que permite el escalado y la administración."
+      ],
+      "correcta": "D"
+    }
+  ]
+}

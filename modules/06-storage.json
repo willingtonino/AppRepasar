@@ -1,0 +1,174 @@
+{
+  "id": "aws-m6",
+  "modulo": 6,
+  "titulo": "Storage",
+  "descripcion": "Almacén de instancias, EBS, instantáneas, S3, EFS, FSx y clases de almacenamiento.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "¿Qué enunciado describe MEJOR a Amazon FSx?",
+      "opciones": [
+        "Un servicio que se utiliza para configurar el uso compartido de archivos privados solo dentro de un centro de datos en las instalaciones",
+        "Un servicio completamente administrado que proporciona un almacenamiento de archivos escalable y rentable basado en sistemas de archivos muy utilizados",
+        "Un servicio de almacenamiento en bloque que proporciona volúmenes de alto rendimiento para instancias de EC2",
+        "Una solución de almacenamiento de objetos diseñada para archivar datos de acceso muy poco frecuente"
+      ],
+      "correcta": "B",
+      "explicacion": "Amazon FSx está diseñado, en concreto, como un servicio completamente administrado que ofrece almacenamiento de archivos basado en sistemas de archivos populares, como Windows File Server, Lustre, OpenZFS y NetApp ONTAP."
+    },
+    {
+      "pregunta": "¿Cuál es la función principal de las clases de almacenamiento de Amazon S3?",
+      "opciones": [
+        "Organizar objetos dentro de los buckets de forma jerárquica",
+        "Cifrar datos en reposo y en tránsito",
+        "Replicar datos de forma automática en varias regiones de AWS",
+        "Proporcionar diferentes opciones de almacenamiento que estén optimizadas para diferentes casos de uso y patrones de acceso"
+      ],
+      "correcta": "D",
+      "explicacion": "Las clases de almacenamiento de Amazon S3 están diseñadas para ofrecer diferentes características de rendimiento, niveles de disponibilidad y estructuras de costos, a fin de cumplir con los requisitos de almacenamiento de datos y los patrones de acceso específicos."
+    },
+    {
+      "pregunta": "¿Qué enunciado describe MEJOR a Amazon S3?",
+      "opciones": [
+        "Un servicio de almacenamiento de archivos que proporciona una interfaz tradicional de sistema de archivos para compartirlos entre varias instancias.",
+        "Un servicio de almacenamiento a nivel de bloques que proporciona almacenamiento persistente para las instancias de Amazon EC2.",
+        "Un servicio escalable de almacenamiento de objetos que se utiliza para almacenar y recuperar cualquier cantidad de datos desde cualquier lugar de la web.",
+        "Un servicio de almacenamiento diseñado, sobre todo, para archivar y hacer copias de seguridad a largo plazo de datos de acceso muy poco frecuente."
+      ],
+      "correcta": "C",
+      "explicacion": "Amazon S3 es, en esencia, un servicio de almacenamiento de objetos diseñado para la escalabilidad. Los usuarios pueden almacenar cantidades ilimitadas de datos a los que se puede acceder desde cualquier lugar con conectividad a internet."
+    },
+    {
+      "pregunta": "EmpresaX Marketing necesita migrar sus archivos compartidos existentes a AWS para brindar apoyar a los equipos de diseño que trabajan con archivos creativos de gran tamaño. La empresa necesita ayuda para elegir una solución de almacenamiento que pueda facilitar esta migración.\n\nLa solución debe cumplir los siguientes requisitos:\n\nBrindar un servicio completamente administrado.\n\nIntegrarse de manera fluida con las aplicaciones de Windows.\n\nAdmitir el protocolo SMB.\n\nOfrecer la integración de Active Directory para autenticar usuarios.\n\nAdmitir la deduplicación de datos para optimizar los costos de almacenamiento.\n\nProporcionar latencias consistentes inferiores a milisegundos.\n\nProporcionar una alta disponibilidad.\n\n¿Qué servicio de almacenamiento de AWS cumple MEJOR los requisitos descritos en la situación?",
+      "opciones": [
+        "Amazon FSx para Windows File Server",
+        "Amazon Elastic File System (Amazon EFS)",
+        "Amazon Storage Gateway",
+        "Amazon S3"
+      ],
+      "correcta": "A",
+      "explicacion": "Amazon FSx para Windows File Server está diseñado, en concreto, para las cargas de trabajo de Windows. Ofrece compatibilidad con SMB, integración con Active Directory y características de Windows, como la deduplicación de datos, a la vez que ofrece latencias consistentes inferiores a milisegundos como un servicio completamente administrado."
+    },
+    {
+      "pregunta": "EmpresaX Marketing necesita una solución de almacenamiento con la que pueda distribuir grandes colecciones de imágenes, videos y archivos de diseño de alta resolución para las campañas de sus clientes. Algunos activos son de acceso frecuente, mientras que otros se archivan para consultarlos en ocasiones.\n\nLa solución debe cumplir los siguientes criterios:\n\nCapacidad de almacenamiento ilimitada\n\nAlta durabilidad\n\nUso compartido de archivos sencillo mediante URL\n\nCapacidad para organizar los activos por cliente y proyecto\n\nOpciones de almacenamiento rentables\n\nControles de seguridad para evitar el acceso no autorizado a activos específicos\n\n¿Qué servicio de AWS es el MÁS adecuado para las necesidades de almacenamiento descritas en esta situación?",
+      "opciones": [
+        "Amazon S3",
+        "Amazon FSx",
+        "Amazon Elastic Block Storage (Amazon EBS)",
+        "Amazon Elastic File System (Amazon EFS)"
+      ],
+      "correcta": "A",
+      "explicacion": "Por qué no: Amazon EBS proporciona volúmenes de almacenamiento en bloque que deben conectarse a instancias de Amazon EC2. No puede accederse de forma directa por internet, no admite el uso compartido de archivos basado en URL y su capacidad está limitada al tamaño de los volúmenes aprovisionados."
+    },
+    {
+      "pregunta": "¿Qué enunciado describe MEJOR a Amazon Elastic File System (Amazon EFS)?",
+      "opciones": [
+        "Un servicio de almacenamiento en bloque que proporciona volúmenes para conectarse a una sola instancia de Amazon EC2",
+        "Un sistema de archivos elástico y completamente administrado que se escala de forma automática a medida que se agregan y eliminan archivos",
+        "Un sistema de almacenamiento de archivos de capacidad fija que requiere escalado y administración manuales",
+        "Un servicio de almacenamiento de objetos diseñado para archivar a largo plazo datos de acceso muy poco frecuente"
+      ],
+      "correcta": "B",
+      "explicacion": "Esto describe con precisión la propuesta de valor fundamental de Amazon EFS como un servicio que aumenta y se reduce de forma automática según las necesidades de almacenamiento sin aprovisionamiento manual."
+    },
+    {
+      "pregunta": "EmpresaX Software implementa una aplicación de producción importante en instancias de Amazon EC2 con varios volúmenes de Amazon Elastic Block Store (Amazon EBS) que contienen código de aplicación y datos de clientes. El equipo busca un servicio de AWS con el que puedan hacer copias de seguridad de los datos de su aplicación.\n\nLa solución debe cumplir los siguientes criterios:\n\nCrear copias de seguridad periódicas de los datos.\n\nCrear entornos duplicados para realizar pruebas.\n\nCrear una estrategia de recuperación de desastres.\n\nCrear copias de seguridad completas o progresivas sin afectar el rendimiento de la aplicación.\n\nProporcionar un almacenamiento rentable a largo plazo.\n\n¿Qué servicio o característica de AWS cumpliría MEJOR los requisitos de la situación?",
+      "opciones": [
+        "Amazon Elastic File System (Amazon EFS)",
+        "Amazon S3 Glacier Flexible Retrieval",
+        "Instantáneas de EBS",
+        "Amazon FSx"
+      ],
+      "correcta": "C",
+      "explicacion": "Por qué no: Si bien S3 Glacier Flexible Retrieval proporciona un almacenamiento rentable a largo plazo, está diseñado para archivar datos. No proporciona la funcionalidad de copia de seguridad y restauración a nivel de volumen, que es necesaria para proteger y recuperar los volúmenes de EBS en su estado completo."
+    },
+    {
+      "pregunta": "¿Cuál es una característica clave de los precios de las clases de almacenamiento de Amazon S3?",
+      "opciones": [
+        "Todas las clases de almacenamiento tienen el mismo requisito de duración mínima del almacenamiento.",
+        "Todas las clases de almacenamiento cuestan lo mismo, pero difieren en la velocidad de recuperación.",
+        "Los precios varían según los costos de almacenamiento, las tarifas de recuperación y la duración mínima de almacenamiento.",
+        "Los precios se determinan de forma exclusiva según la región geográfica del bucket."
+      ],
+      "correcta": "C",
+      "explicacion": "Las clases de almacenamiento de Amazon S3 tienen diferentes estructuras de precios que afectan el costo total. Estas incluyen los costos de almacenamiento por gigabyte, los posibles cargos por recuperación de datos y los compromisos de duración mínima del almacenamiento."
+    },
+    {
+      "pregunta": "EmpresaX IA está desarrollando una aplicación de machine learning que requiere un procesamiento de datos muy rápido para conjuntos de datos de entrenamiento de modelos temporales. Los datos se generan durante las sesiones de entrenamiento y se almacenan por separado en un almacenamiento persistente. El equipo intenta determinar la mejor solución de almacenamiento para usar junto con su aplicación.\n\nLa solución debe cumplir los siguientes criterios:\n\nRendimiento de E/S más alto posible\n\nConexión directa a sus instancias de Amazon EC2\n\nAlmacenamiento temporal (los datos no persisten cuando las instancias se detienen o terminan)\n\n¿Qué servicio de AWS cubre MEJOR las necesidades de almacenamiento temporal descritas en esta situación?",
+      "opciones": [
+        "Amazon Elastic Block Store (Amazon EBS)",
+        "Amazon Elastic File System (Amazon EFS)",
+        "Amazon S3",
+        "Almacén de instancias Amazon EC2"
+      ],
+      "correcta": "D",
+      "explicacion": "El almacén de instancias EC2 proporciona almacenamiento temporal a nivel de bloques que se conecta de forma física al equipo host, lo que ofrece el mayor rendimiento de E/S posible para las necesidades de procesamiento de datos temporales."
+    },
+    {
+      "pregunta": "EmpresaX Manufactura conserva una gran cantidad de dibujos técnicos y archivos de diseño a los que sus equipos necesitan acceder a diario desde sus aplicaciones en las instalaciones. La empresa desea migrar estos archivos a AWS de manera gradual para reducir sus costos de almacenamiento local y, al mismo tiempo, mantener un acceso de baja latencia para los archivos de uso frecuente.\n\nLa solución debe cumplir los siguientes criterios:\n\nIntegrarse con los flujos de trabajo existentes basados en archivos.\n\nProporcionar una ruta fluida hacia el almacenamiento en la nube sin interrumpir las operaciones actuales.\n\nMantener el acceso local y de baja latencia a los archivos de uso frecuente.\n\n¿Qué servicio de almacenamiento de AWS debe usar en función de estos requisitos?",
+      "opciones": [
+        "AWS Storage Gateway: File Gateway",
+        "Amazon FSx para Windows File Server",
+        "Amazon S3 Glacier Flexible Retrieval",
+        "Amazon Elastic File System (Amazon EFS)"
+      ],
+      "correcta": "A",
+      "explicacion": "File Gateway brinda una interfaz de archivos para acceder al almacenamiento de objetos de Amazon S3. Mantiene un acceso local de baja latencia a los datos de acceso frecuente mediante el almacenamiento en caché local y se integra a la perfección con los flujos de trabajo existentes basados en archivos."
+    },
+    {
+      "pregunta": "¿Qué enunciado describe MEJOR a AWS Storage Gateway?",
+      "opciones": [
+        "Un dispositivo de hardware físico que debe instalarse en un centro de datos",
+        "Una red privada virtual que crea conexiones seguras entre un centro de datos y AWS",
+        "Una herramienta de migración que transfiere de forma automática todos los datos en las instalaciones a la nube",
+        "Una solución de almacenamiento en la nube híbrida que proporciona a las aplicaciones en las instalaciones acceso a un almacenamiento en la nube casi ilimitado"
+      ],
+      "correcta": "D",
+      "explicacion": "Storage Gateway está diseñado, en concreto, como una solución híbrida que conecta los entornos en las instalaciones con el almacenamiento en la nube de AWS. Esto permite que las aplicaciones locales accedan sin problemas al almacenamiento de AWS y, al mismo tiempo, mantengan los patrones de acceso locales."
+    },
+    {
+      "pregunta": "EmpresaX Tecnología necesita implementar una solución de almacenamiento centralizada para su equipo de desarrollo, la cual permita que varias instancias de Amazon EC2 accedan al mismo sistema de archivos de forma simultánea.\n\nLa solución debe cumplir los siguientes criterios:\n\nBrindar un servicio completamente administrado.\n\nEscalar de forma automática.\n\nEliminar la necesidad de planificar la capacidad.\n\nAdmitir aplicaciones basadas en Linux con interfaces de sistema de archivos estándar.\n\nMantener un acceso constante de baja latencia en todos los entornos de desarrollo.\n\nProporcionar una alta durabilidad sin necesidad de configuraciones de replicación complejas.\n\n¿Qué servicio de almacenamiento de AWS es el MÁS adecuado para esta situación?",
+      "opciones": [
+        "Amazon Elastic Block Storage (Amazon EBS)",
+        "Amazon S3",
+        "Amazon FSx",
+        "Amazon Elastic File System (Amazon EFS)"
+      ],
+      "correcta": "D",
+      "explicacion": "Amazon EFS proporciona un sistema de archivos de red (NFS) escalable, elástico y completamente administrado al que varias instancias de EC2 pueden acceder de forma simultánea. Crece de forma automática a medida que se agregan datos y ofrece cumplimiento con POSIX para aplicaciones de Linux."
+    },
+    {
+      "pregunta": "¿Qué enunciado describe MEJOR a la Recuperación elástica ante desastres de AWS?",
+      "opciones": [
+        "Un servicio de copias de seguridad que crea instantáneas periódicas de los recursos de AWS y las almacena en buckets de Amazon S3",
+        "Un servicio de bases de datos administradas que proporciona copias de seguridad automatizadas y replicación entre regiones",
+        "Un servicio que escala de forma automática la capacidad informática según las demandas de carga de trabajo durante los desastres",
+        "Un servicio que minimiza el tiempo de inactividad y la pérdida de datos, ya que brinda una recuperación rápida y fiable de aplicaciones en las instalaciones y basadas en la nube mediante el almacenamiento de bajo costo, la computación mínima y la recuperación a un momento dado"
+      ],
+      "correcta": "D",
+      "explicacion": "esto describe con precisión la funcionalidad principal de la Recuperación elástica ante desastres, que se centra en la replicación continua para ayudar a brindar una recuperación rápida con una pérdida de datos mínima."
+    },
+    {
+      "pregunta": "En los últimos tiempos, EmpresaX Comercio migró su aplicación principal a una instancia de Amazon EC2 en AWS. A medida que su base de clientes crece, la empresa explora soluciones de almacenamiento que puedan crecer de forma dinámica según las necesidades de datos de la aplicación.\n\nLa solución debe cumplir los siguientes criterios:\n\nDisponer de un almacenamiento en bloque persistente que proporcione un rendimiento constante de baja latencia.\n\nPoder conectarse y desconectarse de la instancia de EC2 según sea necesario.\n\nRedimensionar la capacidad de almacenamiento de forma independiente sin interrumpir la instancia.\n\nCrear copias de seguridad en un momento dado para proteger los datos importantes de los clientes y del inventario.\n\n¿Qué servicio de almacenamiento de AWS cumpliría MEJOR los requisitos de la situación?",
+      "opciones": [
+        "Amazon S3",
+        "Amazon Elastic File System (Amazon EFS)",
+        "Amazon FSx",
+        "Amazon Elastic Block Store (Amazon EBS)"
+      ],
+      "correcta": "D",
+      "explicacion": "Amazon EBS proporciona volúmenes de almacenamiento en bloque persistente que pueden conectarse a instancias de EC2. Ofrece un rendimiento constante de baja latencia, se puede escalar de forma independiente de la instancia de EC2 y admite instantáneas en un momento dado con fines de copias de seguridad."
+    },
+    {
+      "pregunta": "¿Qué enunciado define MEJOR a Amazon Elastic Block Store (Amazon EBS)?",
+      "opciones": [
+        "Una opción de almacenamiento temporal que se pierde cuando una instancia se detiene o termina",
+        "Un caché en memoria que se utiliza para mejorar el rendimiento de la base de datos",
+        "Un servicio de almacenamiento a nivel de bloques que proporciona volúmenes de almacenamiento persistentes para las instancias de Amazon EC2",
+        "Un sistema de almacenamiento de archivos que permite que varias instancias accedan a los mismos datos de forma simultánea"
+      ],
+      "correcta": "C",
+      "explicacion": "Amazon EBS está diseñado de manera específica como un servicio de almacenamiento en bloque, que ofrece volúmenes persistentes que se pueden conectar a instancias de EC2 y pueden soportar la terminación de las instancias."
+    }
+  ]
+}

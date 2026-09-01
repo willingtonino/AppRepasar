@@ -1,0 +1,19 @@
+{
+  "marca": "Ruta de estudio AWS",
+  "titulo": "¿Qué módulo quieres estudiar?",
+  "descripcion": "Selecciona un módulo. Recibirás retroalimentación inmediata y podrás repetirlo cuantas veces necesites.",
+  "modulos": [
+    "01-introduccion-nube.json",
+    "02-computacion-nube.json",
+    "03-servicios-computacion.json",
+    "04-globalizacion.json",
+    "05-networking.json",
+    "06-storage.json",
+    "07-bases-de-datos.json",
+    "08-ia-ml-analitica.json",
+    "09-seguridad.json",
+    "10-monitorizacion-gobernanza.json",
+    "11-precios-soporte.json",
+    "12-migracion.json"
+  ]
+}

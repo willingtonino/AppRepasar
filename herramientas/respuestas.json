@@ -1,0 +1,11 @@
+{
+  "_comentario": "Respuestas de las preguntas que el Word no marca en verde. La clave es el texto de la pregunta + el de su primera opción (así se distinguen las preguntas repetidas). Si marcas la respuesta en verde en el Word, borra la entrada de aquí.",
+
+  "¿Qué servicio de AWS es el MÁS adecuado para las necesidades de almacenamiento descritas en esta situación? Amazon S3": "A",
+
+  "¿Qué servicio o característica de AWS cumpliría MEJOR los requisitos de la situación? Amazon Elastic File System (Amazon EFS)": "C",
+
+  "¿Qué servicio de almacenamiento de AWS debe usar en función de estos requisitos? AWS Storage Gateway: File Gateway": "A",
+
+  "¿Qué servicio de AWS se adaptaría mejor a las necesidades de este cliente? AWS Organizations": "A"
+}

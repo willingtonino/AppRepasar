@@ -1,0 +1,141 @@
+{
+  "id": "aws-m7",
+  "modulo": 7,
+  "titulo": "Bases de datos",
+  "descripcion": "RDS, Aurora, DynamoDB, ElastiCache, Redshift, DocumentDB y Neptune.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "¿Cuál es un uso práctico de Amazon Neptune?",
+      "opciones": [
+        "Optimizar la búsqueda de texto en grandes bases de datos de documentos",
+        "Administrar y consultar conjuntos de datos altamente conectados de manera eficiente",
+        "Proporcionar análisis de streaming en tiempo real",
+        "Sustituir las bases de datos SQL tradicionales para todas las cargas de trabajo"
+      ],
+      "correcta": "B",
+      "explicacion": "Neptune está optimizado para almacenar y consultar datos altamente conectados con una latencia de milisegundos."
+    },
+    {
+      "pregunta": "¿Cuál de estas opciones es una característica de AWS Backup?",
+      "opciones": [
+        "AWS Backup únicamente puede realizar copias de seguridad de los recursos de una sola región de AWS.",
+        "AWS Backup se limita únicamente a los servicios de bases de datos.",
+        "AWS Backup proporciona políticas centralizadas de copia de seguridad y supervisión en varias cuentas y regiones de AWS.",
+        "AWS Backup requiere una configuración manual para cada recurso individual."
+      ],
+      "correcta": "C",
+      "explicacion": "Con AWS Backup, puede definir y administrar las políticas de copia de seguridad a nivel de la organización e implementarlas automáticamente en todas las cuentas y regiones de AWS relacionadas."
+    },
+    {
+      "pregunta": "¿Qué opción describe una situación hipotética en la que una solución no administrada, como una base de datos instalada directamente en una instancia de Amazon EC2, sería preferible a utilizar un servicio de base de datos de AWS completamente administrado?",
+      "opciones": [
+        "Un desarrollador desea escalar una instancia de base de datos en función de los patrones de carga de trabajo sin preocuparse por las complicaciones de la licencia.",
+        "Un desarrollador quiere que AWS se encargue de las tareas rutinarias de mantenimiento de las bases de datos, como las copias de seguridad y la aplicación de parches.",
+        "Un desarrollador tiene una base de datos de un tamaño inferior a los límites máximos impuestos por Amazon RDS.",
+        "Un desarrollador necesita tener el control total sobre la base de datos y acceder a su sistema operativo subyacente, la instalación de la base de datos y la configuración."
+      ],
+      "correcta": "D",
+      "explicacion": "cuando se necesita un control administrativo completo sobre todo el entorno de la base de datos, es preferible instalar una base de datos directamente en Amazon EC2. Esto incluye el acceso a nivel del sistema operativo y la flexibilidad total de configuración, que no están disponibles en los servicios administrados de AWS."
+    },
+    {
+      "pregunta": "¿Cuál es la principal diferencia entre las bases de datos NoSQL, como Amazon DynamoDB, y las bases de datos relacionales?",
+      "opciones": [
+        "Las bases de datos NoSQL utilizan diseños de esquemas flexibles en lugar de las estructuras rígidas de tablas de las bases de datos relacionales.",
+        "Las bases de datos relacionales requieren índices en todas las consultas y las bases de datos NoSQL no utilizan índices.",
+        "Las bases de datos relacionales proporcionan escalado automático y las bases de datos NoSQL requieren escalado manual.",
+        "Las bases de datos relacionales ofrecen un mejor rendimiento para las cargas de trabajo transaccionales que cualquier solución NoSQL."
+      ],
+      "correcta": "A",
+      "explicacion": "El diferenciador clave es que las bases de datos NoSQL ofrecen esquemas flexibles que permiten estructurar los datos de maneras que van más allá del enfoque tradicional basado en tablas. Esto hace posible que los desarrolladores almacenen y procesen datos en formatos que coincidan con la forma en que los usan sus aplicaciones."
+    },
+    {
+      "pregunta": "¿Cuál es el principal beneficio de usar Amazon ElastiCache?",
+      "opciones": [
+        "Sustitución completa de bases de datos relacionales",
+        "Escalado automático del almacenamiento de la base de datos subyacente",
+        "Capacidades de machine learning integradas para el análisis de datos",
+        "Rendimiento mejorado de las aplicaciones mediante el almacenamiento de caché en memoria"
+      ],
+      "correcta": "D",
+      "explicacion": "La función principal de ElastiCache es proporcionar almacenamiento de caché en memoria que permita a las aplicaciones recuperar datos de almacenes de memoria rápidos en lugar de bases de datos basadas en disco, más lentas. Esto reduce significativamente la latencia y mejora el rendimiento general de las aplicaciones."
+    },
+    {
+      "pregunta": "Qué enunciado describe las responsabilidades de los clientes que utilizan los servicios de bases de datos de AWS completamente administrados?",
+      "opciones": [
+        "Los clientes son responsables de supervisar y generar métricas para sus datos.",
+        "Los clientes son responsables de implementar y administrar las soluciones antivirus en los sistemas operativos de los servicios de bases de datos completamente administrados.",
+        "Los clientes son responsables del aprovisionamiento, el escalado, la aplicación de parches y las copias de seguridad.",
+        "Los clientes son responsables de diseñar las estructuras de datos y administrar los controles de acceso."
+      ],
+      "correcta": "D",
+      "explicacion": "Los servicios de bases de datos de AWS completamente administrados solo requieren que los clientes se hagan cargo del diseño de las estructuras de datos y la administración de los controles de acceso."
+    },
+    {
+      "pregunta": "Cuál es un posible caso de uso de Amazon Aurora?",
+      "opciones": [
+        "Almacenar datos estáticos de acceso poco frecuente y que requieren capacidades de procesamiento mínimas",
+        "Sustituir los motores de bases de datos comerciales de alto costo por una solución más rentable que siga proporcionando un rendimiento y una fiabilidad de nivel empresarial",
+        "Procesar flujos de datos no estructurados en tiempo real sin restricciones de bases de datos relacionales",
+        "Ejecutar bases de datos temporales con requisitos mínimos de disponibilidad para entornos de desarrollo"
+      ],
+      "correcta": "B",
+      "explicacion": "Aurora proporciona un rendimiento comparable al de las bases de datos comerciales de alta gama, pero a una décima parte del costo, lo que lo hace ideal para las organizaciones que buscan reducir los costos de las bases de datos sin sacrificar el rendimiento."
+    },
+    {
+      "pregunta": "Cuál es la explicación que MEJOR describe Amazon RDS?",
+      "opciones": [
+        "Un sistema de base de datos NoSQL optimizado para datos no estructurados",
+        "Un servicio de almacenamiento de caché en memoria completamente administrado que se integra perfectamente con Redis, Valkey o Memcached",
+        "Un servicio completamente administrado que ayuda a configurar, operar y escalar bases de datos relacionales en la nube",
+        "Una solución de almacenamiento de datos para el procesamiento analítico"
+      ],
+      "correcta": "C",
+      "explicacion": "Amazon RDS es un servicio de base de datos completamente administrado en la nube de AWS que libera a los usuarios de la mayoría de las tareas de administración y ayuda a configurar, operar y escalar las bases de datos en la nube."
+    },
+    {
+      "pregunta": "Cuál es un caso de uso práctico de Amazon DocumentDB (compatible con MongoDB)?",
+      "opciones": [
+        "Almacenamiento de caché en memoria en tiempo real de los datos de las sesiones web",
+        "Almacenamiento de archivos a largo plazo de datos históricos con patrones de acceso poco frecuente",
+        "Ejecución de aplicaciones bancarias transaccionales de alto rendimiento con estrictos requisitos de cumplimiento",
+        "Almacenamiento y administración de un gran catálogo de productos para una aplicación de comercio electrónico"
+      ],
+      "correcta": "D",
+      "explicacion": "Amazon DocumentDB se destaca en el manejo de datos semiestructurados, como los catálogos de productos."
+    },
+    {
+      "pregunta": "¿Qué definición describe MEJOR el almacenamiento de caché en memoria?",
+      "opciones": [
+        "Un sistema de administración de bases de datos que almacena permanentemente todos los datos de las aplicaciones en unidades de estado sólido para lograr velocidades de recuperación consistentes",
+        "Una solución de redes que optimiza las rutas de enrutamiento de internet para reducir la latencia entre las solicitudes de los usuarios y las aplicaciones basadas en la nube",
+        "Un servicio de copia de seguridad y recuperación que crea automáticamente instantáneas de datos críticos cada cinco minutos para evitar la pérdida",
+        "Un servicio basado en la nube que almacena los datos en la memoria para un acceso rápido, lo que mejora el rendimiento y la escalabilidad de las aplicaciones y reduce la carga de la base de datos"
+      ],
+      "correcta": "D",
+      "explicacion": "El almacenamiento de caché en memoria es un servicio que almacena los datos de uso frecuente en la memoria para mejorar el rendimiento de las aplicaciones y reducir la necesidad de obtener datos de un almacenamiento basado en disco que es más lento."
+    },
+    {
+      "pregunta": "¿Qué enunciado describe MEJOR Amazon DynamoDB?",
+      "opciones": [
+        "DynamoDB es una base de datos orientada a columnas que requiere la definición del esquema antes de almacenar los datos.",
+        "DynamoDB es un servicio de base de datos relacional que proporciona capacidades de consulta SQL complejas.",
+        "DynamoDB es una base de datos de documentos y clave-valor NoSQL completamente administrada que proporciona un rendimiento rápido y predecible con una escalabilidad perfecta.",
+        "DynamoDB es una base de datos de gráficos completamente administrada que requiere mantenimiento del servidor durante el tiempo de inactividad programado."
+      ],
+      "correcta": "C",
+      "explicacion": "DynamoDB es un servicio de bases de datos NoSQL completamente administrado que ofrece modelos de datos de documentos y clave-valor con un rendimiento rápido y predecible, incluso a escala."
+    },
+    {
+      "pregunta": "¿Qué problema resuelve AWS Database Migration Service (AWS DMS)?",
+      "opciones": [
+        "Crear programas automatizados de copia de seguridad de bases de datos",
+        "Proporcionar una interfaz gráfica para que los administradores de bases de datos diseñen tablas",
+        "Minimizar el tiempo de inactividad de las aplicaciones durante las migraciones de bases de datos",
+        "Optimizar las consultas SQL para mejorar el rendimiento de la base de datos"
+      ],
+      "correcta": "C",
+      "explicacion": "Un beneficio clave de AWS DMS es que la base de datos fuente permanece en pleno funcionamiento durante la migración, lo que minimiza el tiempo de inactividad de las aplicaciones."
+    }
+  ]
+}

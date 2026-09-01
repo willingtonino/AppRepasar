@@ -1,0 +1,140 @@
+{
+  "id": "aws-m11",
+  "modulo": 11,
+  "titulo": "Precios y soporte",
+  "descripcion": "Modelos de precios, facturación, presupuestos, calculadora y planes de soporte.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "Imagine que es el líder técnico de una empresa de comercio electrónico de tamaño mediano y está evaluando varias opciones de soporte para su infraestructura de AWS. Sus desafíos actuales incluyen la optimización del rendimiento de la base de datos y la planificación de la respuesta a los incidentes. También busca asesoramiento técnico sobre las prácticas recomendadas de seguridad.\n\nAdemás de los planes de AWS Support, ¿qué opción de soporte es la MEJOR para obtener asesoramiento sobre las prácticas recomendadas de seguridad y realizar una auditoría de seguridad de su entorno de AWS?",
+      "opciones": [
+        "AWS Basic Support",
+        "AWS re:Post",
+        "AWS Professional Services",
+        "Equipo de confianza y seguridad de AWS"
+      ],
+      "correcta": "C",
+      "explicacion": "AWS Professional Services ofrece una amplia experiencia técnica y puede ayudar con auditorías de seguridad, prácticas recomendadas y orientación estratégica adaptadas a las necesidades específicas."
+    },
+    {
+      "pregunta": "Es el director de tecnología de una gran empresa con aplicaciones esenciales que se ejecutan en AWS. Su organización requiere el más alto nivel de soporte, incluidos tiempos de respuesta de 15 minutos o menos cuando los sistemas de importancia crítica no funcionan.\n\n¿Qué plan de AWS Support debe elegir?",
+      "opciones": [
+        "Business Support",
+        "Enterprise Support",
+        "Developer Support",
+        "Basic Support"
+      ],
+      "correcta": "B",
+      "explicacion": "Enterprise Support está diseñado para grandes empresas que tienen aplicaciones esenciales para su negocio. Ofrece el más alto nivel de soporte, incluidos tiempos de respuesta rápidos, supervisión proactiva y acceso a una amplia gama de servicios y características de AWS. Además, proporciona orientación de los expertos de AWS para ayudar a garantizar un rendimiento y una seguridad óptimos."
+    },
+    {
+      "pregunta": "Imagine que forma parte de un equipo que desea supervisar y administrar los costos de varias cuentas de AWS en diferentes departamentos de su organización.\n\n¿Qué servicio de AWS puede utilizar para administrar y consolidar de forma eficaz la información de facturación de estas cuentas?",
+      "opciones": [
+        "AWS Budgets",
+        "AWS Organizations",
+        "Panel de administración de facturación y costos de AWS",
+        "Explorador de costos de AWS"
+      ],
+      "correcta": "B",
+      "explicacion": "AWS Organizations está diseñado para ayudarle a administrar varias cuentas de AWS, incluida la consolidación de la información de facturación, la configuración de políticas y la aplicación de la gobernanza en toda la organización."
+    },
+    {
+      "pregunta": "Una empresa financiera global actualmente tiene sus recursos de tecnología de la información (TI) en las instalaciones y está evaluando utilizar la nube de AWS. La empresa está acostumbrada a las inversiones de capital fijas y quiere saber cómo pagarían si se trasladaran a la nube de AWS.\n\n¿Cuáles son las opciones que MEJOR describen la forma en que los clientes pagan por AWS? (Seleccione TRES opciones).",
+      "opciones": [
+        "Pago por uso",
+        "Ahorro cuando se compromete",
+        "Ahorro a través de gastos fijos",
+        "Firma de contratos fijos",
+        "Más uso, menos dinero",
+        "Pago total anticipado"
+      ],
+      "correcta": [
+        "A",
+        "B",
+        "E"
+      ],
+      "tipo": "multiple",
+      "explicacion": "Cuando se trata de los precios de AWS, los clientes pagan por uso y pueden ahorrar cuando se comprometen a una cantidad específica de uso durante un período de tiempo determinado. También pueden recibir descuentos por volumen a medida que aumentan el uso."
+    },
+    {
+      "pregunta": "Además de los planes de AWS Support y otras opciones de asistencia técnica, AWS también proporciona acceso a recursos de autoayuda.\n\n¿Qué opciones tienen disponibles los clientes de AWS como recursos de autoayuda? (Seleccione TRES opciones).",
+      "opciones": [
+        "AWS Professional Services",
+        "Arquitectos de soluciones de AWS",
+        "Blog de AWS",
+        "Guías de SDK",
+        "Centro de confianza y seguridad de AWS",
+        "Documentación de AWS, como guías del usuario para los servicios de AWS"
+      ],
+      "correcta": [
+        "C",
+        "D",
+        "F"
+      ],
+      "tipo": "multiple",
+      "explicacion": "Estos son todos los tipos de recursos disponibles para los clientes de AWS que buscan una solución en la nube mediante la autoayuda."
+    },
+    {
+      "pregunta": "¿Qué opción describe MEJOR el rol de la Red de socios de AWS (APN)?",
+      "opciones": [
+        "Ayudar a las empresas a crear, comercializar y vender soluciones basadas en AWS",
+        "Ofrecer certificación a los usuarios de AWS",
+        "Desarrollar nuevos servicios y características de AWS",
+        "Brindar servicio de atención al cliente para los usuarios de AWS"
+      ],
+      "correcta": "A",
+      "explicacion": "La APN ayuda a los socios de AWS a crear, comercializar y vender soluciones basadas en AWS al proporcionarles asistencia técnica, de marketing y de comercialización."
+    },
+    {
+      "pregunta": "Una empresa minorista en línea está interesada en seguir adelante con la migración de una aplicación, pero le gustaría estimar los costos antes de comenzar.\n\n¿Qué herramienta o servicio puede usar para estimar el costo de los servicios y las configuraciones de AWS específicos que necesitan?",
+      "opciones": [
+        "AWS Organizations es un servicio que la empresa puede usar para administrar y controlar de manera centralizada su entorno a medida que crecen y escalan sus recursos de AWS.",
+        "El explorador de costos de AWS es una herramienta que la empresa puede utilizar para ver y analizar sus costos y su uso.",
+        "La calculadora de precios de AWS es una herramienta basada en la web que la empresa puede utilizar para configurar las estimaciones de costos según sus necesidades empresariales únicas.",
+        "Con AWS Budgets, la empresa puede supervisar sus métricas de cobertura y uso agregadas."
+      ],
+      "correcta": "C",
+      "explicacion": "La calculadora de precios de AWS es la herramienta adecuada para realizar la configuración de estimaciones de costos en función de las necesidades únicas del cliente."
+    },
+    {
+      "pregunta": "¿Cuál es la opción que MEJOR describe un beneficio clave de ser socio de AWS?",
+      "opciones": [
+        "Acceso exclusivo a AWS Training and Certification por completo",
+        "Hardware de AWS dedicado",
+        "Beneficios de financiación para los socios de AWS",
+        "Acceso anticipado a todos los servicios de AWS"
+      ],
+      "correcta": "C",
+      "explicacion": "; Uno de los beneficios clave de ser socio de AWS es el acceso a varios beneficios de financiación. Estos pueden incluir incentivos financieros, apoyo de marketing y financiación para la comercialización que ayuden a los socios a crear, comercializar y vender sus soluciones en AWS."
+    },
+    {
+      "pregunta": "Una empresa de tecnología educativa está considerando trasladar su aplicación educativa a la nube. El director financiero (CFO) de la empresa quiere comprender cómo se fijan los precios de los servicios de AWS y qué factores determinarán su costo.\n\nSi bien los precios varían en función de varios factores, ¿qué opciones son los principales determinantes de los costos en AWS? (Seleccione TRES opciones).",
+      "opciones": [
+        "Soporte",
+        "Computación",
+        "Transferencia entrante de datos",
+        "Transferencia saliente de datos",
+        "Seguridad",
+        "Almacenamiento"
+      ],
+      "correcta": [
+        "B",
+        "D",
+        "F"
+      ],
+      "tipo": "multiple",
+      "explicacion": "El costo de un servicio o categoría de servicios de AWS puede verse afectado por varios factores. Sin embargo, los principales factores determinantes del costo son la computación, el almacenamiento y la transferencia de datos salientes."
+    },
+    {
+      "pregunta": "Una gran empresa desea encontrar soluciones de software preparadas para el cumplimiento a fin de asegurarse de satisfacer las normativas del sector. La empresa está analizando qué servicios de AWS pueden resultar útiles en este sentido y quiere implementar la solución lo antes posible.\n\n¿Cuál es la MEJOR opción para esta empresa y sus requisitos?",
+      "opciones": [
+        "Desarrollar soluciones personalizadas internamente.",
+        "Encontrar soluciones preparadas para el cumplimiento en AWS Marketplace.",
+        "Utilizar herramientas de autoayuda, como la documentación de AWS.",
+        "Utilizar AWS Shield para protegerse contra los ataques de denegación de servicio distribuida (DDoS)."
+      ],
+      "correcta": "B",
+      "explicacion": "AWS Marketplace ofrece una variedad de soluciones de software, como software preparado para el cumplimiento. Esta empresa puede usar AWS Marketplace para encontrar e implementar rápidamente una solución que satisfaga sus necesidades específicas."
+    }
+  ]
+}

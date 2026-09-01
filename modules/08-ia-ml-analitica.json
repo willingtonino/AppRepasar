@@ -1,0 +1,123 @@
+{
+  "id": "aws-m8",
+  "modulo": 8,
+  "titulo": "IA, ML y analítica de datos",
+  "descripcion": "SageMaker, Bedrock, Amazon Q, servicios de IA prediseñados y analítica de datos.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "El proceso de extraer, transformar y cargar (ETL) se utiliza con frecuencia para proporcionar datos limpios y accesibles en un formato que puedan utilizar las herramientas de análisis y los algoritmos de IA.\n\n¿Cómo puede una canalización de datos mejorar este proceso?",
+      "opciones": [
+        "Las canalizaciones de datos aumentan la cantidad de datos sin procesar que se recopilan.",
+        "Las canalizaciones de datos eliminan la necesidad de transformar datos.",
+        "Las canalizaciones de datos hacen que el proceso de ETL sea más eficiente y repetible.",
+        "Las canalizaciones de datos reducen la variedad de orígenes de datos que se utilizan en el proceso de ETL."
+      ],
+      "correcta": "C",
+      "explicacion": "Las canalizaciones de datos son líneas de ensamblaje automatizadas que se usan para hacer que el proceso de ETL sea eficaz y repetible. AWS cuenta con un conjunto de servicios integrados que puede utilizar para crear sus propias canalizaciones de datos."
+    },
+    {
+      "pregunta": "Amazon Bedrock es un servicio completamente administrado que se diseñó específicamente para trabajar con modelos fundacionales (FM) de gran tamaño y crear aplicaciones de IA generativa.\n\n¿Qué ofrece el servicio para poder acceder a los FM de Amazon y de las principales startups de IA?",
+      "opciones": [
+        "Una única API",
+        "Un repositorio de código abierto",
+        "Uso gratuito e ilimitado",
+        "Almacenamiento dedicado en la nube"
+      ],
+      "correcta": "A",
+      "explicacion": "Amazon Bedrock proporciona acceso a los FM de Amazon y de las principales startups de IA, como Claude y Stable Diffusion, todo a través de una API unificada."
+    },
+    {
+      "pregunta": "La IA generativa es un tipo de aprendizaje profundo impulsado por modelos de machine learning (ML) extremadamente grandes, conocidos como modelos fundacionales (FM).\n\n¿Qué características tienen los FM? (Seleccione DOS opciones).",
+      "opciones": [
+        "Los FM reciben entrenamiento previo con vastas colecciones de datos.",
+        "Los FM se programan con reglas explícitas.",
+        "Los FM se utilizan únicamente para crear imágenes.",
+        "Los FM están entrenados para realizar tareas particulares.",
+        "Los FM se pueden adaptar para realizar varias tareas."
+      ],
+      "correcta": [
+        "A",
+        "E"
+      ],
+      "tipo": "multiple"
+    },
+    {
+      "pregunta": "Los datos pueden provenir de muchas fuentes diferentes. Para proporcionar información, los datos deben estar consolidados en una sola ubicación. Para esto, existen dos opciones de almacenamiento. Los lagos de datos almacenan grandes cantidades de datos sin procesar, mientras que los almacenes de datos están optimizados para la inteligencia empresarial.\n\n¿Qué servicios de AWS se suelen utilizar como lagos y almacenes de datos?",
+      "opciones": [
+        "Amazon S3 es una opción popular para los lagos de datos, mientras que Amazon Redshift es un servicio de almacén de datos.",
+        "Amazon S3 es una opción popular para los lagos de datos, mientras que Amazon Athena es un servicio de almacén de datos.",
+        "Amazon EMR es una opción popular para los lagos de datos, mientras que Amazon Redshift es un servicio de almacén de datos.",
+        "Amazon Redshift es una opción popular para los lagos de datos, mientras que Amazon S3 es un servicio de almacén de datos."
+      ],
+      "correcta": "A",
+      "explicacion": "Amazon S3 puede almacenar casi cualquier cantidad de datos estructurados o no estructurados, lo que lo convierte en una buena opción para los lagos de datos. Amazon Redshift es un servicio de almacén de datos completamente administrado y optimizado para inteligencia empresarial."
+    },
+    {
+      "pregunta": "Una empresa de servicios financieros está desarrollando una aplicación que analice los datos bursátiles en tiempo real para que su equipo de analistas pueda tomar decisiones comerciales inmediatas. La empresa necesita hacer una ingesta de datos bursátiles en tiempo real sin preocuparse por los servidores ni la capacidad de escalado.\n\n¿Qué servicio de AWS sería acorde a sus necesidades?",
+      "opciones": [
+        "Amazon EMR",
+        "Amazon Athena",
+        "Amazon Kinesis Data Streams",
+        "Amazon QuickSight"
+      ],
+      "correcta": "C",
+      "explicacion": "Este servicio sin servidor puede utilizarse para la ingesta en tiempo real de terabytes de datos de aplicaciones, transmisiones y sensores. Incluso proporciona aprovisionamiento y escalado automáticos."
+    },
+    {
+      "pregunta": "Tanto la programación clásica como el machine learning se pueden utilizar para entrenar a los equipos a fin de que realicen tareas.\n\n¿Cuál es la principal diferencia entre estos dos enfoques?",
+      "opciones": [
+        "La programación clásica se utiliza para operaciones matemáticas, mientras que el machine learning se utiliza exclusivamente para el reconocimiento de patrones en imágenes y texto.",
+        "La programación clásica se utiliza para tareas sencillas, mientras que el machine learning se reserva para tareas extremadamente complejas.",
+        "La programación clásica establece reglas explícitas que el equipo debe seguir. En el machine learning, los equipos hacen predicciones mediante patrones aprendidos de datos históricos.",
+        "La programación clásica requiere más recursos computacionales que el machine learning, lo que la hace menos eficiente para tareas complejas."
+      ],
+      "correcta": "C",
+      "explicacion": "Esto representa la diferencia fundamental entre la programación clásica y el machine learning."
+    },
+    {
+      "pregunta": "¿Qué servicio de AWS se puede utilizar para crear, entrenar e implementar un modelo de machine learning (ML) personalizado sin tener que preocuparse por la infraestructura subyacente?",
+      "opciones": [
+        "IA de Amazon SageMaker",
+        "Amazon EMR",
+        "Amazon Personalize",
+        "Amazon Comprehend"
+      ],
+      "correcta": "A",
+      "explicacion": "La IA de Amazon SageMaker ofrece un enfoque personalizado para el desarrollo de modelos de ML sin tener que preocuparse por la infraestructura subyacente."
+    },
+    {
+      "pregunta": "Una amplia organización de sanidad desea mejorar la productividad de sus empleados. La empresa busca un asistente de IA generativa prediseñado que pueda responder preguntas, ayudar a resolver problemas y realizar acciones con los datos y la experiencia que se encuentran en sus repositorios de información.\n\n¿Qué servicio de AWS podría ser de ayuda en este caso de uso?",
+      "opciones": [
+        "Amazon Q Business",
+        "Amazon Q Developer",
+        "Amazon SageMaker JumpStart",
+        "Amazon Bedrock"
+      ],
+      "correcta": "A",
+      "explicacion": "Amazon Q Business puede responder a preguntas urgentes, ayudar a resolver problemas y realizar acciones con los datos y la experiencia que se encuentran en los repositorios de información de su empresa. Es una elección ideal para este caso de uso."
+    },
+    {
+      "pregunta": "Un pequeño equipo de desarrollo busca agregar una característica a su aplicación que pueda convertir el texto a voz.\n\n¿Qué servicio prediseñado de la IA de AWS se puede utilizar para esta tarea?",
+      "opciones": [
+        "Amazon Textract",
+        "Amazon Personalize",
+        "Amazon Polly",
+        "Amazon Comprehend"
+      ],
+      "correcta": "C",
+      "explicacion": "Amazon Polly es un servicio de conversión de texto a voz que transforma el texto escrito en audio hablado realista para aplicaciones habilitadas para voz."
+    },
+    {
+      "pregunta": "Una empresa de comercio electrónico desea agregar un motor de recomendación de productos a su aplicación en línea para aumentar las ventas. El equipo de desarrollo quiere que estas recomendaciones sean relevantes para cada cliente.\n\n¿Qué servicio prediseñado de la IA de AWS sería útil en este caso de uso?",
+      "opciones": [
+        "Amazon Comprehend",
+        "Amazon Kendra",
+        "Amazon Personalize",
+        "Amazon Lex"
+      ],
+      "correcta": "C",
+      "explicacion": "Amazon Personalize se puede usar para agregar recomendaciones personalizadas de clientes a las aplicaciones. Es una buena opción para este caso de uso."
+    }
+  ]
+}

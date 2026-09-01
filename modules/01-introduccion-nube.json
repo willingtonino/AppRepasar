@@ -1,0 +1,107 @@
+{
+  "id": "aws-m1",
+  "modulo": 1,
+  "titulo": "Introducción a la nube",
+  "descripcion": "Infraestructura global, modelos de implementación y responsabilidad compartida.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "Usted trabaja para una empresa de ropa deportiva que está expandiendo sus operaciones a clientes de todo el mundo. La empresa quiere implementar recursos en varias ubicaciones de AWS para lograr una alta disponibilidad. Se le asignó la tarea de explicar los aspectos básicos de la infraestructura global de AWS a su director de operaciones (chief operating officer, COO). El COO necesita ayuda para comprender la diferencia entre las regiones y las zonas de disponibilidad de AWS.\n\n¿Qué enunciado describe MEJOR la diferencia entre las regiones y las zonas de disponibilidad de AWS?",
+      "opciones": [
+        "Una zona de disponibilidad es una ubicación geográfica que contiene tres o más regiones. Una región es una ubicación distinta dentro de una zona de disponibilidad que contiene uno o más centros de datos independientes.",
+        "Una región es un centro de datos único, mientras que una zona de disponibilidad consta de varios centros de datos.",
+        "Una región es una ubicación geográfica que contiene tres o más zonas de disponibilidad. Una zona de disponibilidad es una ubicación distinta dentro de una región que contiene uno o más centros de datos independientes.",
+        "Una zona de disponibilidad abarca varias ubicaciones físicas en todas las regiones, y las regiones se encuentran en todo el mundo."
+      ],
+      "correcta": "C",
+      "explicacion": "Una región es una ubicación física en el mundo que contiene varios centros de datos aislados. Una zona de disponibilidad consta de uno o más centros de datos independientes, cada uno con su propia capacidad, redes y conectividad."
+    },
+    {
+      "pregunta": "Una gran empresa busca reducir los costos operativos. Quiere reducir la sobrecarga operativa asociada con la administración de su propia infraestructura física.\n\n¿Qué opción describe MEJOR las ventajas de la nube de las que puede beneficiarse esta empresa?",
+      "opciones": [
+        "Aumentar la velocidad y la agilidad",
+        "Dejar de gastar dinero en la ejecución y el mantenimiento de centros de datos",
+        "Aprovechar las economías de escala masivas",
+        "Dejar de hacer conjeturas sobre la capacidad"
+      ],
+      "correcta": "B",
+      "explicacion": "Al migrar a la nube, la empresa puede liberarse de la responsabilidad de mantener los centros de datos físicos, lo que reduce la sobrecarga operativa."
+    },
+    {
+      "pregunta": "Una agencia gubernamental desea mantener un control total sobre su infraestructura de TI, pero planea usar los servicios de la nube de AWS para aplicaciones específicas.\n\n¿Qué tipo de implementación es MEJOR para esta situación?",
+      "opciones": [
+        "Cumplimiento",
+        "Híbrida",
+        "Nube",
+        "En las instalaciones"
+      ],
+      "correcta": "B",
+      "explicacion": "La implementación híbrida es una solución en la que la agencia puede mantener el control sobre los sistemas en las instalaciones mientras usa los servicios de nube para otras aplicaciones."
+    },
+    {
+      "pregunta": "Usted es un arquitecto de nube en una empresa que migró recientemente su infraestructura a AWS. Su gerente le pidió que informe a su equipo sobre las responsabilidades que tiene el cliente en lo que respecta a la protección de los recursos en la nube.\n\n¿Qué responsabilidad tiene el cliente según el modelo de responsabilidad compartida de AWS? (Seleccione DOS opciones).",
+      "opciones": [
+        "Seguridad física de los centros de datos",
+        "Cifrado de datos del cliente",
+        "Mantenimiento de la red y del hardware de la infraestructura",
+        "Administración de parches del sistema operativo (SO)",
+        "Actualización del software de computación, redes, almacenamiento y bases de datos"
+      ],
+      "correcta": [
+        "B",
+        "D"
+      ],
+      "tipo": "multiple",
+      "explicacion": "En el modelo de responsabilidad compartida de AWS, el cliente es responsable de administrar los parches del SO. AWS proporciona la infraestructura subyacente, pero el cliente debe asegurarse de que sus SO estén actualizados con los parches de seguridad más recientes. Además, también es responsable de cifrar los datos del lado del cliente. AWS ofrece varios servicios para ayudar con el cifrado, pero es responsabilidad del cliente implementar y administrar estos servicios.\n\nLa seguridad física de los centros de datos y el mantenimiento del hardware son responsabilidades de AWS. La actualización del software para los servicios de computación, redes, almacenamiento y bases de datos también es responsabilidad de AWS."
+    },
+    {
+      "pregunta": "Una pequeña empresa está considerando migrar su infraestructura de TI a la nube. El equipo de finanzas tiene una reunión con el departamento de TI para analizar los costos asociados con esta transición. Durante la reunión, el gerente financiero dice que le gusta la idea de la fiabilidad que ofrece la nube, pero que le preocupan los costos fijos.\n\n¿Qué enunciado define con precisión el modelo de computación en la nube y aborda la preocupación del gerente financiero?",
+      "opciones": [
+        "La computación en la nube implica la compra de servidores dedicados y la configuración de un centro de datos privado. Este modelo suele tener costos fijos relacionados con el hardware y el mantenimiento.",
+        "La computación en la nube es un modelo para entregar recursos de TI a través de internet. Las empresas pueden alquilar los servicios con un modelo de pago por uso, lo que puede ayudar a reducir los costos fijos y permitir presupuestos más flexibles.",
+        "La computación en la nube reduce la necesidad de hardware adicional, pero aun así implica importantes tarifas mensuales fijas.",
+        "La computación en la nube consiste básicamente en usar el servidor de otra persona para alojar su sitio web, y no ofrece ningún tipo de ventaja de costo significativa en comparación con las soluciones de alojamiento tradicionales."
+      ],
+      "correcta": "B",
+      "explicacion": "La computación en la nube se puede definir como la entrega bajo demanda de recursos de TI a través de internet con precios de pago por uso. Esta respuesta define con precisión la computación en la nube y aborda directamente la preocupación del gerente financiero por los costos fijos."
+    },
+    {
+      "pregunta": "Usted es un desarrollador de software que trabaja para una empresa que planea migrar su aplicación actual a la nube. Su líder le pidió que explique al resto del equipo el modelo cliente-servidor y cómo se integra la computación en nube en este modelo.\n\n¿Qué enunciado describe MEJOR el modelo cliente-servidor y su relación con la computación en la nube?",
+      "opciones": [
+        "En el modelo cliente-servidor, el cliente es responsable de proteger sus datos y el servidor es responsable de proteger el hardware físico. La computación en la nube reemplaza el modelo cliente-servidor.",
+        "El modelo cliente-servidor está desactualizado y ya no se usa en las aplicaciones modernas. La computación en la nube lo reemplazó por completo.",
+        "En el modelo cliente-servidor, el servidor solo gestiona el almacenamiento de datos, mientras que el cliente realiza todas las tareas de procesamiento. La computación en la nube proporciona almacenamiento de datos, pero no potencia de procesamiento.",
+        "En el modelo cliente-servidor, el cliente envía solicitudes al servidor, que las procesa y envía respuestas. La computación en la nube proporciona recursos de servidor escalables a los que se puede acceder a través de internet."
+      ],
+      "correcta": "D",
+      "explicacion": "Esta respuesta describe con precisión el modelo cliente-servidor en el que el cliente envía solicitudes al servidor. El servidor procesa estas solicitudes y devuelve las respuestas apropiadas. La computación en la nube proporciona recursos de servidor escalables y flexibles a los que se puede acceder a través de internet."
+    },
+    {
+      "pregunta": "Su empresa tiene previsto lanzar una nueva aplicación web que ofrecerá servicios a usuarios de todo el mundo. Para garantizar que la aplicación funcione correctamente y siga siendo fiable, el equipo de TI tiene previsto utilizar AWS para su amplia infraestructura global.\n\n¿Qué opciones describen MEJOR los beneficios de la infraestructura global de AWS en relación con esta situación? (Seleccione DOS opciones).",
+      "opciones": [
+        "Facilidad de uso",
+        "Alta disponibilidad",
+        "Ahorro de costos",
+        "Cumplimiento de las normas reglamentarias",
+        "Tolerancia a errores"
+      ],
+      "correcta": [
+        "B",
+        "E"
+      ],
+      "tipo": "multiple",
+      "explicacion": "Por lo general, la infraestructura global implica la distribución de recursos en varios centros de datos de diferentes ubicaciones geográficas. Al tener sistemas redundantes en varias ubicaciones, la infraestructura global mejora la tolerancia a errores. Si un componente falla, otros pueden asumir el control para minimizar el tiempo de inactividad y ayudar a garantizar una alta disponibilidad.\n\nLa facilidad de uso, el cumplimiento y el ahorro de costos son beneficios que se pueden lograr mediante el uso de recursos en la nube. Sin embargo, en este caso, lo importante es que los recursos tengan un alto nivel de disponibilidad para los usuarios de todo el mundo."
+    },
+    {
+      "pregunta": "Una empresa financiera está interesada en migrar a la nube. Les interesa saber si contarán con suficiente personal para proteger tanto su espacio de oficina como la infraestructura física de sus recursos de computación en la nube.\n\n¿Qué enunciado describe MEJOR la responsabilidad de la empresa en lo que respecta a la protección de la infraestructura física de la nube?",
+      "opciones": [
+        "La empresa es totalmente responsable de proteger toda la infraestructura física de la nube, incluidos los centros de datos.",
+        "La empresa no tiene ninguna responsabilidad en lo que respecta a la seguridad en la nube.",
+        "La empresa comparte con el proveedor de la nube la responsabilidad de proteger la infraestructura física.",
+        "AWS es responsable de proteger la infraestructura física, mientras que la empresa debe centrarse en proteger sus datos y aplicaciones en la nube."
+      ],
+      "correcta": "D",
+      "explicacion": "AWS es responsable de la seguridad física de los centros de datos. Esto incluye medidas como los controles de acceso, la vigilancia y los controles ambientales. Las empresas que migran a la nube aún tienen responsabilidades como las configuraciones de seguridad y los datos dentro de sus entornos de nube."
+    }
+  ]
+}

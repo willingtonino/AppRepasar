@@ -1,0 +1,80 @@
+{
+  "id": "aws-m4",
+  "modulo": 4,
+  "titulo": "Globalización",
+  "descripcion": "Regiones, zonas de disponibilidad, ubicaciones de borde y servicios en el edge.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "Cuáles son las opciones que MEJOR describen los beneficios clave de usar varias regiones de AWS y varias zonas de disponibilidad? (Seleccione DOS opciones).",
+      "opciones": [
+        "Baja latencia para los usuarios finales",
+        "Protocolo de seguridad mejorado",
+        "Migración de las bases de datos más rápida",
+        "Mayor capacidad de almacenamiento",
+        "Alta disponibilidad y tolerancia a errores"
+      ],
+      "correcta": [
+        "A",
+        "E"
+      ],
+      "tipo": "multiple",
+      "explicacion": "Al usar varias regiones de AWS, una empresa puede colocar sus recursos más cerca de sus usuarios finales, lo que reduce la distancia que deben recorrer los datos. Esto se traduce en una latencia más baja y una mejor experiencia del usuario. Al utilizar varias zonas de disponibilidad dentro de una región, la empresa mejora la tolerancia a errores de sus aplicaciones. Si una zona falla, su aplicación puede seguir funcionando desde otra zona, manteniendo una alta disponibilidad."
+    },
+    {
+      "pregunta": "Una organización sin fines de lucro está migrando todos sus recursos a la nube de AWS. Están intentando decidir en qué región de AWS van a implementar sus recursos.\n\n¿Qué opción enumera los factores que la organización debe tener en cuenta al decidir dónde colocar sus recursos en la nube?",
+      "opciones": [
+        "Tiempo de actividad de los servidores, rendimiento de las aplicaciones, satisfacción de los empleados y ubicación de la oficina",
+        "Cumplimiento, proximidad a los clientes, disponibilidad de características y precios",
+        "Velocidad de red, cifrado de datos, interfaz de usuario y capacidad de almacenamiento",
+        "Licencias de software, especificaciones de hardware, competencias del personal en materia de la nube y opiniones de los clientes"
+      ],
+      "correcta": "B",
+      "explicacion": "A la hora de decidir dónde colocar los recursos en la nube, las empresas deben tener en cuenta varios factores. El cumplimiento se refiere a que la región cumpla con los requisitos legales o reglamentarios. La proximidad a los clientes ayuda a reducir la latencia y a mejorar la experiencia del usuario. La disponibilidad de las características garantiza que los servicios de AWS necesarios sean compatibles con la región elegida. Los precios varían según la región, por lo que la rentabilidad también es un factor fundamental."
+    },
+    {
+      "pregunta": "Se asignó a un equipo de una empresa de tecnología biomédica la tarea de implementar una nueva aplicación médica en varias regiones de AWS para ayudar a mantener la alta disponibilidad y la tolerancia a errores. La aplicación consta de varios componentes, incluidos un servidor web, una base de datos y una cola de mensajes. La implementación debe ser uniforme y repetible, y debe minimizar los errores manuales mediante la automatización.\n\n¿Qué enfoque es el MÁS adecuado para implementar esta aplicación de acuerdo con las necesidades de automatización y consistencia?",
+      "opciones": [
+        "Escribir un script para implementar la aplicación por programación mediante la API del proveedor de la nube",
+        "Usar la Consola de administración de AWS para implementar manualmente cada componente en todas las regiones",
+        "Usar un servicio de infraestructura como código (IaC), como AWS CloudFormation, para implementar la aplicación",
+        "Combinar enfoques programáticos y de consola para diferentes niveles de la aplicación"
+      ],
+      "correcta": "C",
+      "explicacion": "Con un servicio de IaC, como CloudFormation, el equipo puede definir su infraestructura de forma declarativa. Esto ayuda a versionar, revisar y automatizar el proceso de implementación para garantizar la coherencia y la capacidad de repetición."
+    },
+    {
+      "pregunta": "¿Qué respuesta describe MEJOR el propósito y los beneficios de las ubicaciones periféricas de AWS?",
+      "opciones": [
+        "Las ubicaciones periféricas están compuestas por centros de datos físicos que alojan la mayoría de los servicios y aplicaciones de AWS.",
+        "Las ubicaciones periféricas están diseñadas para proporcionar soluciones de almacenamiento redundante para datos críticos.",
+        "Las ubicaciones periféricas se utilizan exclusivamente para ejecutar aplicaciones y bases de datos con uso intensivo de computación.",
+        "Las ubicaciones periféricas almacenan en caché el contenido para entregar datos con una latencia más baja y velocidades de transferencia más altas a los usuarios finales."
+      ],
+      "correcta": "D",
+      "explicacion": "Esta respuesta describe con precisión el propósito y los beneficios de las ubicaciones periféricas de AWS. Están diseñadas para mejorar la entrega del contenido almacenándolo en caché, más cerca de los usuarios finales, lo que reduce la latencia y aumenta la velocidad de transferencia."
+    },
+    {
+      "pregunta": "Qué respuesta describe MEJOR la relación entre las regiones, las zonas de disponibilidad y las ubicaciones periféricas de AWS?",
+      "opciones": [
+        "Las regiones, las zonas de disponibilidad y las ubicaciones periféricas de AWS son lo mismo y se usan indistintamente.",
+        "Las regiones de AWS son ubicaciones físicas en todo el mundo en las que AWS tiene varias zonas de disponibilidad. Las ubicaciones periféricas se encuentran fuera de las regiones de AWS y almacenan en caché el contenido de acceso frecuente.",
+        "Las regiones de AWS contienen varias ubicaciones periféricas y cada ubicación periférica puede tener una o más zonas de disponibilidad.",
+        "Las regiones de AWS son ubicaciones físicas en todo el mundo en las que AWS tiene varias zonas de disponibilidad. Cada zona de disponibilidad tiene una o más ubicaciones periféricas."
+      ],
+      "correcta": "B",
+      "explicacion": "De hecho, las regiones de AWS son ubicaciones físicas en todo el mundo en las que AWS tiene varias zonas de disponibilidad aisladas. Las ubicaciones periféricas, por otro lado, forman parte de la red de entrega de contenido (CDN) de AWS. Están optimizadas para la entrega de contenido y no están directamente vinculadas a las zonas de disponibilidad."
+    },
+    {
+      "pregunta": "¿Qué respuesta describe las principales características y beneficios de AWS CloudFormation?",
+      "opciones": [
+        "Con CloudFormation, los usuarios pueden modelar y configurar sus recursos de AWS mediante código para automatizar el aprovisionamiento y la administración de la infraestructura. Este método puede ayudar a reducir los errores y mantener la consistencia en todos los entornos.",
+        "CloudFormation es una herramienta de optimización de costos que analiza el uso de AWS y sugiere las prácticas recomendadas para reducir las facturas de AWS de una empresa.",
+        "Con CloudFormation, los usuarios pueden almacenar en caché el contenido de acceso frecuente. De este modo, los usuarios experimentan una latencia más baja al acceder a los recursos de la nube.",
+        "CloudFormation es un servicio que proporciona una interfaz visual para configurar manualmente, uno por uno, cada recurso de AWS, sin necesidad de ningún código."
+      ],
+      "correcta": "A",
+      "explicacion": "Esta respuesta describe con precisión las principales características y beneficios de CloudFormation. Destaca la capacidad de modelar y configurar recursos mediante código, automatizar el aprovisionamiento, reducir los errores y ayudar a mantener la uniformidad del entorno."
+    }
+  ]
+}

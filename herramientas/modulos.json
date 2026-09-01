@@ -1,0 +1,63 @@
+{
+  "_comentario": "Títulos, descripciones y nombre de archivo de cada módulo, por número. Los usa word_a_modulos.py para que las conversiones sean repetibles.",
+  "1": {
+    "archivo": "01-introduccion-nube.json",
+    "titulo": "Introducción a la nube",
+    "descripcion": "Infraestructura global, modelos de implementación y responsabilidad compartida."
+  },
+  "2": {
+    "archivo": "02-computacion-nube.json",
+    "titulo": "Computación en la nube",
+    "descripcion": "EC2, tipos y precios de instancias, escalado, balanceo y mensajería."
+  },
+  "3": {
+    "archivo": "03-servicios-computacion.json",
+    "titulo": "Servicios de computación",
+    "descripcion": "Serverless, contenedores, Lightsail, Lambda, ECR, ECS, EKS, Fargate y Batch."
+  },
+  "4": {
+    "archivo": "04-globalizacion.json",
+    "titulo": "Globalización",
+    "descripcion": "Regiones, zonas de disponibilidad, ubicaciones de borde y servicios en el edge."
+  },
+  "5": {
+    "archivo": "05-networking.json",
+    "titulo": "Networking",
+    "descripcion": "Amazon VPC, subredes, grupos de seguridad, ACL, Route 53 y conectividad híbrida."
+  },
+  "6": {
+    "archivo": "06-storage.json",
+    "titulo": "Storage",
+    "descripcion": "Almacén de instancias, EBS, instantáneas, S3, EFS, FSx y clases de almacenamiento."
+  },
+  "7": {
+    "archivo": "07-bases-de-datos.json",
+    "titulo": "Bases de datos",
+    "descripcion": "RDS, Aurora, DynamoDB, ElastiCache, Redshift, DocumentDB y Neptune."
+  },
+  "8": {
+    "archivo": "08-ia-ml-analitica.json",
+    "titulo": "IA, ML y analítica de datos",
+    "descripcion": "SageMaker, Bedrock, Amazon Q, servicios de IA prediseñados y analítica de datos."
+  },
+  "9": {
+    "archivo": "09-seguridad.json",
+    "titulo": "Seguridad",
+    "descripcion": "IAM, MFA, KMS, Shield, WAF, GuardDuty, Inspector y Macie."
+  },
+  "10": {
+    "archivo": "10-monitorizacion-gobernanza.json",
+    "titulo": "Monitorización y gobernanza",
+    "descripcion": "CloudWatch, CloudTrail, Config, Artifact, Organizations y Trusted Advisor."
+  },
+  "11": {
+    "archivo": "11-precios-soporte.json",
+    "titulo": "Precios y soporte",
+    "descripcion": "Modelos de precios, facturación, presupuestos, calculadora y planes de soporte."
+  },
+  "12": {
+    "archivo": "12-migracion.json",
+    "titulo": "Migración a la nube de AWS",
+    "descripcion": "Marco de adopción de la nube, estrategias de migración, Snow Family y DataSync."
+  }
+}

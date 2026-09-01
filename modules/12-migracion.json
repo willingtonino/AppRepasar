@@ -1,0 +1,108 @@
+{
+  "id": "aws-m12",
+  "modulo": 12,
+  "titulo": "Migración a la nube de AWS",
+  "descripcion": "Marco de adopción de la nube, estrategias de migración, Snow Family y DataSync.",
+  "notaMinima": 70,
+  "preguntas": [
+    {
+      "pregunta": "Una empresa de ingeniería está migrando grandes cantidades de archivos de diseño de propiedad intelectual patentados desde su centro de datos en las instalaciones a la nube de AWS. Quiere un servicio que tenga soporte completamente administrado para transferencias seguras de archivos con varios protocolos diferentes, como el Protocolo de transferencia segura de archivos (SFTP) y el Protocolo seguro de transferencia de archivos (FTPS)\n\n¿Qué solución de migración en línea se ajustaría a sus necesidades?",
+      "opciones": [
+        "AWS Transfer Family",
+        "AWS DataSync",
+        "AWS Direct Connect",
+        "Dispositivos de AWS Snowball Edge Storage Optimized"
+      ],
+      "correcta": "A",
+      "explicacion": "Transfer Family permite administrar y compartir datos sin problemas con transferencias de archivos seguras y escalables. Este servicio proporciona soporte completamente administrado para transferencias seguras de archivos a través de SFTP (Protocolo de transferencia segura de archivos), FTPS (Protocolo seguro de transferencia de archivos), FTP (Protocolo de transferencia de archivos) y otros."
+    },
+    {
+      "pregunta": "Una empresa minorista acaba de empezar su migración a la nube de AWS. Necesita ayuda para crear un caso empresarial con el fin de garantizar la financiación de su director financiero (CFO) y las partes interesadas.\n\n¿Qué servicio de migración se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "AWS Migration Hub",
+        "AWS Application Migration Service",
+        "Migration Evaluator",
+        "AWS Application Discovery Service"
+      ],
+      "correcta": "C",
+      "explicacion": "Migration Evaluator es un servicio de evaluación de la migración que ayuda a la empresa a crear un caso empresarial para la planificación y la migración a la nube de AWS."
+    },
+    {
+      "pregunta": "Cuáles son las siete estrategias de migración que se utilizan habitualmente cuando los clientes migran a la nube de AWS?",
+      "opciones": [
+        "Reubicar, realojar, redefinir la plataforma, refactorizar, recomprar, retener y retirar",
+        "Reubicar, remediar, renovar, refactorizar, reclasificar, remodelar y remover",
+        "No hay siete, hay tres (evaluar, movilizar, y migrar y modernizar)",
+        "Empresa, personas, gobernanza, plataforma, seguridad, operaciones, TI"
+      ],
+      "correcta": "A",
+      "explicacion": "Las siete R, o estrategias de migración, son reubicar, realojar, redefinir la plataforma, refactorizar, recomprar, retener y retirar."
+    },
+    {
+      "pregunta": "Una empresa de tarjetas de crédito está migrando grandes cantidades de información confidencial de su almacenamiento en las instalaciones a la nube de AWS. Quiere automatizar el proceso y programar la migración fuera de las horas de mayor actividad. También quiere poder comprobar el progreso y los informes de tareas. No tiene una conexión privada dedicada entre su centro de datos y la nube de AWS.\n\n¿Qué solución de migración en línea se ajustaría a sus necesidades?",
+      "opciones": [
+        "Puerta de enlace privada virtual",
+        "Dispositivos de AWS Snowball Edge Storage Optimized",
+        "AWS Transfer Family",
+        "AWS DataSync"
+      ],
+      "correcta": "D",
+      "explicacion": "DataSync es un servicio de migración en línea diseñado específicamente para automatizar y acelerar la transferencia de datos. DataSync optimiza y acelera la transferencia de grandes cantidades de datos entre el almacenamiento en las instalaciones y los servicios de almacenamiento de AWS, como Amazon S3, Amazon Elastic File System (Amazon EFS) y Amazon FSx para Windows File Server."
+    },
+    {
+      "pregunta": "Una empresa de medios se encuentra en la fase de migración y modernización y quiere una ubicación centralizada para ver sus tareas y el progreso de la migración.\n\n¿Qué servicio de migración se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "Migration Evaluator",
+        "AWS Application Discovery Service",
+        "AWS Application Migration Service",
+        "AWS Migration Hub"
+      ],
+      "correcta": "D",
+      "explicacion": "Migration Hub es un centro unificado que guía a la empresa a través de las fases de descubrimiento, evaluación, planificación e implementación de la migración."
+    },
+    {
+      "pregunta": "Durante su próxima migración, el administrador de la base de datos desea pasar de su base de datos actual a una base de datos administrada por AWS para descargar parte de la administración de la base de datos. También le gustaría usar una herramienta para planificar, evaluar, convertir y migrar la base de datos.\n\n¿Qué solución de migración se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "Migration Evaluator",
+        "Herramienta de conversión de esquemas de AWS (AWS SCT)",
+        "AWS Migration Hub",
+        "AWS Database Migration Service (AWS DMS)"
+      ],
+      "correcta": "D",
+      "explicacion": "Database Migration Service permite migrar de forma rápida y segura las bases de datos y la replicación de datos a la nube de AWS. Proporciona una forma de planificar, evaluar, convertir y migrar bases de datos, incluso con almacenes de datos, en una herramienta central y se puede utilizar para convertir bases de datos."
+    },
+    {
+      "pregunta": "¿Cuál es la función principal del AWS Cloud Adoption Framework (AWS CAF)?",
+      "opciones": [
+        "Migra las bases de datos y los datos en las instalaciones a la nube de AWS.",
+        "Actúa como un centro unificado para administrar la migración de una empresa a la nube de AWS.",
+        "También se conoce como las siete R o las siete estrategias de migración.",
+        "Proporciona herramientas para ayudar a acelerar el proceso de migración, organizar los recursos y alinear la administración durante la transición."
+      ],
+      "correcta": "D",
+      "explicacion": "AWS CAF proporciona la experiencia y las prácticas recomendadas en AWS a las empresas que se preparan para migrar a la nube de AWS. El marco de trabajo también proporciona herramientas para ayudar a acelerar el proceso de migración, organizar los recursos y alinear la administración durante la transición."
+    },
+    {
+      "pregunta": "Una agencia medioambiental está migrando sus aplicaciones a la nube de AWS. Durante la migración, también quieren buscar formas de modernizar y reducir los costos de sus aplicaciones.\n\n¿Qué servicio de migración se adaptaría MEJOR a sus necesidades?",
+      "opciones": [
+        "AWS Application Migration Service",
+        "AWS Migration Hub",
+        "AWS Application Discovery Service",
+        "Migration Evaluator"
+      ],
+      "correcta": "A",
+      "explicacion": "Application Migration Service es una herramienta para migrar y mejorar las aplicaciones en las instalaciones y basadas en la nube. Ayuda a la agencia a simplificar, acelerar y reducir el costo de la migración y modernización de las aplicaciones."
+    },
+    {
+      "pregunta": "El equipo de migración quiere asegurarse de que la organización considere una estrategia de administración de cambios para toda la empresa con el fin de adoptar la nube con éxito. ¿Qué perspectiva del Cloud Adoption Framework (CAF) utilizarían?",
+      "opciones": [
+        "Perspectiva empresarial",
+        "Perspectiva de las operaciones",
+        "Perspectiva de seguridad",
+        "Perspectiva de las personas"
+      ],
+      "correcta": "D",
+      "explicacion": "La perspectiva de las personas sirve como puente entre Tecnología y negocios, acelerando el camino en la nube"
+    }
+  ]
+}

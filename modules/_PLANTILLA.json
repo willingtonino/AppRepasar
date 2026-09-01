@@ -1,0 +1,44 @@
+{
+  "id": "mi-modulo-1",
+  "modulo": 1,
+  "titulo": "Título del módulo",
+  "descripcion": "Una línea describiendo qué se repasa en este módulo.",
+  "notaMinima": 70,
+  "barajarPreguntas": false,
+  "barajarOpciones": false,
+  "preguntas": [
+    {
+      "pregunta": "Pregunta con una sola respuesta correcta.",
+      "opciones": [
+        "Texto de la opción A",
+        "Texto de la opción B",
+        "Texto de la opción C",
+        "Texto de la opción D"
+      ],
+      "correcta": "B",
+      "explicacion": "Por qué B es la correcta. Este campo es OPCIONAL: si no está, la app solo dice si acertaste."
+    },
+    {
+      "pregunta": "Pregunta con varias respuestas correctas.",
+      "opciones": [
+        "Texto de la opción A",
+        "Texto de la opción B",
+        "Texto de la opción C",
+        "Texto de la opción D"
+      ],
+      "correcta": ["A", "C"]
+    },
+    {
+      "pregunta": "También puedes indicar la respuesta con el texto exacto de la opción.",
+      "opciones": ["Verdadero", "Falso"],
+      "correcta": "Verdadero",
+      "explicacion": "Sirve tanto la letra (A, B, C...) como el texto literal de la opción."
+    },
+    {
+      "pregunta": "Y forzar que se muestre como selección múltiple aunque solo haya una correcta.",
+      "tipo": "multiple",
+      "opciones": ["Opción A", "Opción B", "Opción C"],
+      "correcta": "C"
+    }
+  ]
+}
