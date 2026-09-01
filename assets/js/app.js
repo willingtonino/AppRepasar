@@ -59,6 +59,21 @@ function pintar(html) {
   window.scrollTo(0, 0);
 }
 
+/**
+ * ¿Se puede añadir módulos desde el navegador?
+ * En el sitio publicado no: el catálogo lo controla quien mantiene el repositorio.
+ * Con "local" solo se permite al abrir la app en tu equipo o el archivo suelto,
+ * que es como cada persona puede probar sus propios módulos.
+ */
+function sePuedeSubir() {
+  const valor = estado.config.permitirSubida;
+  if (typeof valor === "boolean") return valor;
+  return (
+    location.protocol === "file:" ||
+    ["localhost", "127.0.0.1", "[::1]", ""].includes(location.hostname)
+  );
+}
+
 /** Hay un intento en curso con respuestas ya enviadas. */
 const intentoVivo = () =>
   Boolean(estado.quiz && estado.quiz.historial.length && !estado.quiz.terminado);
@@ -104,7 +119,7 @@ function vistaInicio() {
       const nota = progreso[m.id];
       const etiqueta = m.etiqueta || `Módulo ${m.orden ?? i + 1}`;
       const insignias = [
-        nota ? `<span class="marca-nota ${nota.mejor >= m.notaMinima ? "aprobado" : ""}">Mejor: ${nota.mejor}%</span>` : "",
+        nota ? `<span class="marca-nota ${nota.mejor >= m.notaMinima ? "aprobado" : ""}">Mejor: ${Number(nota.mejor) || 0}%</span>` : "",
         m.origen === "local" ? `<span class="marca-nota local">Solo en este navegador</span>` : "",
       ].join("");
 
@@ -138,14 +153,18 @@ function vistaInicio() {
 
     <div class="rejilla">
       ${tarjetas}
-      <button class="tarjeta fantasma" type="button" data-ir="subir">
-        <span class="tarjeta-cab">
-          <span class="etiqueta">Nuevo</span>
-          <span class="flecha" aria-hidden="true">+</span>
-        </span>
-        <h2>Añadir un módulo</h2>
-        <p>Sube un archivo JSON con tus preguntas o copia la plantilla.</p>
-      </button>
+      ${
+        sePuedeSubir()
+          ? `<button class="tarjeta fantasma" type="button" data-ir="subir">
+               <span class="tarjeta-cab">
+                 <span class="etiqueta">Nuevo</span>
+                 <span class="flecha" aria-hidden="true">+</span>
+               </span>
+               <h2>Añadir un módulo</h2>
+               <p>Sube un archivo JSON con tus preguntas o copia la plantilla.</p>
+             </button>`
+          : ""
+      }
     </div>
     ${avisos}`);
 
@@ -222,7 +241,7 @@ function vistaQuiz() {
       <h2>${esc(q.modulo.titulo)}</h2>
       <span class="quiz-meta">Pregunta ${numero} de ${totales}</span>
     </div>
-    <div class="progreso"><i style="width:${pct}%"></i></div>
+    <div class="progreso"><i id="barra-progreso"></i></div>
 
     <section class="panel">
       <span class="tipo-nota">${tipo}</span>
@@ -245,6 +264,8 @@ function vistaQuiz() {
         }</span>
       </div>
     </section>`);
+
+  app.querySelector("#barra-progreso").style.width = `${pct}%`;
 
   const contenedor = app.querySelector("#opciones");
   const botonComprobar = app.querySelector("#comprobar");
@@ -377,7 +398,7 @@ function vistaResultados() {
   pintar(`
     <section class="panel">
       <div class="marcador">
-        <div class="nota" style="--pct:${porcentaje}"><span>${porcentaje}%</span></div>
+        <div class="nota" id="nota"><span>${porcentaje}%</span></div>
         <div class="marcador-txt">
           <h2>${aprobado ? "¡Módulo superado!" : "Sigue repasando"}</h2>
           <p>Has acertado <b>${aciertos}</b> de <b>${total}</b> preguntas de
@@ -390,9 +411,10 @@ function vistaResultados() {
       </div>
     </section>
 
-    <h2 style="margin:32px 0 0">Repaso de las respuestas</h2>
+    <h2 class="titulo-seccion">Repaso de las respuestas</h2>
     <div class="repaso">${repaso}</div>`);
 
+  app.querySelector("#nota").style.setProperty("--pct", porcentaje);
   app.querySelector("#repetir").addEventListener("click", () => empezarModulo(q.modulo.id));
 }
 
@@ -421,11 +443,12 @@ const PLANTILLA = {
 };
 
 function vistaSubir() {
+  if (!sePuedeSubir()) return vistaInicio();
   estado.quiz = null;
 
   pintar(`
     <button class="volver" type="button" data-ir="inicio">← Volver a los módulos</button>
-    <h1 style="font-size:clamp(1.8rem,5vw,2.6rem)">Añadir un módulo</h1>
+    <h1 class="titulo-menor">Añadir un módulo</h1>
     <p class="subtitulo">
       Pega o suelta un archivo JSON para probarlo aquí mismo. Se guarda solo en este navegador.
       Para que lo vea todo el mundo, copia el archivo en la carpeta <code>modules/</code> y añádelo a
@@ -445,12 +468,12 @@ function vistaSubir() {
 
     <div id="resultado-validacion"></div>
 
-    <div class="acciones" style="margin-top:16px">
+    <div class="acciones separado">
       <button class="btn fantasma" type="button" id="validar">Validar</button>
       <button class="btn" type="button" id="anadir">Añadir a este navegador</button>
     </div>
 
-    <h2 style="margin:36px 0 0;font-size:1.25rem">Formato</h2>
+    <h2 class="titulo-seccion pequeno">Formato</h2>
     <p class="ayuda">
       Campos obligatorios: <code>titulo</code>, <code>preguntas</code>, y en cada pregunta
       <code>pregunta</code>, <code>opciones</code> y <code>correcta</code>.
@@ -548,7 +571,7 @@ function pintarLocales() {
     return;
   }
   zona.innerHTML = `
-    <h2 style="margin:36px 0 0;font-size:1.25rem">Módulos de este navegador</h2>
+    <h2 class="titulo-seccion pequeno">Módulos de este navegador</h2>
     <div class="tabla-locales">
       ${locales
         .map(

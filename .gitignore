@@ -3,5 +3,5 @@ node_modules/
 Thumbs.db
 *.log
 .vscode/
-repasar.html
 repasar.aspx
+.claude/

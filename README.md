@@ -23,6 +23,7 @@ modules/*.json                 un archivo por módulo
 modules/_PLANTILLA.json        plantilla para copiar
 herramientas/word_a_modulos.py convierte el banco de Word en módulos JSON
 herramientas/empaquetar.py     genera repasar.html (todo en un solo archivo)
+repasar.html                   la app entera en un archivo (generado)
 staticwebapp.config.json       exige iniciar sesión (solo en Azure Static Web Apps)
 ```
 
@@ -96,6 +97,23 @@ Del módulo, solo `titulo` y `preguntas` son obligatorios; `id`, `modulo`,
 > La pantalla **Añadir un módulo** de la propia app valida el JSON, señala los
 > errores uno a uno y te deja probar el módulo sin publicarlo.
 
+### Quién puede añadir módulos
+
+El catálogo publicado lo decide **quien mantiene el repositorio**: cambiarlo exige
+un commit. La pantalla de añadir módulos ni siquiera aparece en el sitio publicado.
+
+Lo controla `permitirSubida` en `modules/index.json`:
+
+| Valor | Efecto |
+|---|---|
+| `"local"` (por defecto) | Solo al abrir la app desde tu equipo (`localhost`) o el archivo suelto (`file://`) |
+| `false` | Nunca |
+| `true` | Siempre, también en el sitio publicado |
+
+Quien quiera estudiar con sus propias preguntas descarga `repasar.html`, lo abre
+con doble clic y ahí sí puede añadir sus módulos. Se guardan únicamente en su
+navegador: no tocan el sitio ni lo que ven los demás.
+
 ---
 
 ## 2. Probar en local
@@ -144,6 +162,10 @@ Genera `repasar.html` (~160 KB) con el diseño, el código y las 127 preguntas
 dentro. Se puede subir a Teams o a OneDrive y compartirlo: quien lo descargue lo
 abre con doble clic y funciona **sin conexión y sin servidor**. Es también el
 archivo que usa la opción C.
+
+> `repasar.html` está versionado, pero **no se regenera solo**: después de tocar
+> las preguntas hay que volver a ejecutar `empaquetar.py` antes del commit, o el
+> archivo quedará desfasado respecto a `modules/`.
 
 ### C. SharePoint — sin salir de Microsoft 365
 
@@ -212,7 +234,35 @@ Con cualquier opción que dé una URL:
 
 ---
 
-## 4. Cómo se comporta
+## 4. Seguridad
+
+Decisiones tomadas, por si hay que revisarlas más adelante:
+
+- **Sin dependencias externas.** Ni CDN, ni tipografías de Google, ni analítica:
+  todo el código y los datos salen del propio repositorio. No hay terceros a los
+  que confiar ni que puedan cambiar el contenido servido.
+- **Content-Security-Policy** declarada en el HTML: `default-src 'none'` y solo se
+  permite lo estrictamente necesario. En el sitio, el código va en archivos y
+  basta `'self'`; en `repasar.html`, como va en línea, `empaquetar.py` calcula el
+  **hash SHA-256** de cada bloque en vez de recurrir a `'unsafe-inline'`.
+  Por eso no hay ni un `style="..."` en el código: los valores dinámicos se
+  aplican por CSSOM, que la CSP sí permite.
+- **Todo el texto de las preguntas se escapa** antes de insertarlo en el DOM
+  (`esc()` en `app.js`), así que un módulo con HTML dentro se muestra como texto,
+  no se ejecuta.
+- **El contenido es de solo lectura para quien visita.** No hay servidor, ni base
+  de datos, ni formularios que envíen nada: cambiar el catálogo exige acceso de
+  escritura al repositorio.
+- **No se recoge ningún dato.** Lo único que se guarda es la mejor nota por
+  módulo, en el `localStorage` del propio navegador. No se envía a ninguna parte.
+- **Lo que no se puede hacer en GitHub Pages:** fijar cabeceras HTTP. Pages no
+  permite `X-Frame-Options` ni `frame-ancestors`, así que la página podría
+  embeberse en un iframe ajeno. Es asumible porque no hay sesión, credenciales ni
+  datos personales que robar mediante clickjacking, y además es lo que permite
+  usarla como pestaña de Teams. Con Azure Static Web Apps sí podrían fijarse esas
+  cabeceras en `staticwebapp.config.json`.
+
+## 5. Cómo se comporta
 
 - Al enviar una respuesta se bloquean las opciones y se muestra el resultado. El
   botón «Atrás» del navegador tampoco devuelve a la pregunta anterior: pide

@@ -6,6 +6,11 @@
   <title>Ruta de estudio</title>
   <meta name="description" content="Repasa módulos de estudio con preguntas de selección múltiple y retroalimentación inmediata." />
   <meta name="color-scheme" content="dark" />
+  <!-- Nada externo: ni scripts, ni tipografías, ni analítica. Todo lo que no
+       esté aquí queda bloqueado por el navegador. empaquetar.py sustituye esta
+       línea por otra con hashes cuando el código va en línea. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'" />
+  <meta name="referrer" content="same-origin" />
   <meta name="theme-color" content="#2a0d10" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>" />
   <link rel="stylesheet" href="assets/css/estilos.css" />

@@ -15,6 +15,8 @@ Uso:
 """
 
 import argparse
+import base64
+import hashlib
 import io
 import json
 import os
@@ -32,6 +34,13 @@ GUIONES = [
 
 RE_IMPORT = re.compile(r"^\s*import\s[^;]*?;\s*$", re.M | re.S)
 RE_EXPORT = re.compile(r"^export\s+", re.M)
+RE_CSP = re.compile(r'<meta http-equiv="Content-Security-Policy"[^>]*>')
+
+
+def hash_csp(texto):
+    """'sha256-...' del contenido exacto de un bloque en linea, para la CSP."""
+    resumen = hashlib.sha256(texto.encode("utf-8")).digest()
+    return "'sha256-%s'" % base64.b64encode(resumen).decode("ascii")
 
 
 def leer(ruta):
@@ -68,14 +77,30 @@ def construir():
     # </script> dentro de los datos romperia la etiqueta
     datos = datos.replace("</", "<\\/")
 
+    estilos = "\n%s\n" % leer("assets/css/estilos.css")
+    guiones = "\n%s\n  " % juntar_guiones()
+
+    # Al ir todo en linea, 'self' ya no sirve: se autoriza cada bloque por su
+    # hash. Es tan estricto como los archivos externos y evita 'unsafe-inline'.
+    csp = (
+        "default-src 'none'; "
+        "script-src %s %s; "
+        "style-src %s; "
+        "img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'"
+        % (hash_csp(guiones), hash_csp(datos), hash_csp(estilos))
+    )
+    html = RE_CSP.sub(
+        '<meta http-equiv="Content-Security-Policy" content="%s">' % csp, html, count=1
+    )
+
     html = html.replace(
         '<link rel="stylesheet" href="assets/css/estilos.css" />',
-        "<style>\n%s\n</style>" % leer("assets/css/estilos.css"),
+        "<style>%s</style>" % estilos,
     )
     html = html.replace(
         '<script type="module" src="assets/js/app.js"></script>',
         '<script id="datos-modulos" type="application/json">%s</script>\n'
-        "  <script>\n%s\n  </script>" % (datos, juntar_guiones()),
+        "  <script>%s</script>" % (datos, guiones),
     )
     return html
 

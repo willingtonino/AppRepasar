@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ruta de estudio</title>
+  <meta name="description" content="Repasa módulos de estudio con preguntas de selección múltiple y retroalimentación inmediata." />
+  <meta name="color-scheme" content="dark" />
+  <!-- Nada externo: ni scripts, ni tipografías, ni analítica. Todo lo que no
+       esté aquí queda bloqueado por el navegador. empaquetar.py sustituye esta
+       línea por otra con hashes cuando el código va en línea. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xz9gthwmoJPU6yPZ7BjaAMcmPtysLTU0QI+ZslH8JVs=' 'sha256-3W9C14rZH5jWujRYiGSfpuc2hFcZBrY159xtHPAOYX0='; style-src 'sha256-l5hQCT+JvG8Z/bXnmbc6Kk6lYgwajnlxrfSG+bzRtYc='; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="same-origin" />
+  <meta name="theme-color" content="#2a0d10" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>" />
+  <style>
+/* ==========================================================================
+   Ruta de estudio - hoja de estilos unica (sin build, sin dependencias)
+   ========================================================================== */
+
+:root {
+  --ambar: #ffb020;
+  --ambar-claro: #ffcf6b;
+  --ambar-fuerte: #f59e0b;
+  --tinta: #2a1004;
+
+  --texto: #fdf6ef;
+  --texto-suave: rgba(253, 246, 239, 0.72);
+  --texto-tenue: rgba(253, 246, 239, 0.52);
+
+  --carta-borde: rgba(255, 220, 180, 0.16);
+  --carta-borde-fuerte: rgba(255, 200, 130, 0.42);
+
+  --ok: #4ade80;
+  --ok-fondo: rgba(34, 197, 94, 0.14);
+  --mal: #fb7185;
+  --mal-fondo: rgba(244, 63, 94, 0.14);
+
+  --radio: 22px;
+  --radio-sm: 14px;
+  --ancho: 1180px;
+  --sombra: 0 18px 40px rgba(20, 4, 4, 0.38);
+
+  --fuente: "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system,
+    "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--fuente);
+  color: var(--texto);
+  background: #1a0607;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+/* Fondo degradado calido, fijo detras de todo ------------------------------ */
+.fondo {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(120% 90% at 88% 12%, rgba(226, 88, 34, 0.55) 0%, rgba(226, 88, 34, 0) 58%),
+    radial-gradient(100% 80% at 78% 96%, rgba(255, 146, 43, 0.42) 0%, rgba(255, 146, 43, 0) 60%),
+    radial-gradient(90% 70% at 8% 4%, rgba(96, 22, 34, 0.9) 0%, rgba(96, 22, 34, 0) 62%),
+    linear-gradient(140deg, #17070c 0%, #330f11 38%, #6d2213 72%, #93341a 100%);
+}
+
+/* Barra superior ----------------------------------------------------------- */
+.barra {
+  width: 100%;
+  padding: 18px clamp(16px, 4vw, 40px);
+}
+
+.barra-int {
+  max-width: var(--ancho);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--ambar);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.marca:hover { color: var(--ambar-claro); }
+.marca .icono { font-size: 1.05rem; letter-spacing: normal; }
+
+.barra-fin {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.usuario {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--carta-borde);
+  background: rgba(30, 10, 10, 0.42);
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+  max-width: 62vw;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(150deg, var(--ambar), #ef6820);
+  color: var(--tinta);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.usuario-nombre {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Contenedor y estructura -------------------------------------------------- */
+.contenedor {
+  flex: 1;
+  width: 100%;
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: clamp(8px, 2vw, 20px) clamp(16px, 4vw, 40px) 64px;
+}
+
+.pie {
+  padding: 22px clamp(16px, 4vw, 40px) 30px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: rgba(253, 246, 239, 0.34);
+}
+
+.cargando { color: var(--texto-tenue); padding: 40px 0; }
+
+/* Titulares ---------------------------------------------------------------- */
+h1 {
+  margin: 6px 0 12px;
+  font-size: clamp(2.1rem, 6.2vw, 3.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  text-shadow: 0 6px 26px rgba(0, 0, 0, 0.35);
+}
+
+.subtitulo {
+  margin: 0 0 22px;
+  max-width: 62ch;
+  color: var(--texto-suave);
+  font-size: clamp(0.98rem, 2.2vw, 1.08rem);
+}
+
+.pastilla {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--carta-borde);
+  background: rgba(28, 9, 10, 0.45);
+  color: var(--texto-suave);
+  font-size: 0.88rem;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+}
+
+/* Rejilla de modulos ------------------------------------------------------- */
+.rejilla {
+  margin-top: 30px;
+  display: grid;
+  gap: clamp(14px, 2vw, 22px);
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+}
+
+.tarjeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 210px;
+  padding: 24px 24px 22px;
+  border-radius: var(--radio);
+  border: 1px solid var(--carta-borde);
+  background:
+    linear-gradient(155deg, rgba(255, 176, 96, 0.20) 0%, rgba(180, 70, 40, 0.16) 48%, rgba(90, 26, 24, 0.24) 100%);
+  box-shadow: var(--sombra);
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  backdrop-filter: blur(4px);
+}
+
+.tarjeta:hover,
+.tarjeta:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--carta-borde-fuerte);
+  box-shadow: 0 22px 46px rgba(20, 4, 4, 0.5);
+}
+
+.tarjeta-cab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 6px 15px;
+  border-radius: 999px;
+  background: linear-gradient(140deg, var(--ambar-claro), var(--ambar-fuerte));
+  color: var(--tinta);
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.flecha {
+  color: var(--ambar);
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform 0.18s ease;
+}
+
+.tarjeta:hover .flecha { transform: translateX(4px); }
+
+.tarjeta h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 3vw, 1.62rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.tarjeta p {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 0.94rem;
+}
+
+.tarjeta-pie {
+  margin-top: auto;
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.marca-nota {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--carta-borde);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+
+.marca-nota.aprobado { color: var(--ok); border-color: rgba(74, 222, 128, 0.4); }
+.marca-nota.local { color: var(--ambar-claro); border-color: rgba(255, 176, 32, 0.4); }
+
+/* Tarjeta para anadir modulo ----------------------------------------------- */
+.tarjeta.fantasma {
+  background: rgba(255, 255, 255, 0.03);
+  border-style: dashed;
+  border-color: rgba(255, 220, 180, 0.26);
+  justify-content: center;
+  min-height: 150px;
+}
+
+.tarjeta.fantasma h2 { font-size: 1.25rem; }
+
+/* Botones ------------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: linear-gradient(140deg, var(--ambar-claro), var(--ambar-fuerte));
+  color: var(--tinta);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:hover:not(:disabled) { filter: brightness(1.07); transform: translateY(-1px); }
+.btn:disabled { opacity: 0.42; cursor: not-allowed; }
+
+.btn.fantasma {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--carta-borde);
+  color: var(--texto);
+}
+
+.btn.fantasma:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); }
+
+.btn.pequeno { padding: 8px 16px; font-size: 0.85rem; }
+
+/* Quiz --------------------------------------------------------------------- */
+.quiz-cab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.quiz-cab h2 {
+  margin: 0;
+  font-size: clamp(1.1rem, 3vw, 1.35rem);
+  font-weight: 800;
+}
+
+.quiz-meta {
+  font-size: 0.85rem;
+  color: var(--texto-tenue);
+  font-weight: 600;
+}
+
+.progreso {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.10);
+  overflow: hidden;
+  margin-bottom: 26px;
+}
+
+.progreso i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ambar-claro), var(--ambar-fuerte));
+  transition: width 0.3s ease;
+}
+
+.panel {
+  padding: clamp(20px, 3.4vw, 34px);
+  border-radius: var(--radio);
+  border: 1px solid var(--carta-borde);
+  background: linear-gradient(155deg, rgba(60, 20, 20, 0.55), rgba(35, 12, 14, 0.62));
+  box-shadow: var(--sombra);
+  backdrop-filter: blur(8px);
+}
+
+.tipo-nota {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--carta-borde);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ambar-claro);
+}
+
+.contexto {
+  margin: 0 0 14px;
+  color: var(--texto-suave);
+  font-size: 0.97rem;
+  white-space: pre-line;
+}
+
+.enunciado {
+  margin: 0 0 22px;
+  font-size: clamp(1.15rem, 2.9vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.opciones {
+  display: grid;
+  gap: 11px;
+  margin: 0 0 22px;
+  padding: 0;
+  border: 0;
+}
+
+.opcion {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 15px 17px;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--carta-borde);
+  background: rgba(255, 255, 255, 0.045);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.opcion:hover { border-color: var(--carta-borde-fuerte); background: rgba(255, 255, 255, 0.08); }
+.opcion input { position: absolute; opacity: 0; pointer-events: none; }
+
+.opcion .letra {
+  flex: 0 0 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid var(--carta-borde);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--texto-suave);
+}
+
+.opcion .texto { flex: 1; padding-top: 3px; }
+
+.opcion.marcada {
+  border-color: var(--ambar);
+  background: rgba(255, 176, 32, 0.14);
+}
+
+.opcion.marcada .letra {
+  background: linear-gradient(140deg, var(--ambar-claro), var(--ambar-fuerte));
+  border-color: transparent;
+  color: var(--tinta);
+}
+
+.opcion:focus-within { outline: 2px solid var(--ambar-claro); outline-offset: 3px; }
+
+/* Estados tras comprobar */
+.opciones.resuelto .opcion { cursor: default; }
+.opciones.resuelto .opcion:hover { border-color: var(--carta-borde); background: rgba(255, 255, 255, 0.045); }
+.opciones.resuelto .opcion.marcada:hover { border-color: var(--ambar); background: rgba(255, 176, 32, 0.14); }
+
+.opcion.correcta,
+.opciones.resuelto .opcion.correcta:hover {
+  border-color: rgba(74, 222, 128, 0.6);
+  background: var(--ok-fondo);
+}
+
+.opcion.correcta .letra {
+  background: var(--ok);
+  border-color: transparent;
+  color: #06301a;
+}
+
+.opcion.fallada,
+.opciones.resuelto .opcion.fallada:hover {
+  border-color: rgba(251, 113, 133, 0.6);
+  background: var(--mal-fondo);
+}
+
+.opcion.fallada .letra {
+  background: var(--mal);
+  border-color: transparent;
+  color: #3d0512;
+}
+
+.opcion .pista {
+  margin-left: auto;
+  padding-top: 3px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.opcion.correcta .pista { color: var(--ok); }
+.opcion.fallada .pista { color: var(--mal); }
+
+/* Retroalimentacion -------------------------------------------------------- */
+.feedback {
+  margin: 0 0 20px;
+  padding: 16px 18px;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--carta-borde);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.feedback.bien { border-color: rgba(74, 222, 128, 0.45); background: var(--ok-fondo); }
+.feedback.mal { border-color: rgba(251, 113, 133, 0.45); background: var(--mal-fondo); }
+
+.feedback strong { display: block; font-size: 1.02rem; margin-bottom: 4px; }
+.feedback.bien strong { color: var(--ok); }
+.feedback.mal strong { color: var(--mal); }
+
+.feedback p { margin: 0; color: var(--texto-suave); font-size: 0.95rem; }
+.feedback .porque { margin-top: 8px; white-space: pre-line; }
+.feedback .porque b { color: var(--ambar-claro); }
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.aviso {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--texto-tenue);
+}
+
+.titulo-seccion { margin: 32px 0 0; }
+.titulo-seccion.pequeno { margin-top: 36px; font-size: 1.25rem; }
+.titulo-menor { font-size: clamp(1.8rem, 5vw, 2.6rem); }
+.acciones.separado { margin-top: 16px; }
+
+/* Resultados --------------------------------------------------------------- */
+.marcador {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 4vw, 34px);
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.nota {
+  width: 128px;
+  height: 128px;
+  flex: 0 0 128px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--texto);
+  background: conic-gradient(var(--ambar) calc(var(--pct) * 1%), rgba(255, 255, 255, 0.10) 0);
+  position: relative;
+}
+
+.nota::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  background: #2b0f10;
+  z-index: 0;
+}
+
+.nota span { position: relative; z-index: 1; }
+
+.marcador-txt { flex: 1; min-width: 220px; }
+.marcador-txt h2 { margin: 0 0 6px; font-size: clamp(1.4rem, 4vw, 2rem); }
+.marcador-txt p { margin: 0; color: var(--texto-suave); }
+
+.repaso { display: grid; gap: 12px; margin-top: 26px; }
+
+.repaso-item {
+  padding: 16px 18px;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--carta-borde);
+  background: rgba(255, 255, 255, 0.04);
+  border-left-width: 4px;
+}
+
+.repaso-item.bien { border-left-color: var(--ok); }
+.repaso-item.mal { border-left-color: var(--mal); }
+
+.repaso-item h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.repaso-item dl { margin: 0; font-size: 0.9rem; color: var(--texto-suave); }
+.repaso-item dt { font-weight: 700; color: var(--texto-tenue); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; }
+.repaso-item dd { margin: 2px 0 0; white-space: pre-line; }
+.repaso-item .ok { color: var(--ok); }
+.repaso-item .no { color: var(--mal); }
+
+/* Subir modulos ------------------------------------------------------------ */
+.suelta {
+  margin: 22px 0;
+  padding: 34px 22px;
+  border-radius: var(--radio);
+  border: 2px dashed rgba(255, 220, 180, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.suelta.encima { border-color: var(--ambar); background: rgba(255, 176, 32, 0.10); }
+.suelta p { margin: 0 0 14px; color: var(--texto-suave); }
+
+textarea.json {
+  width: 100%;
+  min-height: 240px;
+  padding: 16px;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--carta-borde);
+  background: rgba(12, 4, 6, 0.55);
+  color: var(--texto);
+  font-family: "Cascadia Code", ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+textarea.json:focus-visible { outline: 2px solid var(--ambar); outline-offset: 2px; }
+
+.lista-errores {
+  margin: 16px 0 0;
+  padding: 14px 18px 14px 34px;
+  border-radius: var(--radio-sm);
+  border: 1px solid rgba(251, 113, 133, 0.45);
+  background: var(--mal-fondo);
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+.lista-errores li { margin: 3px 0; }
+
+.exito {
+  margin: 16px 0 0;
+  padding: 14px 18px;
+  border-radius: var(--radio-sm);
+  border: 1px solid rgba(74, 222, 128, 0.45);
+  background: var(--ok-fondo);
+  font-size: 0.92rem;
+}
+
+pre.codigo {
+  margin: 12px 0 0;
+  padding: 16px;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--carta-borde);
+  background: rgba(12, 4, 6, 0.55);
+  overflow-x: auto;
+  font-family: "Cascadia Code", ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--texto-suave);
+}
+
+.ayuda { color: var(--texto-suave); font-size: 0.94rem; }
+.ayuda code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.09);
+  font-family: "Cascadia Code", ui-monospace, Consolas, monospace;
+  font-size: 0.86em;
+}
+
+.tabla-locales { display: grid; gap: 10px; margin-top: 14px; }
+
+.fila-local {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--carta-borde);
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.92rem;
+}
+
+.fila-local .nombre { flex: 1; min-width: 160px; }
+
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 18px;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--texto-tenue);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.volver:hover { color: var(--ambar-claro); }
+
+.error-carga {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border-radius: var(--radio-sm);
+  border: 1px solid rgba(251, 113, 133, 0.45);
+  background: var(--mal-fondo);
+}
+
+.error-carga h2 { margin: 0 0 8px; font-size: 1.1rem; }
+.error-carga p { margin: 0 0 6px; color: var(--texto-suave); font-size: 0.92rem; }
+
+/* Accesibilidad y utilidades ---------------------------------------------- */
+:focus-visible { outline: 2px solid var(--ambar-claro); outline-offset: 3px; }
+
+.solo-lector {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.oculto { display: none !important; }
+
+@media (max-width: 560px) {
+  .rejilla { grid-template-columns: 1fr; }
+  .tarjeta { min-height: 0; padding: 20px; }
+  .acciones { flex-direction: column; align-items: stretch; }
+  .acciones .btn { width: 100%; }
+  .aviso { margin: 4px 0 0; text-align: center; }
+  .barra { padding: 14px 16px; }
+  .barra-int { flex-wrap: nowrap; gap: 10px; }
+  .marca { font-size: 0.72rem; letter-spacing: 0.1em; }
+  .usuario { padding: 4px 10px 4px 4px; font-size: 0.78rem; }
+  .usuario .usuario-nombre { max-width: 92px; }
+  .avatar { width: 24px; height: 24px; flex-basis: 24px; font-size: 0.68rem; }
+  .nota { width: 104px; height: 104px; flex-basis: 104px; font-size: 1.8rem; }
+  .opcion { flex-wrap: wrap; }
+  .opcion .pista { flex: 1 0 100%; margin: 2px 0 0 43px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+</style>
+</head>
+<body>
+  <div class="fondo" aria-hidden="true"></div>
+
+  <header class="barra" id="barra"></header>
+
+  <main id="app" class="contenedor">
+    <p class="cargando">Cargando módulos…</p>
+  </main>
+
+  <footer class="pie">
+    <span>Ruta de estudio · repaso por módulos</span>
+  </footer>
+
+  <script id="datos-modulos" type="application/json">{"marca":"Ruta de estudio AWS","titulo":"¿Qué módulo quieres estudiar?","descripcion":"Selecciona un módulo. Recibirás retroalimentación inmediata y podrás repetirlo cuantas veces necesites.","permitirSubida":"local","modulos":[{"id":"aws-m1","modulo":1,"titulo":"Introducción a la nube","descripcion":"Infraestructura global, modelos de implementación y responsabilidad compartida.","notaMinima":70,"preguntas":[{"pregunta":"Usted trabaja para una empresa de ropa deportiva que está expandiendo sus operaciones a clientes de todo el mundo. La empresa quiere implementar recursos en varias ubicaciones de AWS para lograr una alta disponibilidad. Se le asignó la tarea de explicar los aspectos básicos de la infraestructura global de AWS a su director de operaciones (chief operating officer, COO). El COO necesita ayuda para comprender la diferencia entre las regiones y las zonas de disponibilidad de AWS.\n\n¿Qué enunciado describe MEJOR la diferencia entre las regiones y las zonas de disponibilidad de AWS?","opciones":["Una zona de disponibilidad es una ubicación geográfica que contiene tres o más regiones. Una región es una ubicación distinta dentro de una zona de disponibilidad que contiene uno o más centros de datos independientes.","Una región es un centro de datos único, mientras que una zona de disponibilidad consta de varios centros de datos.","Una región es una ubicación geográfica que contiene tres o más zonas de disponibilidad. Una zona de disponibilidad es una ubicación distinta dentro de una región que contiene uno o más centros de datos independientes.","Una zona de disponibilidad abarca varias ubicaciones físicas en todas las regiones, y las regiones se encuentran en todo el mundo."],"correcta":"C","explicacion":"Una región es una ubicación física en el mundo que contiene varios centros de datos aislados. Una zona de disponibilidad consta de uno o más centros de datos independientes, cada uno con su propia capacidad, redes y conectividad."},{"pregunta":"Una gran empresa busca reducir los costos operativos. Quiere reducir la sobrecarga operativa asociada con la administración de su propia infraestructura física.\n\n¿Qué opción describe MEJOR las ventajas de la nube de las que puede beneficiarse esta empresa?","opciones":["Aumentar la velocidad y la agilidad","Dejar de gastar dinero en la ejecución y el mantenimiento de centros de datos","Aprovechar las economías de escala masivas","Dejar de hacer conjeturas sobre la capacidad"],"correcta":"B","explicacion":"Al migrar a la nube, la empresa puede liberarse de la responsabilidad de mantener los centros de datos físicos, lo que reduce la sobrecarga operativa."},{"pregunta":"Una agencia gubernamental desea mantener un control total sobre su infraestructura de TI, pero planea usar los servicios de la nube de AWS para aplicaciones específicas.\n\n¿Qué tipo de implementación es MEJOR para esta situación?","opciones":["Cumplimiento","Híbrida","Nube","En las instalaciones"],"correcta":"B","explicacion":"La implementación híbrida es una solución en la que la agencia puede mantener el control sobre los sistemas en las instalaciones mientras usa los servicios de nube para otras aplicaciones."},{"pregunta":"Usted es un arquitecto de nube en una empresa que migró recientemente su infraestructura a AWS. Su gerente le pidió que informe a su equipo sobre las responsabilidades que tiene el cliente en lo que respecta a la protección de los recursos en la nube.\n\n¿Qué responsabilidad tiene el cliente según el modelo de responsabilidad compartida de AWS? (Seleccione DOS opciones).","opciones":["Seguridad física de los centros de datos","Cifrado de datos del cliente","Mantenimiento de la red y del hardware de la infraestructura","Administración de parches del sistema operativo (SO)","Actualización del software de computación, redes, almacenamiento y bases de datos"],"correcta":["B","D"],"tipo":"multiple","explicacion":"En el modelo de responsabilidad compartida de AWS, el cliente es responsable de administrar los parches del SO. AWS proporciona la infraestructura subyacente, pero el cliente debe asegurarse de que sus SO estén actualizados con los parches de seguridad más recientes. Además, también es responsable de cifrar los datos del lado del cliente. AWS ofrece varios servicios para ayudar con el cifrado, pero es responsabilidad del cliente implementar y administrar estos servicios.\n\nLa seguridad física de los centros de datos y el mantenimiento del hardware son responsabilidades de AWS. La actualización del software para los servicios de computación, redes, almacenamiento y bases de datos también es responsabilidad de AWS."},{"pregunta":"Una pequeña empresa está considerando migrar su infraestructura de TI a la nube. El equipo de finanzas tiene una reunión con el departamento de TI para analizar los costos asociados con esta transición. Durante la reunión, el gerente financiero dice que le gusta la idea de la fiabilidad que ofrece la nube, pero que le preocupan los costos fijos.\n\n¿Qué enunciado define con precisión el modelo de computación en la nube y aborda la preocupación del gerente financiero?","opciones":["La computación en la nube implica la compra de servidores dedicados y la configuración de un centro de datos privado. Este modelo suele tener costos fijos relacionados con el hardware y el mantenimiento.","La computación en la nube es un modelo para entregar recursos de TI a través de internet. Las empresas pueden alquilar los servicios con un modelo de pago por uso, lo que puede ayudar a reducir los costos fijos y permitir presupuestos más flexibles.","La computación en la nube reduce la necesidad de hardware adicional, pero aun así implica importantes tarifas mensuales fijas.","La computación en la nube consiste básicamente en usar el servidor de otra persona para alojar su sitio web, y no ofrece ningún tipo de ventaja de costo significativa en comparación con las soluciones de alojamiento tradicionales."],"correcta":"B","explicacion":"La computación en la nube se puede definir como la entrega bajo demanda de recursos de TI a través de internet con precios de pago por uso. Esta respuesta define con precisión la computación en la nube y aborda directamente la preocupación del gerente financiero por los costos fijos."},{"pregunta":"Usted es un desarrollador de software que trabaja para una empresa que planea migrar su aplicación actual a la nube. Su líder le pidió que explique al resto del equipo el modelo cliente-servidor y cómo se integra la computación en nube en este modelo.\n\n¿Qué enunciado describe MEJOR el modelo cliente-servidor y su relación con la computación en la nube?","opciones":["En el modelo cliente-servidor, el cliente es responsable de proteger sus datos y el servidor es responsable de proteger el hardware físico. La computación en la nube reemplaza el modelo cliente-servidor.","El modelo cliente-servidor está desactualizado y ya no se usa en las aplicaciones modernas. La computación en la nube lo reemplazó por completo.","En el modelo cliente-servidor, el servidor solo gestiona el almacenamiento de datos, mientras que el cliente realiza todas las tareas de procesamiento. La computación en la nube proporciona almacenamiento de datos, pero no potencia de procesamiento.","En el modelo cliente-servidor, el cliente envía solicitudes al servidor, que las procesa y envía respuestas. La computación en la nube proporciona recursos de servidor escalables a los que se puede acceder a través de internet."],"correcta":"D","explicacion":"Esta respuesta describe con precisión el modelo cliente-servidor en el que el cliente envía solicitudes al servidor. El servidor procesa estas solicitudes y devuelve las respuestas apropiadas. La computación en la nube proporciona recursos de servidor escalables y flexibles a los que se puede acceder a través de internet."},{"pregunta":"Su empresa tiene previsto lanzar una nueva aplicación web que ofrecerá servicios a usuarios de todo el mundo. Para garantizar que la aplicación funcione correctamente y siga siendo fiable, el equipo de TI tiene previsto utilizar AWS para su amplia infraestructura global.\n\n¿Qué opciones describen MEJOR los beneficios de la infraestructura global de AWS en relación con esta situación? (Seleccione DOS opciones).","opciones":["Facilidad de uso","Alta disponibilidad","Ahorro de costos","Cumplimiento de las normas reglamentarias","Tolerancia a errores"],"correcta":["B","E"],"tipo":"multiple","explicacion":"Por lo general, la infraestructura global implica la distribución de recursos en varios centros de datos de diferentes ubicaciones geográficas. Al tener sistemas redundantes en varias ubicaciones, la infraestructura global mejora la tolerancia a errores. Si un componente falla, otros pueden asumir el control para minimizar el tiempo de inactividad y ayudar a garantizar una alta disponibilidad.\n\nLa facilidad de uso, el cumplimiento y el ahorro de costos son beneficios que se pueden lograr mediante el uso de recursos en la nube. Sin embargo, en este caso, lo importante es que los recursos tengan un alto nivel de disponibilidad para los usuarios de todo el mundo."},{"pregunta":"Una empresa financiera está interesada en migrar a la nube. Les interesa saber si contarán con suficiente personal para proteger tanto su espacio de oficina como la infraestructura física de sus recursos de computación en la nube.\n\n¿Qué enunciado describe MEJOR la responsabilidad de la empresa en lo que respecta a la protección de la infraestructura física de la nube?","opciones":["La empresa es totalmente responsable de proteger toda la infraestructura física de la nube, incluidos los centros de datos.","La empresa no tiene ninguna responsabilidad en lo que respecta a la seguridad en la nube.","La empresa comparte con el proveedor de la nube la responsabilidad de proteger la infraestructura física.","AWS es responsable de proteger la infraestructura física, mientras que la empresa debe centrarse en proteger sus datos y aplicaciones en la nube."],"correcta":"D","explicacion":"AWS es responsable de la seguridad física de los centros de datos. Esto incluye medidas como los controles de acceso, la vigilancia y los controles ambientales. Las empresas que migran a la nube aún tienen responsabilidades como las configuraciones de seguridad y los datos dentro de sus entornos de nube."}]},{"id":"aws-m2","modulo":2,"titulo":"Computación en la nube","descripcion":"EC2, tipos y precios de instancias, escalado, balanceo y mensajería.","notaMinima":70,"preguntas":[{"pregunta":"Una empresa de medios está trabajando en un proyecto que implica renderizar simulaciones y efectos visuales complejos. El proceso de renderizado requiere una potencia de computación significativa y aceleradores de hardware para gestionar la intensa carga de trabajo de manera eficiente.\n\n¿Qué tipo de instancia de Amazon EC2 sería la MEJOR opción para esta tarea?","opciones":["Optimizadas para la computación","De computación acelerada","Optimizadas para memoria","De uso general"],"correcta":"B"},{"pregunta":"Un equipo de investigación universitario está realizando simulaciones de modelos climáticos que requieren una potencia de CPU considerable para procesar algoritmos complejos y analizar grandes conjuntos de datos.\n\n¿Por qué las instancias de Amazon EC2 optimizadas para la computación son ideales para esta tarea?","opciones":["Están optimizadas para gestionar tareas que requieren aceleradores de hardware.","Proporcionan un alto rendimiento de almacenamiento, lo que las hace ideales para tareas que requieren una recuperación y un almacenamiento rápidos para grandes conjuntos de datos.","Son ideales para tareas que requieren una potencia de CPU significativa para realizar los cálculos.","Están diseñadas para cargas de trabajo que requieren una gran cantidad de memoria para procesar grandes conjuntos de datos de manera eficiente."],"correcta":"C"},{"pregunta":"Una startup está creando una nueva aplicación web y elige instancias de Amazon EC2 de uso general para alojar la aplicación.\n\n¿Por qué eligieron este tipo de instancia?","opciones":["Están diseñadas para una alta capacidad de almacenamiento, que es necesaria para alojar bases de datos de gran tamaño.","Proporciona el máximo rendimiento para tareas que consumen muchos recursos de computación, como el renderizado de video o el machine learning.","Están diseñadas específicamente para aplicaciones con uso intensivo de memoria, lo que resulta ideal para alojar una aplicación web.","Proporciona una combinación equilibrada de recursos de computación, memoria y redes, a la vez que mantiene la eficiencia de los costos a medida que escalan su base de usuarios."],"correcta":"D"},{"pregunta":"Una empresa tiene cargas de trabajo críticas en estado estable y trabajos por lotes que no son urgentes.\n\n¿Cómo deberían optimizar los costos con Savings Plans y las instancias de spot de Amazon EC2?","opciones":["Usar Savings Plans para cargas de trabajo críticas e instancias de spot para trabajos que no sean urgentes a fin de maximizar los ahorros.","Usar instancias de spot para todas las cargas de trabajo a fin de maximizar los ahorros y evitar Savings Plans.","Usar Savings Plans para todas las cargas de trabajo y evitar las instancias de spot debido a los riesgos de interrupción.","Usar Savings Plans para cargas de trabajo que no son urgentes y las instancias de spot para trabajos críticos."],"correcta":"A"},{"pregunta":"Qué herramienta se puede utilizar para interactuar con los servicios de AWS a través de una interfaz gráfica de usuario (GUI)?","opciones":["Consola de administración de AWS","Amazon EC2","Kit de desarrollo de software de AWS (AWS SDK)","Interfaz de la línea de comandos de AWS (AWS CLI)"],"correcta":"A"},{"pregunta":"una empresa de desarrollo de software debe notificar al equipo de ingeniería cada vez que se informa de un nuevo error en su sistema de seguimiento de errores. Algunos miembros del equipo deben recibir una notificación inmediata, mientras que otros pueden procesar los informes de errores más adelante.\n\n¿Qué servicio debería elegir la empresa de desarrollo de software según los requisitos?","opciones":["Amazon EC2","Elastic Load Balancing (ELB)","Amazon Simple Notification Service (Amazon SNS)","Amazon Simple Queue Service (Amazon SQS)"],"correcta":"C"},{"pregunta":"una empresa de fabricación ejecutará un conjunto de cargas de trabajo predecibles para los próximos 3 años y quiere optimizar los costos.\n\n¿Qué opción deben elegir?","opciones":["Bajo demanda","Instancias de spot","Hosts dedicados","Instancias reservadas"],"correcta":"D"},{"pregunta":"¿Cómo funcionan en conjunto Amazon EC2 Auto Scaling y Elastic Load Balancing (ELB) en AWS?","opciones":["ELB escala automáticamente las instancias de EC2 y Amazon EC2 Auto Scaling ajusta el tráfico.","Amazon EC2 Auto Scaling ajusta la cantidad de instancias, mientras que ELB distribuye el tráfico de manera uniforme entre ellas.","Funcionan de forma independiente y no están conectados.","Amazon EC2 Auto Scaling gestiona el enrutamiento del tráfico, mientras que ELB administra el escalado de las instancias."],"correcta":"B"},{"pregunta":"¿Cuál es el rol principal de una imagen de máquina de Amazon (AMI) a la hora de escalar aplicaciones?","opciones":["Configura las políticas de escalado de las aplicaciones.","Almacena copias de seguridad de los datos de la aplicación.","Proporciona una imagen coherente para lanzar nuevas instancias.","Administra automáticamente el tráfico de red."],"correcta":"C"},{"pregunta":"Una agencia de marketing está desarrollando una nueva aplicación web y espera un crecimiento constante, pero no tiene certeza sobre el tráfico en los primeros meses. Quiere flexibilidad sin asumir un compromiso a largo plazo.\n\n¿Qué opción de precios debería usar?","opciones":["Instancias reservadas","Instancias de spot","Savings Plans","Bajo demanda"],"correcta":"D"},{"pregunta":"¿Cómo funciona Amazon EC2 Auto Scaling en AWS?","opciones":["Amazon EC2 Auto Scaling ajusta el tipo de instancia, pero no cambia el número de instancias.","Amazon EC2 Auto Scaling agrega o elimina instancias automáticamente según los datos de rendimiento y las métricas de las aplicaciones.","Amazon EC2 Auto Scaling agrega instancias cuando la carga de trabajo es demasiado alta, pero no se reduce verticalmente cuando la demanda disminuye.","Amazon EC2 Auto Scaling requiere una intervención manual para agregar o eliminar instancias según el tráfico."],"correcta":"B"},{"pregunta":"Qué ocurre si un componente falla en una arquitectura de acoplamiento débil?","opciones":["El sistema puede seguir funcionando ya que los demás componentes son independientes.","El error hace que todo el sistema falle.","El sistema cambia automáticamente a los componentes de respaldo sin necesidad de intervención.","Los demás componentes se deben reiniciar de forma manual."],"correcta":"A"},{"pregunta":"¿A qué se refiere la tenencia múltiple en el contexto de Amazon EC2?","opciones":["Instancias de EC2 dedicadas a clientes individuales","Instancias que están restringidas a una región geográfica","Cada instancia de EC2 se ejecuta en su propia red privada","Varios usuarios comparten la misma instancia de EC2 mientras mantienen el aislamiento"],"correcta":"D"},{"pregunta":"¿Qué opción describe MEJOR cómo se aprovisionan y administran los recursos de computación en la nube?","opciones":["Los recursos deben comprarse por adelantado e instalarse de manera local.","Los recursos de computación requieren una administración manual constante.","Los recursos de computación son fijos y no se pueden escalar.","Los recursos se aprovisionan según la demanda, lo que permite el escalado y la administración."],"correcta":"D"}]},{"id":"aws-m3","modulo":3,"titulo":"Servicios de computación","descripcion":"Serverless, contenedores, Lightsail, Lambda, ECR, ECS, EKS, Fargate y Batch.","notaMinima":70,"preguntas":[{"pregunta":"Un desarrollador lanzará un nuevo microservicio y quiere centrarse únicamente en escribir e implementar código. No quiere administrar servidores, encargarse del escalado ni preocuparse por la disponibilidad de la infraestructura.\n\n¿Qué modelo de servicio de AWS es MEJOR para este caso de uso?","opciones":["Nube híbrida","Sin servidor","No administrados","En las instalaciones"],"correcta":"B"},{"pregunta":"¿Qué debe administrar el cliente en un servicio sin servidor como AWS Lambda?","opciones":["Nada, AWS administra todo por usted.","Los servidores físicos y el hardware de red","El sistema operativo, la configuración de red y la pila de aplicaciones","El código de la aplicación"],"correcta":"D"},{"pregunta":"Un equipo de desarrollo de una empresa de comercio electrónico está trabajando en un nuevo sitio web. La aplicación funciona correctamente en sus máquinas locales, pero cuando intentan implementarla en un entorno de almacenamiento provisional, no funciona como debería. El equipo quiere asegurarse de que, en el futuro, la aplicación se ejecute de manera coherente en todos los entornos de desarrollo, pruebas y producción.\n\n¿Qué solución debe usar el equipo para asegurarse de que la aplicación se ejecute de la misma manera en todos los entornos?","opciones":["Utilizar Amazon EC2 para recrear de forma manual el entorno de desarrollo.","Empaquetar la aplicación en un contenedor que incluya todas las dependencias.","Configurar entornos independientes para cada sistema operativo.","Usar diferentes versiones de las aplicaciones para diferentes entornos."],"correcta":"B","explicacion":"Los contenedores empaquetan la aplicación, el tiempo de ejecución y las dependencias, lo que proporciona coherencia en todos los entornos, desde el desarrollo hasta la producción."},{"pregunta":"Un desarrollador independiente está creando un blog para un cliente con un tráfico mínimo. El desarrollador busca una solución básica y rentable que incluya almacenamiento y computación en un solo paquete, sin tener que lidiar con configuraciones complejas o problemas de escalamiento.\n\n¿Qué servicio de AWS es el MÁS adecuado?","opciones":["AWS Fargate","AWS Lambda","AWS Batch","Amazon Lightsail"],"correcta":"D","explicacion":"Lightsail es ideal para proyectos pequeños, como blogs y sitios web básicos, y ofrece precios predecibles y un uso sencillo."},{"pregunta":"Una empresa lanzará una aplicación de fotos en contenedores y creó la imagen del contenedor, que debe almacenarse de forma segura. Planean usar Kubernetes para la orquestación y prefieren no administrar ningún servidor.\n\n¿Qué combinación de servicios de AWS se adapta MEJOR a sus necesidades?","opciones":["Amazon S3, Amazon Elastic Container Service (Amazon ECS) y Amazon EC2","Amazon Elastic Container Registry (Amazon ECR), Amazon Elastic Container Service (Amazon ECS) y Amazon EC2","Amazon Elastic Container Registry (Amazon ECR), Amazon Elastic Kubernetes Service (Amazon EKS) y AWS Fargate","Amazon Elastic Container Registry (Amazon ECR), AWS Lambda y Amazon EC2"],"correcta":"C","explicacion":"Amazon ECR almacena imágenes de contenedores, Amazon EKS administra la orquestación de Kubernetes y AWS Fargate ejecuta contenedores sin necesidad de administrar servidores. Esta combinación ofrece una orquestación perfecta sin mantenimiento de la infraestructura."},{"pregunta":"Un equipo de desarrollo de una empresa de viajes almacenó la imagen del contenedor de su sistema de reservas de hoteles en Amazon Elastic Container Registry (Amazon ECR) y está listo para implementarla. Necesitan un servicio que pueda iniciar y detener contenedores de forma automática según el tráfico, escalar o reducir verticalmente según la demanda, y supervisar el estado del sistema.\n\n¿Qué servicio debería utilizar el equipo?","opciones":["AWS Lambda","Amazon EC2 con escalado automático","Un servicio de orquestación como Amazon Elastic Container Service (Amazon ECS) o Amazon Elastic Kubernetes Service (Amazon EKS)","Una máquina virtual para ejecutar el contenedor de forma manual"],"correcta":"C","explicacion":"Amazon ECS o Amazon EKS pueden escalar automáticamente los contenedores, encargarse de las comprobaciones de estado y administrar su ciclo de vida según la demanda de tráfico, lo que se ajusta a los requisitos del equipo."},{"pregunta":"Cuál es la MEJOR situación para usar AWS Lambda?","opciones":["Procesamiento automático de imágenes a medida que los usuarios las cargan a un bucket de Amazon S3","Ejecución de una base de datos relacional que necesita consultas complejas y conexiones frecuentes","Alojamiento de un servidor web de alto tráfico que requiere un control total sobre el sistema operativo (SO)","Ejecución de una gran carga de trabajo de computación de alto rendimiento que tarda varias horas en completarse"],"correcta":"A","explicacion":"Lambda es perfecto para este caso de uso basado en eventos. Puede ejecutar código en respuesta a las cargas y escalar automáticamente según el número de eventos."},{"pregunta":"una empresa de investigación farmacéutica necesita ejecutar miles de simulaciones para analizar el plegamiento de las proteínas. Estas tareas que consumen muchos recursos de computación se ejecutan en paralelo y no requieren interacción en tiempo real. La empresa quiere que los trabajos se programen y escalen de forma automática según la demanda de computación.\n\n¿Qué servicio de AWS se adapta MEJOR a esta carga de trabajo?","opciones":["AWS Batch","Amazon Lightsail","AWS Elastic Beanstalk","AWS Lambda"],"correcta":"A","explicacion":"AWS Batch está diseñado para cargas de trabajo por lotes a gran escala y puede administrar y escalar de forma automática los recursos de computación para las colas de trabajo."}]},{"id":"aws-m4","modulo":4,"titulo":"Globalización","descripcion":"Regiones, zonas de disponibilidad, ubicaciones de borde y servicios en el edge.","notaMinima":70,"preguntas":[{"pregunta":"Cuáles son las opciones que MEJOR describen los beneficios clave de usar varias regiones de AWS y varias zonas de disponibilidad? (Seleccione DOS opciones).","opciones":["Baja latencia para los usuarios finales","Protocolo de seguridad mejorado","Migración de las bases de datos más rápida","Mayor capacidad de almacenamiento","Alta disponibilidad y tolerancia a errores"],"correcta":["A","E"],"tipo":"multiple","explicacion":"Al usar varias regiones de AWS, una empresa puede colocar sus recursos más cerca de sus usuarios finales, lo que reduce la distancia que deben recorrer los datos. Esto se traduce en una latencia más baja y una mejor experiencia del usuario. Al utilizar varias zonas de disponibilidad dentro de una región, la empresa mejora la tolerancia a errores de sus aplicaciones. Si una zona falla, su aplicación puede seguir funcionando desde otra zona, manteniendo una alta disponibilidad."},{"pregunta":"Una organización sin fines de lucro está migrando todos sus recursos a la nube de AWS. Están intentando decidir en qué región de AWS van a implementar sus recursos.\n\n¿Qué opción enumera los factores que la organización debe tener en cuenta al decidir dónde colocar sus recursos en la nube?","opciones":["Tiempo de actividad de los servidores, rendimiento de las aplicaciones, satisfacción de los empleados y ubicación de la oficina","Cumplimiento, proximidad a los clientes, disponibilidad de características y precios","Velocidad de red, cifrado de datos, interfaz de usuario y capacidad de almacenamiento","Licencias de software, especificaciones de hardware, competencias del personal en materia de la nube y opiniones de los clientes"],"correcta":"B","explicacion":"A la hora de decidir dónde colocar los recursos en la nube, las empresas deben tener en cuenta varios factores. El cumplimiento se refiere a que la región cumpla con los requisitos legales o reglamentarios. La proximidad a los clientes ayuda a reducir la latencia y a mejorar la experiencia del usuario. La disponibilidad de las características garantiza que los servicios de AWS necesarios sean compatibles con la región elegida. Los precios varían según la región, por lo que la rentabilidad también es un factor fundamental."},{"pregunta":"Se asignó a un equipo de una empresa de tecnología biomédica la tarea de implementar una nueva aplicación médica en varias regiones de AWS para ayudar a mantener la alta disponibilidad y la tolerancia a errores. La aplicación consta de varios componentes, incluidos un servidor web, una base de datos y una cola de mensajes. La implementación debe ser uniforme y repetible, y debe minimizar los errores manuales mediante la automatización.\n\n¿Qué enfoque es el MÁS adecuado para implementar esta aplicación de acuerdo con las necesidades de automatización y consistencia?","opciones":["Escribir un script para implementar la aplicación por programación mediante la API del proveedor de la nube","Usar la Consola de administración de AWS para implementar manualmente cada componente en todas las regiones","Usar un servicio de infraestructura como código (IaC), como AWS CloudFormation, para implementar la aplicación","Combinar enfoques programáticos y de consola para diferentes niveles de la aplicación"],"correcta":"C","explicacion":"Con un servicio de IaC, como CloudFormation, el equipo puede definir su infraestructura de forma declarativa. Esto ayuda a versionar, revisar y automatizar el proceso de implementación para garantizar la coherencia y la capacidad de repetición."},{"pregunta":"¿Qué respuesta describe MEJOR el propósito y los beneficios de las ubicaciones periféricas de AWS?","opciones":["Las ubicaciones periféricas están compuestas por centros de datos físicos que alojan la mayoría de los servicios y aplicaciones de AWS.","Las ubicaciones periféricas están diseñadas para proporcionar soluciones de almacenamiento redundante para datos críticos.","Las ubicaciones periféricas se utilizan exclusivamente para ejecutar aplicaciones y bases de datos con uso intensivo de computación.","Las ubicaciones periféricas almacenan en caché el contenido para entregar datos con una latencia más baja y velocidades de transferencia más altas a los usuarios finales."],"correcta":"D","explicacion":"Esta respuesta describe con precisión el propósito y los beneficios de las ubicaciones periféricas de AWS. Están diseñadas para mejorar la entrega del contenido almacenándolo en caché, más cerca de los usuarios finales, lo que reduce la latencia y aumenta la velocidad de transferencia."},{"pregunta":"Qué respuesta describe MEJOR la relación entre las regiones, las zonas de disponibilidad y las ubicaciones periféricas de AWS?","opciones":["Las regiones, las zonas de disponibilidad y las ubicaciones periféricas de AWS son lo mismo y se usan indistintamente.","Las regiones de AWS son ubicaciones físicas en todo el mundo en las que AWS tiene varias zonas de disponibilidad. Las ubicaciones periféricas se encuentran fuera de las regiones de AWS y almacenan en caché el contenido de acceso frecuente.","Las regiones de AWS contienen varias ubicaciones periféricas y cada ubicación periférica puede tener una o más zonas de disponibilidad.","Las regiones de AWS son ubicaciones físicas en todo el mundo en las que AWS tiene varias zonas de disponibilidad. Cada zona de disponibilidad tiene una o más ubicaciones periféricas."],"correcta":"B","explicacion":"De hecho, las regiones de AWS son ubicaciones físicas en todo el mundo en las que AWS tiene varias zonas de disponibilidad aisladas. Las ubicaciones periféricas, por otro lado, forman parte de la red de entrega de contenido (CDN) de AWS. Están optimizadas para la entrega de contenido y no están directamente vinculadas a las zonas de disponibilidad."},{"pregunta":"¿Qué respuesta describe las principales características y beneficios de AWS CloudFormation?","opciones":["Con CloudFormation, los usuarios pueden modelar y configurar sus recursos de AWS mediante código para automatizar el aprovisionamiento y la administración de la infraestructura. Este método puede ayudar a reducir los errores y mantener la consistencia en todos los entornos.","CloudFormation es una herramienta de optimización de costos que analiza el uso de AWS y sugiere las prácticas recomendadas para reducir las facturas de AWS de una empresa.","Con CloudFormation, los usuarios pueden almacenar en caché el contenido de acceso frecuente. De este modo, los usuarios experimentan una latencia más baja al acceder a los recursos de la nube.","CloudFormation es un servicio que proporciona una interfaz visual para configurar manualmente, uno por uno, cada recurso de AWS, sin necesidad de ningún código."],"correcta":"A","explicacion":"Esta respuesta describe con precisión las principales características y beneficios de CloudFormation. Destaca la capacidad de modelar y configurar recursos mediante código, automatizar el aprovisionamiento, reducir los errores y ayudar a mantener la uniformidad del entorno."}]},{"id":"aws-m5","modulo":5,"titulo":"Networking","descripcion":"Amazon VPC, subredes, grupos de seguridad, ACL, Route 53 y conectividad híbrida.","notaMinima":70,"preguntas":[{"pregunta":"Un cliente está creando recursos de aplicaciones en sus subredes de nube virtual privada (VPC). Desea proteger sus recursos en la nube, sobre todo, las tareas de protección del tráfico de redes.\n\n¿De qué componente es responsable el cliente según el modelo de responsabilidad compartida?","opciones":["Proteger el hardware que ejecuta los servicios de la nube de AWS","Proteger el software que ejecuta los servicios de la nube de AWS","Proteger el tráfico de red con las subredes y los recursos con listas de control de acceso de red (ACL de red) y grupos de seguridad","Asegurar el acceso a los centros de datos e instalaciones de AWS que ejecutan los servicios de la nube de AWS"],"correcta":"C","explicacion":"El cliente es responsable de proteger el tráfico de la red. Puede hacerlo con grupos de seguridad y ACL de red."},{"pregunta":"Un cliente financiero necesita una solución de entrega de contenido para ofrecer los videos de formación y el contenido estático necesarios a sus consultores financieros de todo el mundo. Quiere asegurarse de que la solución ofrezca una latencia baja.\n\n¿Qué solución de AWS se adaptaría MEJOR a sus necesidades?","opciones":["AWS Global Accelerator","AWS Direct Connect","Amazon CloudFront","Amazon Route 53"],"correcta":"C","explicacion":"CloudFront agiliza la distribución de contenido web estático y dinámico a los usuarios. Entrega el contenido de forma segura y con baja latencia por medio de una red mundial de centros de datos que reciben el nombre de ubicaciones perimetrales."},{"pregunta":"¿Cuál es la función principal de una zona de disponibilidad en la nube de AWS?","opciones":["Le permite crear una subsección de una nube virtual privada (VPC) donde puede aislar los recursos y controlar el acceso.","Mejora la disponibilidad de las aplicaciones y la tolerancia a errores, ya que permite que los recursos se implementen en varias zonas.","Filtra el tráfico entrante y saliente de las instancias de EC2 de una VPC.","Aprovisiona una sección aislada de forma lógica de la nube de AWS, donde puede lanzar recursos de AWS en una red virtual que usted defina."],"correcta":"B","explicacion":"Una zona de disponibilidad es un centro de datos o un conjunto de centros de datos aislado de forma física dentro de una región de AWS. Cada AZ cuenta con energía eléctrica, refrigeración y redes independientes, y están diseñadas para mejorar la disponibilidad y la tolerancia a errores de las aplicaciones, ya que permiten que los recursos se implementen en varias zonas de disponibilidad dentro de la misma región."},{"pregunta":"Un cliente empresarial acaba de fusionarse con otra empresa y necesita una forma de escalar de manera rápida y ofrecer al nuevo equipo de ventas mundial una manera de acceder a sus recursos de AWS. Busca un servicio completamente administrado con autenticación avanzada para sus trabajadores remotos nuevos.\n\n¿Qué solución se adaptaría MEJOR a sus necesidades?","opciones":["AWS Client VPN","AWS Direct Connect","AWS Site-to-Site VPN","AWS PrivateLink"],"correcta":"A","explicacion":"Amazon Client VPN es un servicio de redes que puede utilizar para conectar las redes en las instalaciones y los trabajadores remotos a la nube. Proporciona autenticación avanzada y acceso elástico y remoto en un servicio completamente administrado."},{"pregunta":"Un cliente está explorando los servicios de redes periféricas para mejorar la disponibilidad, el rendimiento y la seguridad de las aplicaciones. Necesita una solución para enrutar el tráfico cuando haya problemas en una de las ubicaciones de su aplicación. En concreto, debe tener en cuenta el estado de los puntos de conexión, la ubicación del usuario y las políticas.\n\n¿Qué solución de AWS se adaptaría MEJOR a sus necesidades?","opciones":["Amazon Route 53","Amazon CloudFront","AWS Global Accelerator","AWS Direct Connect"],"correcta":"C","explicacion":"Por qué no: CloudFront agiliza la distribución de contenido web estático y dinámico a los usuarios. Entrega el contenido por medio de una red mundial de centros de datos que reciben el nombre de ubicaciones perimetrales.\n\nGlobal Accelerator es un servicio de redes que está diseñado para mejorar los niveles de disponibilidad y rendimiento de las aplicaciones para los usuarios globales. Para ello, brinda direcciones IP estáticas, dirige el tráfico a través de la red global de AWS y lo enruta a puntos de conexión óptimos según el estado, la ubicación de los usuarios y las políticas"},{"pregunta":"Un cliente está creando una Amazon VPC para su aplicación. Desea crear un segmento privado en la Amazon VPC para que los recursos lanzados puedan aislarse de los usuarios en internet.\n\n¿Qué componente de red se adaptaría MEJOR a sus necesidades?","opciones":["Tanto una subred pública como una privada sería una buena opción.","Una subred pública","Una zona de disponibilidad en lugar de una subred","Una subred privada"],"correcta":"D","explicacion":"Una subred privada es un segmento de red dentro de una nube virtual privada (VPC) que no tiene una ruta directa a internet. Esto cubriría sus necesidades para la aplicación."},{"pregunta":"Un cliente está trasladando su aplicación a una Amazon VPC y desea configurar un control de tráfico en el nivel de la subred. Requiere un control amplio sobre el tráfico entrante y saliente y le gustaría utilizar reglas de permiso y denegación.\n\n¿Qué solución o característica cubriría sus necesidades?","opciones":["Cambiar la subred pública a una subred privada para evitar el acceso público de internet.","Configurar una puerta de enlace privada virtual según los requisitos de la aplicación.","Utilizar listas de control de acceso de red (ACL de red).","Utilizar grupos de seguridad."],"correcta":"C","explicacion":"Por qué no: Una puerta de enlace privada virtual restringiría el acceso a la nube virtual privada (VPC), pero no permitiría un control amplio en el nivel de la subred ni tendría reglas de permiso y denegación."},{"pregunta":"Una empresa de medios necesita un servicio para administrar sus registros de dominio con diferentes proveedores. Además, utilizarán el servicio para dirigir el tráfico de internet a sus recursos alojados en la nube de AWS y en otros lugares.\n\n¿Qué solución de AWS se adaptaría MEJOR a sus necesidades?","opciones":["Amazon CloudFront","AWS Global Accelerator","Amazon Route 53","AWS Direct Connect"],"correcta":"C","explicacion":"Route 53 es un servicio de sistema de nombres de dominio (DNS) que administra el registro de dominios, el enrutamiento de DNS y las comprobaciones de estado. Ofrece un enrutamiento fiable y eficiente de los usuarios a su sitio web o aplicaciones, ya sea que estén alojados en AWS o en otro lugar."},{"pregunta":"Un cliente busca una forma de establecer una conexión dedicada desde su red en las instalaciones a una Amazon VPC. Necesita una solución que brinde una experiencia de red más uniforme con un ancho de banda mayor.\n\n¿Qué tipo de conexión a la nube de AWS se adaptaría MEJOR a sus necesidades?","opciones":["Puerta de enlace privada virtual","Puerta de enlace de internet","AWS Direct Connect","Amazon CloudFront"],"correcta":"C","explicacion":"Direct Connect establecería una conexión dedicada desde una red en las instalaciones a una o más nubes virtuales privadas (VPC). También puede reducir los costos de redes, aumentar el rendimiento de ancho de banda y proporcionar una experiencia de red más uniforme que las conexiones basadas en internet."},{"pregunta":"Un cliente minorista aloja su aplicación en una Amazon VPC y desea configurar las reglas de tráfico para las instancias de Amazon EC2 que se ejecutan en una subred pública. La aplicación requiere que se definan varias reglas en el nivel de la instancia.\n\n¿Qué solución o característica cubriría sus necesidades?","opciones":["Cambiar la subred pública a una subred privada para evitar el acceso público de internet.","Configurar grupos de seguridad para las instancias de Amazon EC2 en función de los requisitos de la aplicación.","Configurar listas de control de acceso de red (ACL de red) para las instancias de Amazon EC2 en función de los requisitos de la aplicación.","Configurar una puerta de enlace privada virtual según los requisitos de la aplicación."],"correcta":"B","explicacion":"Los grupos de seguridad permitirían un control detallado en el nivel de la instancia. Se pueden definir reglas en la subred pública para las instancias individuales."},{"pregunta":"¿Cuál es la función principal de un servicio de nombres de dominio (DNS)?","opciones":["Traduce nombres de dominio legibles para el ser humano a direcciones IP legibles por máquinas.","Aprovisiona una sección aislada de forma lógica de la nube de AWS, donde puede lanzar recursos de AWS en una red virtual que usted defina.","Le permite crear una subsección de una nube virtual privada (VPC) donde puede aislar los recursos y controlar el acceso.","Filtra el tráfico entrante y saliente de las instancias de Amazon EC2 en una nube virtual privada (VPC)."],"correcta":"A","explicacion":"Un DNS traduce el nombre de dominio en el navegador y lo envía a un solucionador de DNS del cliente. Luego, solicita la dirección IP al servidor DNS de la empresa y la devuelve para que el usuario pueda acceder al sitio web."},{"pregunta":"¿Qué son las redes en la nube de AWS?","opciones":["Una sección aislada de forma lógica de la nube de AWS donde puede lanzar recursos de AWS en una red virtual que usted mismo defina","Dispositivos interconectados que pueden intercambiar datos y recursos","Centros de datos o un conjunto de centros de datos aislados de forma física dentro de una región de AWS","Un sistema que traduce nombres de dominio legibles a direcciones IP"],"correcta":"B","explicacion":"Por qué no: Una nube virtual privada (VPC) es el servicio que se utiliza para lanzar recursos de AWS en una red virtual aislada de forma lógica que se haya definido."},{"pregunta":"una empresa desea establecer una conexión privada y segura entre su centro de datos en las instalaciones y su Amazon VPC para crear una arquitectura de nube híbrida.\n\n¿Qué componente debe utilizar para garantizar una conexión segura?","opciones":["Puerta de enlace privada virtual","Puerta de enlace de internet","Tabla de enrutamiento","Subred"],"correcta":"A","explicacion":"Una puerta de enlace privada virtual es el punto de conexión de la red privada virtual (VPN) del lado de AWS. Ofrece una manera de establecer una conexión segura y cifrada entre la red en las instalaciones y la nube virtual privada (VPC)."},{"pregunta":"Un cliente está explorando soluciones para establecer conexiones seguras y cifradas entre sus redes en las instalaciones en sus centros de datos y sucursales. Está buscando la forma MÁS rentable de conectar sus oficinas con otros sitios y sus servicios de AWS. No desea aumentar la cantidad de ancho de banda.\n\n¿Qué solución se adaptaría MEJOR a sus necesidades?","opciones":["AWS Site-to-Site VPN","AWS Client VPN","AWS Direct Connect","AWS PrivateLink"],"correcta":"A","explicacion":"AWS Site-to-Site VPN crea una conexión segura entre el centro de datos o las sucursales y los recursos en la nube de AWS."}]},{"id":"aws-m6","modulo":6,"titulo":"Storage","descripcion":"Almacén de instancias, EBS, instantáneas, S3, EFS, FSx y clases de almacenamiento.","notaMinima":70,"preguntas":[{"pregunta":"¿Qué enunciado describe MEJOR a Amazon FSx?","opciones":["Un servicio que se utiliza para configurar el uso compartido de archivos privados solo dentro de un centro de datos en las instalaciones","Un servicio completamente administrado que proporciona un almacenamiento de archivos escalable y rentable basado en sistemas de archivos muy utilizados","Un servicio de almacenamiento en bloque que proporciona volúmenes de alto rendimiento para instancias de EC2","Una solución de almacenamiento de objetos diseñada para archivar datos de acceso muy poco frecuente"],"correcta":"B","explicacion":"Amazon FSx está diseñado, en concreto, como un servicio completamente administrado que ofrece almacenamiento de archivos basado en sistemas de archivos populares, como Windows File Server, Lustre, OpenZFS y NetApp ONTAP."},{"pregunta":"¿Cuál es la función principal de las clases de almacenamiento de Amazon S3?","opciones":["Organizar objetos dentro de los buckets de forma jerárquica","Cifrar datos en reposo y en tránsito","Replicar datos de forma automática en varias regiones de AWS","Proporcionar diferentes opciones de almacenamiento que estén optimizadas para diferentes casos de uso y patrones de acceso"],"correcta":"D","explicacion":"Las clases de almacenamiento de Amazon S3 están diseñadas para ofrecer diferentes características de rendimiento, niveles de disponibilidad y estructuras de costos, a fin de cumplir con los requisitos de almacenamiento de datos y los patrones de acceso específicos."},{"pregunta":"¿Qué enunciado describe MEJOR a Amazon S3?","opciones":["Un servicio de almacenamiento de archivos que proporciona una interfaz tradicional de sistema de archivos para compartirlos entre varias instancias.","Un servicio de almacenamiento a nivel de bloques que proporciona almacenamiento persistente para las instancias de Amazon EC2.","Un servicio escalable de almacenamiento de objetos que se utiliza para almacenar y recuperar cualquier cantidad de datos desde cualquier lugar de la web.","Un servicio de almacenamiento diseñado, sobre todo, para archivar y hacer copias de seguridad a largo plazo de datos de acceso muy poco frecuente."],"correcta":"C","explicacion":"Amazon S3 es, en esencia, un servicio de almacenamiento de objetos diseñado para la escalabilidad. Los usuarios pueden almacenar cantidades ilimitadas de datos a los que se puede acceder desde cualquier lugar con conectividad a internet."},{"pregunta":"EmpresaX Marketing necesita migrar sus archivos compartidos existentes a AWS para brindar apoyar a los equipos de diseño que trabajan con archivos creativos de gran tamaño. La empresa necesita ayuda para elegir una solución de almacenamiento que pueda facilitar esta migración.\n\nLa solución debe cumplir los siguientes requisitos:\n\nBrindar un servicio completamente administrado.\n\nIntegrarse de manera fluida con las aplicaciones de Windows.\n\nAdmitir el protocolo SMB.\n\nOfrecer la integración de Active Directory para autenticar usuarios.\n\nAdmitir la deduplicación de datos para optimizar los costos de almacenamiento.\n\nProporcionar latencias consistentes inferiores a milisegundos.\n\nProporcionar una alta disponibilidad.\n\n¿Qué servicio de almacenamiento de AWS cumple MEJOR los requisitos descritos en la situación?","opciones":["Amazon FSx para Windows File Server","Amazon Elastic File System (Amazon EFS)","Amazon Storage Gateway","Amazon S3"],"correcta":"A","explicacion":"Amazon FSx para Windows File Server está diseñado, en concreto, para las cargas de trabajo de Windows. Ofrece compatibilidad con SMB, integración con Active Directory y características de Windows, como la deduplicación de datos, a la vez que ofrece latencias consistentes inferiores a milisegundos como un servicio completamente administrado."},{"pregunta":"EmpresaX Marketing necesita una solución de almacenamiento con la que pueda distribuir grandes colecciones de imágenes, videos y archivos de diseño de alta resolución para las campañas de sus clientes. Algunos activos son de acceso frecuente, mientras que otros se archivan para consultarlos en ocasiones.\n\nLa solución debe cumplir los siguientes criterios:\n\nCapacidad de almacenamiento ilimitada\n\nAlta durabilidad\n\nUso compartido de archivos sencillo mediante URL\n\nCapacidad para organizar los activos por cliente y proyecto\n\nOpciones de almacenamiento rentables\n\nControles de seguridad para evitar el acceso no autorizado a activos específicos\n\n¿Qué servicio de AWS es el MÁS adecuado para las necesidades de almacenamiento descritas en esta situación?","opciones":["Amazon S3","Amazon FSx","Amazon Elastic Block Storage (Amazon EBS)","Amazon Elastic File System (Amazon EFS)"],"correcta":"A","explicacion":"Por qué no: Amazon EBS proporciona volúmenes de almacenamiento en bloque que deben conectarse a instancias de Amazon EC2. No puede accederse de forma directa por internet, no admite el uso compartido de archivos basado en URL y su capacidad está limitada al tamaño de los volúmenes aprovisionados."},{"pregunta":"¿Qué enunciado describe MEJOR a Amazon Elastic File System (Amazon EFS)?","opciones":["Un servicio de almacenamiento en bloque que proporciona volúmenes para conectarse a una sola instancia de Amazon EC2","Un sistema de archivos elástico y completamente administrado que se escala de forma automática a medida que se agregan y eliminan archivos","Un sistema de almacenamiento de archivos de capacidad fija que requiere escalado y administración manuales","Un servicio de almacenamiento de objetos diseñado para archivar a largo plazo datos de acceso muy poco frecuente"],"correcta":"B","explicacion":"Esto describe con precisión la propuesta de valor fundamental de Amazon EFS como un servicio que aumenta y se reduce de forma automática según las necesidades de almacenamiento sin aprovisionamiento manual."},{"pregunta":"EmpresaX Software implementa una aplicación de producción importante en instancias de Amazon EC2 con varios volúmenes de Amazon Elastic Block Store (Amazon EBS) que contienen código de aplicación y datos de clientes. El equipo busca un servicio de AWS con el que puedan hacer copias de seguridad de los datos de su aplicación.\n\nLa solución debe cumplir los siguientes criterios:\n\nCrear copias de seguridad periódicas de los datos.\n\nCrear entornos duplicados para realizar pruebas.\n\nCrear una estrategia de recuperación de desastres.\n\nCrear copias de seguridad completas o progresivas sin afectar el rendimiento de la aplicación.\n\nProporcionar un almacenamiento rentable a largo plazo.\n\n¿Qué servicio o característica de AWS cumpliría MEJOR los requisitos de la situación?","opciones":["Amazon Elastic File System (Amazon EFS)","Amazon S3 Glacier Flexible Retrieval","Instantáneas de EBS","Amazon FSx"],"correcta":"C","explicacion":"Por qué no: Si bien S3 Glacier Flexible Retrieval proporciona un almacenamiento rentable a largo plazo, está diseñado para archivar datos. No proporciona la funcionalidad de copia de seguridad y restauración a nivel de volumen, que es necesaria para proteger y recuperar los volúmenes de EBS en su estado completo."},{"pregunta":"¿Cuál es una característica clave de los precios de las clases de almacenamiento de Amazon S3?","opciones":["Todas las clases de almacenamiento tienen el mismo requisito de duración mínima del almacenamiento.","Todas las clases de almacenamiento cuestan lo mismo, pero difieren en la velocidad de recuperación.","Los precios varían según los costos de almacenamiento, las tarifas de recuperación y la duración mínima de almacenamiento.","Los precios se determinan de forma exclusiva según la región geográfica del bucket."],"correcta":"C","explicacion":"Las clases de almacenamiento de Amazon S3 tienen diferentes estructuras de precios que afectan el costo total. Estas incluyen los costos de almacenamiento por gigabyte, los posibles cargos por recuperación de datos y los compromisos de duración mínima del almacenamiento."},{"pregunta":"EmpresaX IA está desarrollando una aplicación de machine learning que requiere un procesamiento de datos muy rápido para conjuntos de datos de entrenamiento de modelos temporales. Los datos se generan durante las sesiones de entrenamiento y se almacenan por separado en un almacenamiento persistente. El equipo intenta determinar la mejor solución de almacenamiento para usar junto con su aplicación.\n\nLa solución debe cumplir los siguientes criterios:\n\nRendimiento de E/S más alto posible\n\nConexión directa a sus instancias de Amazon EC2\n\nAlmacenamiento temporal (los datos no persisten cuando las instancias se detienen o terminan)\n\n¿Qué servicio de AWS cubre MEJOR las necesidades de almacenamiento temporal descritas en esta situación?","opciones":["Amazon Elastic Block Store (Amazon EBS)","Amazon Elastic File System (Amazon EFS)","Amazon S3","Almacén de instancias Amazon EC2"],"correcta":"D","explicacion":"El almacén de instancias EC2 proporciona almacenamiento temporal a nivel de bloques que se conecta de forma física al equipo host, lo que ofrece el mayor rendimiento de E/S posible para las necesidades de procesamiento de datos temporales."},{"pregunta":"EmpresaX Manufactura conserva una gran cantidad de dibujos técnicos y archivos de diseño a los que sus equipos necesitan acceder a diario desde sus aplicaciones en las instalaciones. La empresa desea migrar estos archivos a AWS de manera gradual para reducir sus costos de almacenamiento local y, al mismo tiempo, mantener un acceso de baja latencia para los archivos de uso frecuente.\n\nLa solución debe cumplir los siguientes criterios:\n\nIntegrarse con los flujos de trabajo existentes basados en archivos.\n\nProporcionar una ruta fluida hacia el almacenamiento en la nube sin interrumpir las operaciones actuales.\n\nMantener el acceso local y de baja latencia a los archivos de uso frecuente.\n\n¿Qué servicio de almacenamiento de AWS debe usar en función de estos requisitos?","opciones":["AWS Storage Gateway: File Gateway","Amazon FSx para Windows File Server","Amazon S3 Glacier Flexible Retrieval","Amazon Elastic File System (Amazon EFS)"],"correcta":"A","explicacion":"File Gateway brinda una interfaz de archivos para acceder al almacenamiento de objetos de Amazon S3. Mantiene un acceso local de baja latencia a los datos de acceso frecuente mediante el almacenamiento en caché local y se integra a la perfección con los flujos de trabajo existentes basados en archivos."},{"pregunta":"¿Qué enunciado describe MEJOR a AWS Storage Gateway?","opciones":["Un dispositivo de hardware físico que debe instalarse en un centro de datos","Una red privada virtual que crea conexiones seguras entre un centro de datos y AWS","Una herramienta de migración que transfiere de forma automática todos los datos en las instalaciones a la nube","Una solución de almacenamiento en la nube híbrida que proporciona a las aplicaciones en las instalaciones acceso a un almacenamiento en la nube casi ilimitado"],"correcta":"D","explicacion":"Storage Gateway está diseñado, en concreto, como una solución híbrida que conecta los entornos en las instalaciones con el almacenamiento en la nube de AWS. Esto permite que las aplicaciones locales accedan sin problemas al almacenamiento de AWS y, al mismo tiempo, mantengan los patrones de acceso locales."},{"pregunta":"EmpresaX Tecnología necesita implementar una solución de almacenamiento centralizada para su equipo de desarrollo, la cual permita que varias instancias de Amazon EC2 accedan al mismo sistema de archivos de forma simultánea.\n\nLa solución debe cumplir los siguientes criterios:\n\nBrindar un servicio completamente administrado.\n\nEscalar de forma automática.\n\nEliminar la necesidad de planificar la capacidad.\n\nAdmitir aplicaciones basadas en Linux con interfaces de sistema de archivos estándar.\n\nMantener un acceso constante de baja latencia en todos los entornos de desarrollo.\n\nProporcionar una alta durabilidad sin necesidad de configuraciones de replicación complejas.\n\n¿Qué servicio de almacenamiento de AWS es el MÁS adecuado para esta situación?","opciones":["Amazon Elastic Block Storage (Amazon EBS)","Amazon S3","Amazon FSx","Amazon Elastic File System (Amazon EFS)"],"correcta":"D","explicacion":"Amazon EFS proporciona un sistema de archivos de red (NFS) escalable, elástico y completamente administrado al que varias instancias de EC2 pueden acceder de forma simultánea. Crece de forma automática a medida que se agregan datos y ofrece cumplimiento con POSIX para aplicaciones de Linux."},{"pregunta":"¿Qué enunciado describe MEJOR a la Recuperación elástica ante desastres de AWS?","opciones":["Un servicio de copias de seguridad que crea instantáneas periódicas de los recursos de AWS y las almacena en buckets de Amazon S3","Un servicio de bases de datos administradas que proporciona copias de seguridad automatizadas y replicación entre regiones","Un servicio que escala de forma automática la capacidad informática según las demandas de carga de trabajo durante los desastres","Un servicio que minimiza el tiempo de inactividad y la pérdida de datos, ya que brinda una recuperación rápida y fiable de aplicaciones en las instalaciones y basadas en la nube mediante el almacenamiento de bajo costo, la computación mínima y la recuperación a un momento dado"],"correcta":"D","explicacion":"esto describe con precisión la funcionalidad principal de la Recuperación elástica ante desastres, que se centra en la replicación continua para ayudar a brindar una recuperación rápida con una pérdida de datos mínima."},{"pregunta":"En los últimos tiempos, EmpresaX Comercio migró su aplicación principal a una instancia de Amazon EC2 en AWS. A medida que su base de clientes crece, la empresa explora soluciones de almacenamiento que puedan crecer de forma dinámica según las necesidades de datos de la aplicación.\n\nLa solución debe cumplir los siguientes criterios:\n\nDisponer de un almacenamiento en bloque persistente que proporcione un rendimiento constante de baja latencia.\n\nPoder conectarse y desconectarse de la instancia de EC2 según sea necesario.\n\nRedimensionar la capacidad de almacenamiento de forma independiente sin interrumpir la instancia.\n\nCrear copias de seguridad en un momento dado para proteger los datos importantes de los clientes y del inventario.\n\n¿Qué servicio de almacenamiento de AWS cumpliría MEJOR los requisitos de la situación?","opciones":["Amazon S3","Amazon Elastic File System (Amazon EFS)","Amazon FSx","Amazon Elastic Block Store (Amazon EBS)"],"correcta":"D","explicacion":"Amazon EBS proporciona volúmenes de almacenamiento en bloque persistente que pueden conectarse a instancias de EC2. Ofrece un rendimiento constante de baja latencia, se puede escalar de forma independiente de la instancia de EC2 y admite instantáneas en un momento dado con fines de copias de seguridad."},{"pregunta":"¿Qué enunciado define MEJOR a Amazon Elastic Block Store (Amazon EBS)?","opciones":["Una opción de almacenamiento temporal que se pierde cuando una instancia se detiene o termina","Un caché en memoria que se utiliza para mejorar el rendimiento de la base de datos","Un servicio de almacenamiento a nivel de bloques que proporciona volúmenes de almacenamiento persistentes para las instancias de Amazon EC2","Un sistema de almacenamiento de archivos que permite que varias instancias accedan a los mismos datos de forma simultánea"],"correcta":"C","explicacion":"Amazon EBS está diseñado de manera específica como un servicio de almacenamiento en bloque, que ofrece volúmenes persistentes que se pueden conectar a instancias de EC2 y pueden soportar la terminación de las instancias."}]},{"id":"aws-m7","modulo":7,"titulo":"Bases de datos","descripcion":"RDS, Aurora, DynamoDB, ElastiCache, Redshift, DocumentDB y Neptune.","notaMinima":70,"preguntas":[{"pregunta":"¿Cuál es un uso práctico de Amazon Neptune?","opciones":["Optimizar la búsqueda de texto en grandes bases de datos de documentos","Administrar y consultar conjuntos de datos altamente conectados de manera eficiente","Proporcionar análisis de streaming en tiempo real","Sustituir las bases de datos SQL tradicionales para todas las cargas de trabajo"],"correcta":"B","explicacion":"Neptune está optimizado para almacenar y consultar datos altamente conectados con una latencia de milisegundos."},{"pregunta":"¿Cuál de estas opciones es una característica de AWS Backup?","opciones":["AWS Backup únicamente puede realizar copias de seguridad de los recursos de una sola región de AWS.","AWS Backup se limita únicamente a los servicios de bases de datos.","AWS Backup proporciona políticas centralizadas de copia de seguridad y supervisión en varias cuentas y regiones de AWS.","AWS Backup requiere una configuración manual para cada recurso individual."],"correcta":"C","explicacion":"Con AWS Backup, puede definir y administrar las políticas de copia de seguridad a nivel de la organización e implementarlas automáticamente en todas las cuentas y regiones de AWS relacionadas."},{"pregunta":"¿Qué opción describe una situación hipotética en la que una solución no administrada, como una base de datos instalada directamente en una instancia de Amazon EC2, sería preferible a utilizar un servicio de base de datos de AWS completamente administrado?","opciones":["Un desarrollador desea escalar una instancia de base de datos en función de los patrones de carga de trabajo sin preocuparse por las complicaciones de la licencia.","Un desarrollador quiere que AWS se encargue de las tareas rutinarias de mantenimiento de las bases de datos, como las copias de seguridad y la aplicación de parches.","Un desarrollador tiene una base de datos de un tamaño inferior a los límites máximos impuestos por Amazon RDS.","Un desarrollador necesita tener el control total sobre la base de datos y acceder a su sistema operativo subyacente, la instalación de la base de datos y la configuración."],"correcta":"D","explicacion":"cuando se necesita un control administrativo completo sobre todo el entorno de la base de datos, es preferible instalar una base de datos directamente en Amazon EC2. Esto incluye el acceso a nivel del sistema operativo y la flexibilidad total de configuración, que no están disponibles en los servicios administrados de AWS."},{"pregunta":"¿Cuál es la principal diferencia entre las bases de datos NoSQL, como Amazon DynamoDB, y las bases de datos relacionales?","opciones":["Las bases de datos NoSQL utilizan diseños de esquemas flexibles en lugar de las estructuras rígidas de tablas de las bases de datos relacionales.","Las bases de datos relacionales requieren índices en todas las consultas y las bases de datos NoSQL no utilizan índices.","Las bases de datos relacionales proporcionan escalado automático y las bases de datos NoSQL requieren escalado manual.","Las bases de datos relacionales ofrecen un mejor rendimiento para las cargas de trabajo transaccionales que cualquier solución NoSQL."],"correcta":"A","explicacion":"El diferenciador clave es que las bases de datos NoSQL ofrecen esquemas flexibles que permiten estructurar los datos de maneras que van más allá del enfoque tradicional basado en tablas. Esto hace posible que los desarrolladores almacenen y procesen datos en formatos que coincidan con la forma en que los usan sus aplicaciones."},{"pregunta":"¿Cuál es el principal beneficio de usar Amazon ElastiCache?","opciones":["Sustitución completa de bases de datos relacionales","Escalado automático del almacenamiento de la base de datos subyacente","Capacidades de machine learning integradas para el análisis de datos","Rendimiento mejorado de las aplicaciones mediante el almacenamiento de caché en memoria"],"correcta":"D","explicacion":"La función principal de ElastiCache es proporcionar almacenamiento de caché en memoria que permita a las aplicaciones recuperar datos de almacenes de memoria rápidos en lugar de bases de datos basadas en disco, más lentas. Esto reduce significativamente la latencia y mejora el rendimiento general de las aplicaciones."},{"pregunta":"Qué enunciado describe las responsabilidades de los clientes que utilizan los servicios de bases de datos de AWS completamente administrados?","opciones":["Los clientes son responsables de supervisar y generar métricas para sus datos.","Los clientes son responsables de implementar y administrar las soluciones antivirus en los sistemas operativos de los servicios de bases de datos completamente administrados.","Los clientes son responsables del aprovisionamiento, el escalado, la aplicación de parches y las copias de seguridad.","Los clientes son responsables de diseñar las estructuras de datos y administrar los controles de acceso."],"correcta":"D","explicacion":"Los servicios de bases de datos de AWS completamente administrados solo requieren que los clientes se hagan cargo del diseño de las estructuras de datos y la administración de los controles de acceso."},{"pregunta":"Cuál es un posible caso de uso de Amazon Aurora?","opciones":["Almacenar datos estáticos de acceso poco frecuente y que requieren capacidades de procesamiento mínimas","Sustituir los motores de bases de datos comerciales de alto costo por una solución más rentable que siga proporcionando un rendimiento y una fiabilidad de nivel empresarial","Procesar flujos de datos no estructurados en tiempo real sin restricciones de bases de datos relacionales","Ejecutar bases de datos temporales con requisitos mínimos de disponibilidad para entornos de desarrollo"],"correcta":"B","explicacion":"Aurora proporciona un rendimiento comparable al de las bases de datos comerciales de alta gama, pero a una décima parte del costo, lo que lo hace ideal para las organizaciones que buscan reducir los costos de las bases de datos sin sacrificar el rendimiento."},{"pregunta":"Cuál es la explicación que MEJOR describe Amazon RDS?","opciones":["Un sistema de base de datos NoSQL optimizado para datos no estructurados","Un servicio de almacenamiento de caché en memoria completamente administrado que se integra perfectamente con Redis, Valkey o Memcached","Un servicio completamente administrado que ayuda a configurar, operar y escalar bases de datos relacionales en la nube","Una solución de almacenamiento de datos para el procesamiento analítico"],"correcta":"C","explicacion":"Amazon RDS es un servicio de base de datos completamente administrado en la nube de AWS que libera a los usuarios de la mayoría de las tareas de administración y ayuda a configurar, operar y escalar las bases de datos en la nube."},{"pregunta":"Cuál es un caso de uso práctico de Amazon DocumentDB (compatible con MongoDB)?","opciones":["Almacenamiento de caché en memoria en tiempo real de los datos de las sesiones web","Almacenamiento de archivos a largo plazo de datos históricos con patrones de acceso poco frecuente","Ejecución de aplicaciones bancarias transaccionales de alto rendimiento con estrictos requisitos de cumplimiento","Almacenamiento y administración de un gran catálogo de productos para una aplicación de comercio electrónico"],"correcta":"D","explicacion":"Amazon DocumentDB se destaca en el manejo de datos semiestructurados, como los catálogos de productos."},{"pregunta":"¿Qué definición describe MEJOR el almacenamiento de caché en memoria?","opciones":["Un sistema de administración de bases de datos que almacena permanentemente todos los datos de las aplicaciones en unidades de estado sólido para lograr velocidades de recuperación consistentes","Una solución de redes que optimiza las rutas de enrutamiento de internet para reducir la latencia entre las solicitudes de los usuarios y las aplicaciones basadas en la nube","Un servicio de copia de seguridad y recuperación que crea automáticamente instantáneas de datos críticos cada cinco minutos para evitar la pérdida","Un servicio basado en la nube que almacena los datos en la memoria para un acceso rápido, lo que mejora el rendimiento y la escalabilidad de las aplicaciones y reduce la carga de la base de datos"],"correcta":"D","explicacion":"El almacenamiento de caché en memoria es un servicio que almacena los datos de uso frecuente en la memoria para mejorar el rendimiento de las aplicaciones y reducir la necesidad de obtener datos de un almacenamiento basado en disco que es más lento."},{"pregunta":"¿Qué enunciado describe MEJOR Amazon DynamoDB?","opciones":["DynamoDB es una base de datos orientada a columnas que requiere la definición del esquema antes de almacenar los datos.","DynamoDB es un servicio de base de datos relacional que proporciona capacidades de consulta SQL complejas.","DynamoDB es una base de datos de documentos y clave-valor NoSQL completamente administrada que proporciona un rendimiento rápido y predecible con una escalabilidad perfecta.","DynamoDB es una base de datos de gráficos completamente administrada que requiere mantenimiento del servidor durante el tiempo de inactividad programado."],"correcta":"C","explicacion":"DynamoDB es un servicio de bases de datos NoSQL completamente administrado que ofrece modelos de datos de documentos y clave-valor con un rendimiento rápido y predecible, incluso a escala."},{"pregunta":"¿Qué problema resuelve AWS Database Migration Service (AWS DMS)?","opciones":["Crear programas automatizados de copia de seguridad de bases de datos","Proporcionar una interfaz gráfica para que los administradores de bases de datos diseñen tablas","Minimizar el tiempo de inactividad de las aplicaciones durante las migraciones de bases de datos","Optimizar las consultas SQL para mejorar el rendimiento de la base de datos"],"correcta":"C","explicacion":"Un beneficio clave de AWS DMS es que la base de datos fuente permanece en pleno funcionamiento durante la migración, lo que minimiza el tiempo de inactividad de las aplicaciones."}]},{"id":"aws-m8","modulo":8,"titulo":"IA, ML y analítica de datos","descripcion":"SageMaker, Bedrock, Amazon Q, servicios de IA prediseñados y analítica de datos.","notaMinima":70,"preguntas":[{"pregunta":"El proceso de extraer, transformar y cargar (ETL) se utiliza con frecuencia para proporcionar datos limpios y accesibles en un formato que puedan utilizar las herramientas de análisis y los algoritmos de IA.\n\n¿Cómo puede una canalización de datos mejorar este proceso?","opciones":["Las canalizaciones de datos aumentan la cantidad de datos sin procesar que se recopilan.","Las canalizaciones de datos eliminan la necesidad de transformar datos.","Las canalizaciones de datos hacen que el proceso de ETL sea más eficiente y repetible.","Las canalizaciones de datos reducen la variedad de orígenes de datos que se utilizan en el proceso de ETL."],"correcta":"C","explicacion":"Las canalizaciones de datos son líneas de ensamblaje automatizadas que se usan para hacer que el proceso de ETL sea eficaz y repetible. AWS cuenta con un conjunto de servicios integrados que puede utilizar para crear sus propias canalizaciones de datos."},{"pregunta":"Amazon Bedrock es un servicio completamente administrado que se diseñó específicamente para trabajar con modelos fundacionales (FM) de gran tamaño y crear aplicaciones de IA generativa.\n\n¿Qué ofrece el servicio para poder acceder a los FM de Amazon y de las principales startups de IA?","opciones":["Una única API","Un repositorio de código abierto","Uso gratuito e ilimitado","Almacenamiento dedicado en la nube"],"correcta":"A","explicacion":"Amazon Bedrock proporciona acceso a los FM de Amazon y de las principales startups de IA, como Claude y Stable Diffusion, todo a través de una API unificada."},{"pregunta":"La IA generativa es un tipo de aprendizaje profundo impulsado por modelos de machine learning (ML) extremadamente grandes, conocidos como modelos fundacionales (FM).\n\n¿Qué características tienen los FM? (Seleccione DOS opciones).","opciones":["Los FM reciben entrenamiento previo con vastas colecciones de datos.","Los FM se programan con reglas explícitas.","Los FM se utilizan únicamente para crear imágenes.","Los FM están entrenados para realizar tareas particulares.","Los FM se pueden adaptar para realizar varias tareas."],"correcta":["A","E"],"tipo":"multiple"},{"pregunta":"Los datos pueden provenir de muchas fuentes diferentes. Para proporcionar información, los datos deben estar consolidados en una sola ubicación. Para esto, existen dos opciones de almacenamiento. Los lagos de datos almacenan grandes cantidades de datos sin procesar, mientras que los almacenes de datos están optimizados para la inteligencia empresarial.\n\n¿Qué servicios de AWS se suelen utilizar como lagos y almacenes de datos?","opciones":["Amazon S3 es una opción popular para los lagos de datos, mientras que Amazon Redshift es un servicio de almacén de datos.","Amazon S3 es una opción popular para los lagos de datos, mientras que Amazon Athena es un servicio de almacén de datos.","Amazon EMR es una opción popular para los lagos de datos, mientras que Amazon Redshift es un servicio de almacén de datos.","Amazon Redshift es una opción popular para los lagos de datos, mientras que Amazon S3 es un servicio de almacén de datos."],"correcta":"A","explicacion":"Amazon S3 puede almacenar casi cualquier cantidad de datos estructurados o no estructurados, lo que lo convierte en una buena opción para los lagos de datos. Amazon Redshift es un servicio de almacén de datos completamente administrado y optimizado para inteligencia empresarial."},{"pregunta":"Una empresa de servicios financieros está desarrollando una aplicación que analice los datos bursátiles en tiempo real para que su equipo de analistas pueda tomar decisiones comerciales inmediatas. La empresa necesita hacer una ingesta de datos bursátiles en tiempo real sin preocuparse por los servidores ni la capacidad de escalado.\n\n¿Qué servicio de AWS sería acorde a sus necesidades?","opciones":["Amazon EMR","Amazon Athena","Amazon Kinesis Data Streams","Amazon QuickSight"],"correcta":"C","explicacion":"Este servicio sin servidor puede utilizarse para la ingesta en tiempo real de terabytes de datos de aplicaciones, transmisiones y sensores. Incluso proporciona aprovisionamiento y escalado automáticos."},{"pregunta":"Tanto la programación clásica como el machine learning se pueden utilizar para entrenar a los equipos a fin de que realicen tareas.\n\n¿Cuál es la principal diferencia entre estos dos enfoques?","opciones":["La programación clásica se utiliza para operaciones matemáticas, mientras que el machine learning se utiliza exclusivamente para el reconocimiento de patrones en imágenes y texto.","La programación clásica se utiliza para tareas sencillas, mientras que el machine learning se reserva para tareas extremadamente complejas.","La programación clásica establece reglas explícitas que el equipo debe seguir. En el machine learning, los equipos hacen predicciones mediante patrones aprendidos de datos históricos.","La programación clásica requiere más recursos computacionales que el machine learning, lo que la hace menos eficiente para tareas complejas."],"correcta":"C","explicacion":"Esto representa la diferencia fundamental entre la programación clásica y el machine learning."},{"pregunta":"¿Qué servicio de AWS se puede utilizar para crear, entrenar e implementar un modelo de machine learning (ML) personalizado sin tener que preocuparse por la infraestructura subyacente?","opciones":["IA de Amazon SageMaker","Amazon EMR","Amazon Personalize","Amazon Comprehend"],"correcta":"A","explicacion":"La IA de Amazon SageMaker ofrece un enfoque personalizado para el desarrollo de modelos de ML sin tener que preocuparse por la infraestructura subyacente."},{"pregunta":"Una amplia organización de sanidad desea mejorar la productividad de sus empleados. La empresa busca un asistente de IA generativa prediseñado que pueda responder preguntas, ayudar a resolver problemas y realizar acciones con los datos y la experiencia que se encuentran en sus repositorios de información.\n\n¿Qué servicio de AWS podría ser de ayuda en este caso de uso?","opciones":["Amazon Q Business","Amazon Q Developer","Amazon SageMaker JumpStart","Amazon Bedrock"],"correcta":"A","explicacion":"Amazon Q Business puede responder a preguntas urgentes, ayudar a resolver problemas y realizar acciones con los datos y la experiencia que se encuentran en los repositorios de información de su empresa. Es una elección ideal para este caso de uso."},{"pregunta":"Un pequeño equipo de desarrollo busca agregar una característica a su aplicación que pueda convertir el texto a voz.\n\n¿Qué servicio prediseñado de la IA de AWS se puede utilizar para esta tarea?","opciones":["Amazon Textract","Amazon Personalize","Amazon Polly","Amazon Comprehend"],"correcta":"C","explicacion":"Amazon Polly es un servicio de conversión de texto a voz que transforma el texto escrito en audio hablado realista para aplicaciones habilitadas para voz."},{"pregunta":"Una empresa de comercio electrónico desea agregar un motor de recomendación de productos a su aplicación en línea para aumentar las ventas. El equipo de desarrollo quiere que estas recomendaciones sean relevantes para cada cliente.\n\n¿Qué servicio prediseñado de la IA de AWS sería útil en este caso de uso?","opciones":["Amazon Comprehend","Amazon Kendra","Amazon Personalize","Amazon Lex"],"correcta":"C","explicacion":"Amazon Personalize se puede usar para agregar recomendaciones personalizadas de clientes a las aplicaciones. Es una buena opción para este caso de uso."}]},{"id":"aws-m9","modulo":9,"titulo":"Seguridad","descripcion":"IAM, MFA, KMS, Shield, WAF, GuardDuty, Inspector y Macie.","notaMinima":70,"preguntas":[{"pregunta":"Cuál es la responsabilidad que tiene AWS según el modelo de responsabilidad compartida?","opciones":["Configurar grupos de seguridad para instancias de Amazon EC2","Cifrar los datos en reposo de los clientes","Administrar la seguridad física de los centros de datos","Configurar los roles y las políticas de AWS Identity and Access Management (AWS IAM)"],"correcta":"C","explicacion":"AWS administra todos los aspectos de la seguridad física de los centros de datos, incluidos los controles de acceso a las instalaciones, las medidas de protección del entorno, la redundancia de energía y los sistemas de vigilancia."},{"pregunta":"Un empleado desea consultar el portal de empleados en línea de su empresa para ver cuántas horas de vacaciones acumuló. Antes de acceder a sus registros personales, ingresa su nombre de usuario y contraseña para iniciar sesión en el sitio.\n\n¿Qué sucede durante este proceso de inicio de sesión?","opciones":["Autenticación","Autorización","Detección","Cifrado"],"correcta":"A","explicacion":"La autenticación es el proceso mediante el que se pide al usuario que proporcione credenciales, como un nombre de usuario y una contraseña, para verificar su identidad."},{"pregunta":"El equipo de seguridad de una gran empresa de comercio electrónico necesita una forma centralizada de crear y administrar claves de cifrado que protejan sus datos en AWS.\n\n¿Cuál de estos servicios representa la MEJOR opción para esto?","opciones":["Amazon Macie","AWS Key Management Service (AWS KMS)","AWS WAF","AWS Certificate Manager (ACM)"],"correcta":"B","explicacion":"AWS KMS está diseñado específicamente para crear y administrar claves de cifrado."},{"pregunta":"El equipo de seguridad de una gran empresa de desarrollo de software necesita comprobar si hay vulnerabilidades de seguridad y desviaciones de las prácticas recomendadas de seguridad en varias aplicaciones. Las aplicaciones se ejecutan en Amazon EC2, AWS Lambda y en contenedores.\n\n¿Qué servicio de AWS deberían utilizar para estas evaluaciones de seguridad?","opciones":["Amazon Detective","Amazon Inspector","AWS Security Hub","Amazon GuardDuty"],"correcta":"B","explicacion":"Amazon Inspector está diseñado específicamente para realizar evaluaciones automatizadas de vulnerabilidades en aplicaciones alojadas en AWS."},{"pregunta":"Todas las cuentas de AWS reciben un usuario raíz. El usuario raíz es el propietario de la cuenta y tiene permiso para realizar cualquier acción.\n\n¿Cuáles son algunas maneras de proteger esta cuenta privilegiada? (Seleccione DOS opciones).","opciones":["Delegar el acceso del usuario raíz a otros usuarios.","Activar la autenticación multifactor (MFA).","Eliminar el usuario raíz después de configurar los usuarios de AWS Identity and Access Management (AWS IAM).","Asociar una contraseña segura a la cuenta.","Crear varios usuarios raíz para lograr redundancia."],"correcta":["B","D"],"tipo":"multiple","explicacion":"Para proteger al usuario raíz, se recomienda asociar una contraseña segura a la cuenta y activar la MFA. Una cuenta de AWS puede tener un solo usuario raíz. Este usuario raíz no se puede eliminar y su acceso no debe delegarse a otros nunca."},{"pregunta":"La protección de los datos confidenciales de los clientes es un componente vital para mantener su confianza. Esto implica cifrar los datos tanto en reposo como en tránsito.\n\n¿Qué se utiliza para cifrar los datos en tránsito?","opciones":["Autenticación multifactor (MFA)","Los certificados SSL/TLS","Contraseñas seguras","Claves criptográficas"],"correcta":"B","explicacion":"SSL y su sucesor, TLS, son protocolos diseñados específicamente para cifrar los datos a medida que se mueven por medio de redes entre sistemas."},{"pregunta":"Con AWS Identity and Access Management (AWS IAM), todas las acciones se deniegan de forma predeterminada. Al conceder permisos, el acceso debe proporcionarse únicamente cuando sea necesario.\n\n¿Cómo se denomina este concepto?","opciones":["Política de denegación predeterminada","Control de acceso basado en roles","Marco de trabajo de los límites de permiso","Principio de mínimo privilegio"],"correcta":"D","explicacion":"El principio de mínimo privilegio establece que las personas y los sistemas deben tener acceso únicamente a lo que necesitan y nada más."},{"pregunta":"Una gran empresa de marketing tiene un conjunto estándar de permisos que se usan para conceder a los diseñadores acceso a determinados buckets de Amazon S3. La empresa agregó un nuevo bucket de S3 al que todos los diseñadores deben acceder.\n\n¿Qué control de AWS Identity and Access Management (AWS IAM) puede utilizar la empresa para asignar permisos que heredarán todos los diseñadores?","opciones":["Usuario de IAM","Grupo de IAM","Política de IAM","Rol de IAM"],"correcta":"B","explicacion":"Los grupos de IAM están diseñados específicamente para estos casos. Se utilizan para dar permisos a varios usuarios a la vez."},{"pregunta":"Recientemente, una pequeña empresa de servicios financieros trasladó sus recursos en línea a AWS. El equipo de seguridad estaba preocupado por la protección frente a los tipos más comunes y frecuentes de ataques de denegación de servicio distribuida (DDoS).\n\n¿Qué servicio de AWS protege a los clientes de los ataques DDoS de forma automática y sin costo alguno?","opciones":["AWS Systems Manager","Amazon Macie","AWS Shield","AWS Identity and Access Management (AWS IAM)"],"correcta":"C","explicacion":"Shield es un servicio de protección frente a ataques DDoS administrado que protege las aplicaciones que se ejecutan en AWS de los tipos de ataques DDoS más comunes y frecuentes sin costo alguno."},{"pregunta":"Una empresa de tecnología está trasladando algunos de sus recursos a AWS. La empresa quiere ofrecer acceso de inicio de sesión único a sus empleados en AWS mediante su fuente de identidad existente.\n\n¿Qué servicio ayudaría a la empresa a lograr esto?","opciones":["AWS Systems Manager","AWS IAM Identity Center","AWS Secrets Manager","AWS Identity and Access Management (AWS IAM)"],"correcta":"B","explicacion":"IAM Identity Center está diseñado específicamente para ayudar a las organizaciones a implementar el inicio de sesión único para los recursos de AWS mediante sus proveedores de identidad existentes."}]},{"id":"aws-m10","modulo":10,"titulo":"Monitorización y gobernanza","descripcion":"CloudWatch, CloudTrail, Config, Artifact, Organizations y Trusted Advisor.","notaMinima":70,"preguntas":[{"pregunta":"Cuál es el propósito de una zona de aterrizaje de AWS Control Tower?","opciones":["Filtra el tráfico entrante y saliente a las instancias de Amazon EC2 en una nube virtual privada (VPC).","Es una subsección de una nube virtual privada (VPC) donde puede aislar los recursos y controlar el acceso.","Se trata de una sección aislada de forma lógica de la nube de AWS donde puede lanzar recursos de AWS en una red virtual que usted mismo defina.","Es el contenedor de toda la empresa que alberga todas las unidades organizativas (UO), cuentas, usuarios y recursos que desea regular para garantizar el cumplimiento."],"correcta":"D","explicacion":"Una zona de aterrizaje es un entorno de cuentas múltiples bien diseñado que se basa en las prácticas recomendadas de seguridad y cumplimiento. Es el contenedor donde guarda todos los recursos que desea regular para su cumplimiento."},{"pregunta":"Un cliente de investigación con un gran equipo de desarrolladores necesita una forma de garantizarles pautas de configuración específicas a la hora de crear recursos de AWS. Quiere una forma de evaluar y auditar los recursos de AWS para asegurarse de que el equipo utilice la lista aprobada de recursos de computación más rentable.\n\n¿Qué solución o característica cubriría sus necesidades?","opciones":["AWS Audit Manager","AWS Artifact","AWS CloudTrail","AWS Config"],"correcta":"D","explicacion":"AWS Config es la mejor opción porque evaluará, auditará y evaluará las configuraciones de los recursos de AWS del desarrollador."},{"pregunta":"Un cliente utiliza AWS Organizations para administrar de forma centralizada las cuentas de su empresa en cuanto a la facturación para optimizar y organizar los costos. Quiere establecer reglas o restricciones en los servicios, los recursos y las acciones individuales de la API de AWS a los que los usuarios pueden acceder.\n\n¿Qué característica cubriría sus necesidades?","opciones":["Una cuenta raíz","Usuario de AWS Identity and Access Management (AWS IAM)","Una unidad organizativa (UO)","Una política de control de servicios (SCP)"],"correcta":"D","explicacion":"Una SCP es una política que le permite restringir los servicios, los recursos y las acciones individuales de la API de AWS a los que pueden acceder los usuarios y los roles de cada cuenta. Las SCP se pueden aplicar a las UO o a las cuentas de miembros individuales."},{"pregunta":"Una empresa financiera con una solución de nube híbrida desea realizar un seguimiento de los cambios realizados en sus recursos de AWS tanto en la nube como en las instalaciones. En concreto, quieren saber quién hizo qué y cuándo.\n\n¿Qué servicio de AWS se adaptaría mejor a sus necesidades?","opciones":["AWS CloudTrail","AWS Trusted Advisor","Amazon CloudWatch","AWS Artifact"],"correcta":"A","explicacion":"CloudTrail es un servicio de AWS que utiliza las API para rastrear quién hizo qué, cuándo se produjo la acción y en qué servicios y recursos de AWS."},{"pregunta":"¿Qué servicio de AWS proporciona evaluaciones y comprobaciones continuas de sus recursos de AWS y ofrece sugerencias para optimizar los costos, el rendimiento, la seguridad y la resiliencia?","opciones":["AWS Trusted Advisor","AWS CloudTrail","AWS Artifact","Amazon CloudWatch"],"correcta":"A","explicacion":"Trusted Advisor le ayuda a optimizar los costos, aumentar el rendimiento, mejorar la seguridad y la resiliencia y operar a escala en la nube."},{"pregunta":"¿Qué servicio de AWS proporciona acceso gratuito y bajo demanda a los informes de seguridad y cumplimiento de AWS y a determinados acuerdos en línea?","opciones":["Amazon CloudWatch","AWS Artifact","AWS Trusted Advisor","AWS CloudTrail"],"correcta":"B","explicacion":"AWS Artifact es un portal de autoservicio que proporciona acceso bajo demanda a la documentación de seguridad y cumplimiento de AWS, incluidos los informes."},{"pregunta":"¿Dónde pueden los clientes encontrar recursos sobre el cumplimiento de AWS, por ejemplo, información sobre historias de cumplimiento de los clientes, respuestas a preguntas clave sobre cumplimiento y una lista de comprobación de seguridad para auditorías?","opciones":["AWS Organizations","AWS Artifact","Centro de conformidad para clientes","Consola de administración de AWS"],"correcta":"C","explicacion":"El Centro de conformidad para clientes proporciona recursos que le ayudarán a obtener más información sobre el cumplimiento de AWS. Puede leer las historias de cumplimiento de los clientes para descubrir cómo las empresas de los sectores regulados resolvieron varios desafíos de cumplimiento, gobernanza y auditoría."},{"pregunta":"Una empresa de ropa deportiva aloja su aplicación en instancias de Amazon EC2. Quiere recopilar métricas de sus instancias de EC2 y desea recibir notificaciones cuando la utilización supere los umbrales. También desea configurar una acción para automatizar el aumento vertical del número de instancias de EC2 cuando la utilización supere su umbral.\n\n¿Qué servicio de AWS se adaptaría mejor a sus necesidades?","opciones":["AWS Artifact","Amazon CloudWatch","AWS CloudTrail","AWS Trusted Advisor"],"correcta":"B","explicacion":"CloudWatch puede recopilar las métricas de las instancias de EC2, proporcionar información mediante paneles, establecer alarmas en los umbrales y automatizar las instancias de EC2 adicionales."},{"pregunta":"Un cliente empresarial creció rápidamente y tiene dificultades para administrar la facturación de sus cuentas y recursos de AWS. Todos los empleados crearon cuentas independientes sin una administración centralizada ni agrupaciones jerárquicas de cuentas. El cliente desea unificar la facturación y centralizar la administración en unidades organizativas.\n\n¿Qué servicio de AWS se adaptaría mejor a las necesidades de este cliente?","opciones":["AWS Organizations","AWS Service Catalog","Una zona de disponibilidad (AZ)","AWS Trusted Advisor"],"correcta":"A","explicacion":"Con Organizations, puede administrar su entorno de forma centralizada a medida que escala sus recursos de AWS. Se puede usar para centralizar la administración, consolidar la facturación e implementar agrupaciones jerárquicas de cuentas."},{"pregunta":"Una empresa financiera busca una solución con el fin de controlar un conjunto seleccionado de recursos de AWS para sus empleados. Cuando los empleados necesitan seleccionar e iniciar un nuevo recurso de AWS, la empresa quiere ofrecer una forma de autoservicio para crear, compartir e implementar los recursos de AWS.\n\n¿Qué servicio de AWS se adaptaría mejor a sus necesidades?","opciones":["AWS Health","AWS Service Catalog","AWS License Manager","AWS Artifact"],"correcta":"B","explicacion":"Con Service Catalog, puede crear, compartir y organizar a partir de un catálogo seleccionado de recursos de AWS. Puede implementar herramientas de seguridad y recursos de red básicos para las nuevas cuentas de AWS, de modo que pueda controlar de manera coherente."},{"pregunta":"Un cliente se está trasladando de un entorno en las instalaciones a la nube y decidió utilizar el enfoque del modelo Bring Your Own License (BYOL) para ahorrar costos. Le preocupa la administración de las licencias, quiere una forma de reducir el riesgo de incumplimiento y desea aplicar límites de uso para las licencias.\n\n¿Qué solución se adaptaría mejor a sus necesidades?","opciones":["AWS Organizations","AWS Service Catalog","AWS License Manager","AWS Control Tower"],"correcta":"C","explicacion":"License Manager ayuda a reducir el riesgo de incumplimiento al aplicar los límites de uso de las licencias, bloquear los nuevos lanzamientos y utilizar otros controles."}]},{"id":"aws-m11","modulo":11,"titulo":"Precios y soporte","descripcion":"Modelos de precios, facturación, presupuestos, calculadora y planes de soporte.","notaMinima":70,"preguntas":[{"pregunta":"Imagine que es el líder técnico de una empresa de comercio electrónico de tamaño mediano y está evaluando varias opciones de soporte para su infraestructura de AWS. Sus desafíos actuales incluyen la optimización del rendimiento de la base de datos y la planificación de la respuesta a los incidentes. También busca asesoramiento técnico sobre las prácticas recomendadas de seguridad.\n\nAdemás de los planes de AWS Support, ¿qué opción de soporte es la MEJOR para obtener asesoramiento sobre las prácticas recomendadas de seguridad y realizar una auditoría de seguridad de su entorno de AWS?","opciones":["AWS Basic Support","AWS re:Post","AWS Professional Services","Equipo de confianza y seguridad de AWS"],"correcta":"C","explicacion":"AWS Professional Services ofrece una amplia experiencia técnica y puede ayudar con auditorías de seguridad, prácticas recomendadas y orientación estratégica adaptadas a las necesidades específicas."},{"pregunta":"Es el director de tecnología de una gran empresa con aplicaciones esenciales que se ejecutan en AWS. Su organización requiere el más alto nivel de soporte, incluidos tiempos de respuesta de 15 minutos o menos cuando los sistemas de importancia crítica no funcionan.\n\n¿Qué plan de AWS Support debe elegir?","opciones":["Business Support","Enterprise Support","Developer Support","Basic Support"],"correcta":"B","explicacion":"Enterprise Support está diseñado para grandes empresas que tienen aplicaciones esenciales para su negocio. Ofrece el más alto nivel de soporte, incluidos tiempos de respuesta rápidos, supervisión proactiva y acceso a una amplia gama de servicios y características de AWS. Además, proporciona orientación de los expertos de AWS para ayudar a garantizar un rendimiento y una seguridad óptimos."},{"pregunta":"Imagine que forma parte de un equipo que desea supervisar y administrar los costos de varias cuentas de AWS en diferentes departamentos de su organización.\n\n¿Qué servicio de AWS puede utilizar para administrar y consolidar de forma eficaz la información de facturación de estas cuentas?","opciones":["AWS Budgets","AWS Organizations","Panel de administración de facturación y costos de AWS","Explorador de costos de AWS"],"correcta":"B","explicacion":"AWS Organizations está diseñado para ayudarle a administrar varias cuentas de AWS, incluida la consolidación de la información de facturación, la configuración de políticas y la aplicación de la gobernanza en toda la organización."},{"pregunta":"Una empresa financiera global actualmente tiene sus recursos de tecnología de la información (TI) en las instalaciones y está evaluando utilizar la nube de AWS. La empresa está acostumbrada a las inversiones de capital fijas y quiere saber cómo pagarían si se trasladaran a la nube de AWS.\n\n¿Cuáles son las opciones que MEJOR describen la forma en que los clientes pagan por AWS? (Seleccione TRES opciones).","opciones":["Pago por uso","Ahorro cuando se compromete","Ahorro a través de gastos fijos","Firma de contratos fijos","Más uso, menos dinero","Pago total anticipado"],"correcta":["A","B","E"],"tipo":"multiple","explicacion":"Cuando se trata de los precios de AWS, los clientes pagan por uso y pueden ahorrar cuando se comprometen a una cantidad específica de uso durante un período de tiempo determinado. También pueden recibir descuentos por volumen a medida que aumentan el uso."},{"pregunta":"Además de los planes de AWS Support y otras opciones de asistencia técnica, AWS también proporciona acceso a recursos de autoayuda.\n\n¿Qué opciones tienen disponibles los clientes de AWS como recursos de autoayuda? (Seleccione TRES opciones).","opciones":["AWS Professional Services","Arquitectos de soluciones de AWS","Blog de AWS","Guías de SDK","Centro de confianza y seguridad de AWS","Documentación de AWS, como guías del usuario para los servicios de AWS"],"correcta":["C","D","F"],"tipo":"multiple","explicacion":"Estos son todos los tipos de recursos disponibles para los clientes de AWS que buscan una solución en la nube mediante la autoayuda."},{"pregunta":"¿Qué opción describe MEJOR el rol de la Red de socios de AWS (APN)?","opciones":["Ayudar a las empresas a crear, comercializar y vender soluciones basadas en AWS","Ofrecer certificación a los usuarios de AWS","Desarrollar nuevos servicios y características de AWS","Brindar servicio de atención al cliente para los usuarios de AWS"],"correcta":"A","explicacion":"La APN ayuda a los socios de AWS a crear, comercializar y vender soluciones basadas en AWS al proporcionarles asistencia técnica, de marketing y de comercialización."},{"pregunta":"Una empresa minorista en línea está interesada en seguir adelante con la migración de una aplicación, pero le gustaría estimar los costos antes de comenzar.\n\n¿Qué herramienta o servicio puede usar para estimar el costo de los servicios y las configuraciones de AWS específicos que necesitan?","opciones":["AWS Organizations es un servicio que la empresa puede usar para administrar y controlar de manera centralizada su entorno a medida que crecen y escalan sus recursos de AWS.","El explorador de costos de AWS es una herramienta que la empresa puede utilizar para ver y analizar sus costos y su uso.","La calculadora de precios de AWS es una herramienta basada en la web que la empresa puede utilizar para configurar las estimaciones de costos según sus necesidades empresariales únicas.","Con AWS Budgets, la empresa puede supervisar sus métricas de cobertura y uso agregadas."],"correcta":"C","explicacion":"La calculadora de precios de AWS es la herramienta adecuada para realizar la configuración de estimaciones de costos en función de las necesidades únicas del cliente."},{"pregunta":"¿Cuál es la opción que MEJOR describe un beneficio clave de ser socio de AWS?","opciones":["Acceso exclusivo a AWS Training and Certification por completo","Hardware de AWS dedicado","Beneficios de financiación para los socios de AWS","Acceso anticipado a todos los servicios de AWS"],"correcta":"C","explicacion":"; Uno de los beneficios clave de ser socio de AWS es el acceso a varios beneficios de financiación. Estos pueden incluir incentivos financieros, apoyo de marketing y financiación para la comercialización que ayuden a los socios a crear, comercializar y vender sus soluciones en AWS."},{"pregunta":"Una empresa de tecnología educativa está considerando trasladar su aplicación educativa a la nube. El director financiero (CFO) de la empresa quiere comprender cómo se fijan los precios de los servicios de AWS y qué factores determinarán su costo.\n\nSi bien los precios varían en función de varios factores, ¿qué opciones son los principales determinantes de los costos en AWS? (Seleccione TRES opciones).","opciones":["Soporte","Computación","Transferencia entrante de datos","Transferencia saliente de datos","Seguridad","Almacenamiento"],"correcta":["B","D","F"],"tipo":"multiple","explicacion":"El costo de un servicio o categoría de servicios de AWS puede verse afectado por varios factores. Sin embargo, los principales factores determinantes del costo son la computación, el almacenamiento y la transferencia de datos salientes."},{"pregunta":"Una gran empresa desea encontrar soluciones de software preparadas para el cumplimiento a fin de asegurarse de satisfacer las normativas del sector. La empresa está analizando qué servicios de AWS pueden resultar útiles en este sentido y quiere implementar la solución lo antes posible.\n\n¿Cuál es la MEJOR opción para esta empresa y sus requisitos?","opciones":["Desarrollar soluciones personalizadas internamente.","Encontrar soluciones preparadas para el cumplimiento en AWS Marketplace.","Utilizar herramientas de autoayuda, como la documentación de AWS.","Utilizar AWS Shield para protegerse contra los ataques de denegación de servicio distribuida (DDoS)."],"correcta":"B","explicacion":"AWS Marketplace ofrece una variedad de soluciones de software, como software preparado para el cumplimiento. Esta empresa puede usar AWS Marketplace para encontrar e implementar rápidamente una solución que satisfaga sus necesidades específicas."}]},{"id":"aws-m12","modulo":12,"titulo":"Migración a la nube de AWS","descripcion":"Marco de adopción de la nube, estrategias de migración, Snow Family y DataSync.","notaMinima":70,"preguntas":[{"pregunta":"Una empresa de ingeniería está migrando grandes cantidades de archivos de diseño de propiedad intelectual patentados desde su centro de datos en las instalaciones a la nube de AWS. Quiere un servicio que tenga soporte completamente administrado para transferencias seguras de archivos con varios protocolos diferentes, como el Protocolo de transferencia segura de archivos (SFTP) y el Protocolo seguro de transferencia de archivos (FTPS)\n\n¿Qué solución de migración en línea se ajustaría a sus necesidades?","opciones":["AWS Transfer Family","AWS DataSync","AWS Direct Connect","Dispositivos de AWS Snowball Edge Storage Optimized"],"correcta":"A","explicacion":"Transfer Family permite administrar y compartir datos sin problemas con transferencias de archivos seguras y escalables. Este servicio proporciona soporte completamente administrado para transferencias seguras de archivos a través de SFTP (Protocolo de transferencia segura de archivos), FTPS (Protocolo seguro de transferencia de archivos), FTP (Protocolo de transferencia de archivos) y otros."},{"pregunta":"Una empresa minorista acaba de empezar su migración a la nube de AWS. Necesita ayuda para crear un caso empresarial con el fin de garantizar la financiación de su director financiero (CFO) y las partes interesadas.\n\n¿Qué servicio de migración se adaptaría MEJOR a sus necesidades?","opciones":["AWS Migration Hub","AWS Application Migration Service","Migration Evaluator","AWS Application Discovery Service"],"correcta":"C","explicacion":"Migration Evaluator es un servicio de evaluación de la migración que ayuda a la empresa a crear un caso empresarial para la planificación y la migración a la nube de AWS."},{"pregunta":"Cuáles son las siete estrategias de migración que se utilizan habitualmente cuando los clientes migran a la nube de AWS?","opciones":["Reubicar, realojar, redefinir la plataforma, refactorizar, recomprar, retener y retirar","Reubicar, remediar, renovar, refactorizar, reclasificar, remodelar y remover","No hay siete, hay tres (evaluar, movilizar, y migrar y modernizar)","Empresa, personas, gobernanza, plataforma, seguridad, operaciones, TI"],"correcta":"A","explicacion":"Las siete R, o estrategias de migración, son reubicar, realojar, redefinir la plataforma, refactorizar, recomprar, retener y retirar."},{"pregunta":"Una empresa de tarjetas de crédito está migrando grandes cantidades de información confidencial de su almacenamiento en las instalaciones a la nube de AWS. Quiere automatizar el proceso y programar la migración fuera de las horas de mayor actividad. También quiere poder comprobar el progreso y los informes de tareas. No tiene una conexión privada dedicada entre su centro de datos y la nube de AWS.\n\n¿Qué solución de migración en línea se ajustaría a sus necesidades?","opciones":["Puerta de enlace privada virtual","Dispositivos de AWS Snowball Edge Storage Optimized","AWS Transfer Family","AWS DataSync"],"correcta":"D","explicacion":"DataSync es un servicio de migración en línea diseñado específicamente para automatizar y acelerar la transferencia de datos. DataSync optimiza y acelera la transferencia de grandes cantidades de datos entre el almacenamiento en las instalaciones y los servicios de almacenamiento de AWS, como Amazon S3, Amazon Elastic File System (Amazon EFS) y Amazon FSx para Windows File Server."},{"pregunta":"Una empresa de medios se encuentra en la fase de migración y modernización y quiere una ubicación centralizada para ver sus tareas y el progreso de la migración.\n\n¿Qué servicio de migración se adaptaría MEJOR a sus necesidades?","opciones":["Migration Evaluator","AWS Application Discovery Service","AWS Application Migration Service","AWS Migration Hub"],"correcta":"D","explicacion":"Migration Hub es un centro unificado que guía a la empresa a través de las fases de descubrimiento, evaluación, planificación e implementación de la migración."},{"pregunta":"Durante su próxima migración, el administrador de la base de datos desea pasar de su base de datos actual a una base de datos administrada por AWS para descargar parte de la administración de la base de datos. También le gustaría usar una herramienta para planificar, evaluar, convertir y migrar la base de datos.\n\n¿Qué solución de migración se adaptaría MEJOR a sus necesidades?","opciones":["Migration Evaluator","Herramienta de conversión de esquemas de AWS (AWS SCT)","AWS Migration Hub","AWS Database Migration Service (AWS DMS)"],"correcta":"D","explicacion":"Database Migration Service permite migrar de forma rápida y segura las bases de datos y la replicación de datos a la nube de AWS. Proporciona una forma de planificar, evaluar, convertir y migrar bases de datos, incluso con almacenes de datos, en una herramienta central y se puede utilizar para convertir bases de datos."},{"pregunta":"¿Cuál es la función principal del AWS Cloud Adoption Framework (AWS CAF)?","opciones":["Migra las bases de datos y los datos en las instalaciones a la nube de AWS.","Actúa como un centro unificado para administrar la migración de una empresa a la nube de AWS.","También se conoce como las siete R o las siete estrategias de migración.","Proporciona herramientas para ayudar a acelerar el proceso de migración, organizar los recursos y alinear la administración durante la transición."],"correcta":"D","explicacion":"AWS CAF proporciona la experiencia y las prácticas recomendadas en AWS a las empresas que se preparan para migrar a la nube de AWS. El marco de trabajo también proporciona herramientas para ayudar a acelerar el proceso de migración, organizar los recursos y alinear la administración durante la transición."},{"pregunta":"Una agencia medioambiental está migrando sus aplicaciones a la nube de AWS. Durante la migración, también quieren buscar formas de modernizar y reducir los costos de sus aplicaciones.\n\n¿Qué servicio de migración se adaptaría MEJOR a sus necesidades?","opciones":["AWS Application Migration Service","AWS Migration Hub","AWS Application Discovery Service","Migration Evaluator"],"correcta":"A","explicacion":"Application Migration Service es una herramienta para migrar y mejorar las aplicaciones en las instalaciones y basadas en la nube. Ayuda a la agencia a simplificar, acelerar y reducir el costo de la migración y modernización de las aplicaciones."},{"pregunta":"El equipo de migración quiere asegurarse de que la organización considere una estrategia de administración de cambios para toda la empresa con el fin de adoptar la nube con éxito. ¿Qué perspectiva del Cloud Adoption Framework (CAF) utilizarían?","opciones":["Perspectiva empresarial","Perspectiva de las operaciones","Perspectiva de seguridad","Perspectiva de las personas"],"correcta":"D","explicacion":"La perspectiva de las personas sirve como puente entre Tecnología y negocios, acelerando el camino en la nube"}]}]}</script>
+  <script>
+/* === formato.js === */
+/**
+ * formato.js
+ * Normaliza y valida el JSON de un modulo.
+ *
+ * Formato recomendado (ver modules/_PLANTILLA.json):
+ * {
+ *   "id": "aws-m1",
+ *   "titulo": "Introduccion a la nube",
+ *   "descripcion": "...",
+ *   "etiqueta": "Modulo 1",
+ *   "preguntas": [
+ *     {
+ *       "pregunta": "...",
+ *       "opciones": ["...", "...", "...", "..."],
+ *       "correcta": "A",              // o ["A", "C"] para varias
+ *       "explicacion": "..."          // opcional
+ *     }
+ *   ]
+ * }
+ *
+ * Se aceptan sinonimos en ingles y otras formas de marcar la respuesta;
+ * todo se reduce a la estructura interna que usa la aplicacion.
+ */
+
+const LETRAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+const letra = (i) => LETRAS[i] ?? `#${i + 1}`;
+
+/** Devuelve el primer valor no vacio entre varias claves posibles. */
+function elegir(obj, claves) {
+  for (const clave of claves) {
+    const valor = obj?.[clave];
+    if (valor !== undefined && valor !== null && valor !== "") return valor;
+  }
+  return undefined;
+}
+
+const texto = (valor) => (typeof valor === "string" ? valor.trim() : "");
+
+/** Convierte las opciones a un array de { texto, correctaInline }. */
+function leerOpciones(bruto) {
+  if (Array.isArray(bruto)) {
+    return bruto.map((op) => {
+      if (op && typeof op === "object") {
+        return {
+          texto: texto(elegir(op, ["texto", "text", "opcion", "label", "valor"])),
+          correctaInline: Boolean(elegir(op, ["correcta", "correcto", "esCorrecta", "correct", "isCorrect"])),
+        };
+      }
+      return { texto: String(op ?? "").trim(), correctaInline: false };
+    });
+  }
+
+  // Forma { "A": "texto", "B": "texto" }
+  if (bruto && typeof bruto === "object") {
+    return Object.keys(bruto)
+      .sort()
+      .map((clave) => ({ texto: String(bruto[clave] ?? "").trim(), correctaInline: false }));
+  }
+
+  return [];
+}
+
+/** Traduce una referencia de respuesta a indice de opcion. */
+function resolverIndice(valor, opciones, numerosBaseCero) {
+  if (typeof valor === "number" && Number.isFinite(valor)) {
+    const idx = numerosBaseCero ? valor : valor - 1;
+    return idx >= 0 && idx < opciones.length ? idx : -1;
+  }
+
+  const bruto = String(valor ?? "").trim();
+  if (!bruto) return -1;
+
+  // Letra suelta: A, b, C...
+  if (/^[A-Za-z]$/.test(bruto)) {
+    const idx = LETRAS.indexOf(bruto.toUpperCase());
+    return idx >= 0 && idx < opciones.length ? idx : -1;
+  }
+
+  // Numero escrito como texto
+  if (/^\d+$/.test(bruto)) {
+    return resolverIndice(Number(bruto), opciones, numerosBaseCero);
+  }
+
+  // Texto exacto de la opcion (sin distinguir mayusculas ni espacios extra)
+  const normal = bruto.toLowerCase().replace(/\s+/g, " ");
+  const idx = opciones.findIndex((op) => op.texto.toLowerCase().replace(/\s+/g, " ") === normal);
+  return idx;
+}
+
+/** Reune todas las referencias de respuesta declaradas en la pregunta. */
+function leerReferencias(pregunta) {
+  const bruto = elegir(pregunta, [
+    "correcta", "correctas", "correcto", "correctos",
+    "respuesta", "respuestas", "solucion",
+    "answer", "answers", "correct",
+  ]);
+
+  if (bruto === undefined) return [];
+
+  const lista = Array.isArray(bruto) ? bruto : [bruto];
+
+  // "A,C" o "A y C" en una sola cadena
+  return lista.flatMap((valor) => {
+    if (typeof valor === "string" && /[,;]/.test(valor)) {
+      return valor.split(/[,;]+/).map((parte) => parte.trim()).filter(Boolean);
+    }
+    return [valor];
+  });
+}
+
+function normalizarPregunta(bruta, i, errores) {
+  const donde = `Pregunta ${i + 1}`;
+  const enunciado = texto(elegir(bruta, ["pregunta", "enunciado", "question", "texto", "text", "titulo"]));
+  if (!enunciado) errores.push(`${donde}: falta el texto de la pregunta ("pregunta").`);
+
+  const opciones = leerOpciones(elegir(bruta, ["opciones", "options", "respuestas", "alternativas", "choices"]));
+  if (opciones.length < 2) errores.push(`${donde}: se necesitan al menos 2 opciones ("opciones").`);
+  if (opciones.some((op) => !op.texto)) errores.push(`${donde}: hay opciones vacías.`);
+
+  const correctas = new Set();
+
+  // 1) Opciones marcadas con "correcta": true
+  opciones.forEach((op, idx) => {
+    if (op.correctaInline) correctas.add(idx);
+  });
+
+  // 2) Campo "correcta" / "respuesta" / ...
+  const referencias = leerReferencias(bruta);
+  const numeros = referencias.filter((r) => typeof r === "number" || /^\d+$/.test(String(r).trim()));
+  // Si aparece un 0, el autor cuenta desde 0; si no, desde 1 (1 = A).
+  const baseCero = numeros.some((r) => Number(r) === 0);
+
+  for (const ref of referencias) {
+    const idx = resolverIndice(ref, opciones, baseCero);
+    if (idx < 0) {
+      errores.push(`${donde}: no se entiende la respuesta "${ref}". Usa una letra (A, B, C...) o el texto exacto de la opción.`);
+    } else {
+      correctas.add(idx);
+    }
+  }
+
+  if (correctas.size === 0 && referencias.length === 0 && opciones.length >= 2) {
+    errores.push(`${donde}: falta indicar la respuesta correcta ("correcta": "A").`);
+  }
+
+  const tipoDeclarado = texto(elegir(bruta, ["tipo", "type"])).toLowerCase();
+  const multiple = tipoDeclarado
+    ? /multi|varias|multiple/.test(tipoDeclarado)
+    : correctas.size > 1;
+
+  return {
+    id: texto(elegir(bruta, ["id"])) || `p${i + 1}`,
+    enunciado,
+    opciones: opciones.map((op) => op.texto),
+    correctas: [...correctas].sort((a, b) => a - b),
+    multiple,
+    explicacion: texto(elegir(bruta, ["explicacion", "explicación", "explanation", "porque", "porqué", "razon", "razón", "justificacion", "motivo"])),
+  };
+}
+
+/**
+ * @returns {{ ok: boolean, modulo: object|null, errores: string[] }}
+ */
+function normalizarModulo(bruto, { idPorDefecto = "" } = {}) {
+  const errores = [];
+
+  if (!bruto || typeof bruto !== "object" || Array.isArray(bruto)) {
+    return { ok: false, modulo: null, errores: ['El archivo debe ser un objeto JSON con "titulo" y "preguntas".'] };
+  }
+
+  const titulo = texto(elegir(bruto, ["titulo", "título", "title", "nombre", "tema"]));
+  if (!titulo) errores.push('Falta el título del módulo ("titulo").');
+
+  const brutoPreguntas = elegir(bruto, ["preguntas", "questions", "items"]);
+  if (!Array.isArray(brutoPreguntas) || brutoPreguntas.length === 0) {
+    errores.push('Falta la lista de preguntas ("preguntas": [ ... ]).');
+  }
+
+  const preguntas = Array.isArray(brutoPreguntas)
+    ? brutoPreguntas.map((p, i) => normalizarPregunta(p ?? {}, i, errores))
+    : [];
+
+  const numero = elegir(bruto, ["modulo", "módulo", "numero", "número", "orden", "module"]);
+  const etiqueta =
+    texto(elegir(bruto, ["etiqueta", "label", "badge"])) ||
+    (numero !== undefined ? `Módulo ${numero}` : "");
+
+  const modulo = {
+    id: texto(elegir(bruto, ["id", "clave", "slug"])) || idPorDefecto || titulo.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+    titulo,
+    descripcion: texto(elegir(bruto, ["descripcion", "descripción", "description", "resumen", "subtitulo"])),
+    etiqueta,
+    orden: Number.isFinite(Number(numero)) ? Number(numero) : null,
+    notaMinima: Number(elegir(bruto, ["notaMinima", "aprobadoEn", "minimo"]) ?? 70),
+    barajarPreguntas: Boolean(elegir(bruto, ["barajarPreguntas", "shuffleQuestions", "barajar"])),
+    barajarOpciones: Boolean(elegir(bruto, ["barajarOpciones", "shuffleOptions"])),
+    preguntas,
+  };
+
+  return { ok: errores.length === 0, modulo: errores.length === 0 ? modulo : null, errores };
+}
+
+
+/* === auth.js === */
+/**
+ * auth.js
+ * Identidad de Microsoft 365 usando la autenticacion incorporada de
+ * Azure Static Web Apps: no hace falta registrar una app ni guardar secretos.
+ *
+ *   /.auth/me                -> quien ha iniciado sesion
+ *   /.auth/login/aad         -> iniciar sesion con la cuenta Microsoft
+ *   /.auth/logout            -> cerrar sesion
+ *
+ * staticwebapp.config.json ya obliga a iniciar sesion antes de servir la
+ * pagina; esto solo sirve para pintar el nombre y el boton de salir.
+ * Fuera de Static Web Apps (por ejemplo en local) se entra en "modo local".
+ */
+
+const RUTA_ME = "/.auth/me";
+
+const URL_LOGIN = (destino = location.pathname) =>
+  `/.auth/login/aad?post_login_redirect_uri=${encodeURIComponent(destino)}`;
+
+const URL_LOGOUT = (destino = "/") =>
+  `/.auth/logout?post_logout_redirect_uri=${encodeURIComponent(destino)}`;
+
+function iniciales(nombre) {
+  const partes = String(nombre || "?")
+    .replace(/@.*$/, "")
+    .split(/[\s._-]+/)
+    .filter(Boolean);
+  const letras = (partes[0]?.[0] ?? "?") + (partes[1]?.[0] ?? "");
+  return letras.toUpperCase();
+}
+
+/**
+ * @returns {Promise<{estado: 'dentro'|'fuera'|'local', nombre: string, iniciales: string, id: string}>}
+ */
+async function sesion() {
+  try {
+    const respuesta = await fetch(RUTA_ME, { headers: { accept: "application/json" } });
+    if (!respuesta.ok) return { estado: "local", nombre: "Modo local", iniciales: "··", id: "local" };
+
+    const tipo = respuesta.headers.get("content-type") || "";
+    if (!tipo.includes("json")) return { estado: "local", nombre: "Modo local", iniciales: "··", id: "local" };
+
+    const datos = await respuesta.json();
+    const principal = datos?.clientPrincipal;
+    if (!principal) return { estado: "fuera", nombre: "", iniciales: "?", id: "" };
+
+    const nombre =
+      principal.claims?.find((c) => /(^|\/)name$/.test(c.typ))?.val ||
+      principal.userDetails ||
+      "Cuenta Microsoft";
+
+    return { estado: "dentro", nombre, iniciales: iniciales(nombre), id: principal.userId || nombre };
+  } catch {
+    // Sin backend de autenticacion (file://, servidor estatico simple, etc.)
+    return { estado: "local", nombre: "Modo local", iniciales: "··", id: "local" };
+  }
+}
+
+
+/* === datos.js === */
+/**
+ * datos.js
+ * Carga del catalogo (modules/index.json + los archivos de cada modulo),
+ * modulos anadidos desde el navegador y progreso guardado.
+ */
+
+const BASE = "modules/";
+const CLAVE_LOCALES = "repasar:v1:modulos-locales";
+const CLAVE_PROGRESO = "repasar:v1:progreso";
+
+const sinCache = { cache: "no-cache", headers: { accept: "application/json" } };
+
+async function leerJson(ruta) {
+  const respuesta = await fetch(ruta, sinCache);
+  if (!respuesta.ok) throw new Error(`No se pudo leer ${ruta} (HTTP ${respuesta.status})`);
+  try {
+    return await respuesta.json();
+  } catch {
+    throw new Error(`${ruta} no contiene JSON válido.`);
+  }
+}
+
+/**
+ * Version de un solo archivo (herramientas/empaquetar.py): los modulos vienen
+ * incrustados en la propia pagina y no hace falta pedir nada al servidor.
+ */
+function leerIncrustado() {
+  const etiqueta = document.getElementById("datos-modulos");
+  if (!etiqueta) return null;
+  try {
+    return JSON.parse(etiqueta.textContent);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Lee el catalogo completo. Nunca lanza: los problemas se devuelven en `errores`
+ * para poder mostrarlos en pantalla sin romper el resto de modulos.
+ */
+async function cargarCatalogo() {
+  const errores = [];
+  let indice;
+
+  const incrustado = leerIncrustado();
+  if (incrustado) {
+    const modulos = (incrustado.modulos || [])
+      .map((bruto, i) => {
+        const { ok, modulo, errores: fallos } = normalizarModulo(bruto, { idPorDefecto: `m${i + 1}` });
+        if (!ok) {
+          errores.push(`Módulo ${i + 1}: ${fallos.join(" ")}`);
+          return null;
+        }
+        return { ...modulo, origen: "catalogo", orden: modulo.orden ?? i + 1 };
+      })
+      .filter(Boolean);
+    return {
+      config: { ...configPorDefecto(), ...incrustado },
+      modulos: [...modulos, ...leerLocales()],
+      errores,
+    };
+  }
+
+  try {
+    indice = await leerJson(`${BASE}index.json`);
+  } catch (e) {
+    return {
+      config: configPorDefecto(),
+      modulos: leerLocales(),
+      errores: [`${e.message} Revisa que exista modules/index.json y que la página se sirva por HTTP.`],
+    };
+  }
+
+  const config = { ...configPorDefecto(), ...indice };
+  const entradas = Array.isArray(indice.modulos) ? indice.modulos : [];
+
+  const cargados = await Promise.all(
+    entradas.map(async (entrada, i) => {
+      const archivo = typeof entrada === "string" ? entrada : entrada?.archivo || entrada?.file;
+      if (!archivo) {
+        errores.push(`Entrada ${i + 1} de index.json: falta el nombre del archivo.`);
+        return null;
+      }
+      try {
+        const bruto = await leerJson(BASE + archivo);
+        const idPorDefecto = archivo.replace(/\.json$/i, "");
+        const { ok, modulo, errores: fallos } = normalizarModulo(bruto, { idPorDefecto });
+        if (!ok) {
+          errores.push(`${archivo}: ${fallos.join(" ")}`);
+          return null;
+        }
+        return { ...modulo, archivo, origen: "catalogo", orden: modulo.orden ?? i + 1 };
+      } catch (e) {
+        errores.push(e.message);
+        return null;
+      }
+    })
+  );
+
+  const modulos = cargados.filter(Boolean);
+  modulos.sort((a, b) => (a.orden ?? 999) - (b.orden ?? 999));
+
+  return { config, modulos: [...modulos, ...leerLocales()], errores };
+}
+
+function configPorDefecto() {
+  return {
+    marca: "Ruta de estudio",
+    titulo: "¿Qué módulo quieres estudiar?",
+    descripcion:
+      "Selecciona un módulo. Recibirás retroalimentación inmediata y podrás repetirlo cuantas veces necesites.",
+    // true | false | "local" (solo al abrirlo en tu equipo, no en el sitio publicado)
+    permitirSubida: "local",
+  };
+}
+
+/* -- Modulos anadidos desde el navegador ---------------------------------- */
+
+function leerLocales() {
+  try {
+    const guardados = JSON.parse(localStorage.getItem(CLAVE_LOCALES) || "[]");
+    return guardados
+      .map((bruto, i) => {
+        const { ok, modulo } = normalizarModulo(bruto, { idPorDefecto: `local-${i}` });
+        return ok ? { ...modulo, origen: "local", orden: 900 + i } : null;
+      })
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function escribirLocales(lista) {
+  guardar(CLAVE_LOCALES, lista);
+}
+
+/** Escribe en localStorage sin romperse si el navegador no lo permite
+ *  (modo privado, archivo abierto con doble clic, cuota agotada...). */
+function guardar(clave, valor) {
+  try {
+    localStorage.setItem(clave, JSON.stringify(valor));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function crudosLocales() {
+  try {
+    return JSON.parse(localStorage.getItem(CLAVE_LOCALES) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+/** Anade (o reemplaza, si coincide el id) un modulo en este navegador. */
+function guardarLocal(bruto, id) {
+  const lista = crudosLocales().filter((m) => (m.id || "") !== id);
+  escribirLocales([...lista, bruto]);
+}
+
+function borrarLocal(id) {
+  escribirLocales(crudosLocales().filter((m, i) => (m.id || `local-${i}`) !== id));
+}
+
+/* -- Progreso -------------------------------------------------------------- */
+
+function leerProgreso() {
+  try {
+    return JSON.parse(localStorage.getItem(CLAVE_PROGRESO) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function guardarProgreso(idModulo, resultado) {
+  const todo = leerProgreso();
+  const previo = todo[idModulo];
+  todo[idModulo] = {
+    ...resultado,
+    fecha: new Date().toISOString(),
+    mejor: Math.max(resultado.porcentaje, previo?.mejor ?? 0),
+    intentos: (previo?.intentos ?? 0) + 1,
+  };
+  guardar(CLAVE_PROGRESO, todo);
+}
+
+
+/* === app.js === */
+/**
+ * app.js
+ * Vistas de la aplicacion: catalogo de modulos, cuestionario y resultados.
+ * Sin framework ni paso de compilacion: se sirve tal cual.
+ */
+
+
+
+const app = document.getElementById("app");
+const barra = document.getElementById("barra");
+
+const estado = {
+  config: {},
+  modulos: [],
+  errores: [],
+  usuario: null,
+  quiz: null, // sesion de cuestionario en curso
+};
+
+/* == utilidades ============================================================ */
+
+const esc = (valor) =>
+  String(valor ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  })[c]);
+
+const plural = (n, singular, prural) => `${n} ${n === 1 ? singular : prural}`;
+
+/** De un enunciado con contexto, se queda con la pregunta (el último párrafo). */
+const soloPregunta = (texto) => texto.split(/\n{2,}/).filter((t) => t.trim()).pop() || texto;
+
+function barajar(lista) {
+  const copia = [...lista];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia;
+}
+
+function mismoConjunto(a, b) {
+  if (a.length !== b.length) return false;
+  const x = [...a].sort((m, n) => m - n);
+  const y = [...b].sort((m, n) => m - n);
+  return x.every((v, i) => v === y[i]);
+}
+
+function pintar(html) {
+  app.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+
+/**
+ * ¿Se puede añadir módulos desde el navegador?
+ * En el sitio publicado no: el catálogo lo controla quien mantiene el repositorio.
+ * Con "local" solo se permite al abrir la app en tu equipo o el archivo suelto,
+ * que es como cada persona puede probar sus propios módulos.
+ */
+function sePuedeSubir() {
+  const valor = estado.config.permitirSubida;
+  if (typeof valor === "boolean") return valor;
+  return (
+    location.protocol === "file:" ||
+    ["localhost", "127.0.0.1", "[::1]", ""].includes(location.hostname)
+  );
+}
+
+/** Hay un intento en curso con respuestas ya enviadas. */
+const intentoVivo = () =>
+  Boolean(estado.quiz && estado.quiz.historial.length && !estado.quiz.terminado);
+
+/* == barra superior ======================================================== */
+
+function pintarBarra() {
+  const u = estado.usuario;
+  let derecha = "";
+
+  if (u?.estado === "dentro") {
+    derecha = `
+      <span class="usuario" title="${esc(u.nombre)}">
+        <span class="avatar" aria-hidden="true">${esc(u.iniciales)}</span>
+        <span class="usuario-nombre">${esc(u.nombre)}</span>
+      </span>
+      <a class="btn fantasma pequeno" href="${URL_LOGOUT()}">Salir</a>`;
+  } else if (u?.estado === "fuera") {
+    derecha = `<a class="btn pequeno" href="${URL_LOGIN()}">Iniciar sesión con Microsoft</a>`;
+  } else {
+    derecha = `<span class="usuario"><span class="avatar" aria-hidden="true">··</span>
+      <span class="usuario-nombre">Modo local</span></span>`;
+  }
+
+  barra.innerHTML = `
+    <div class="barra-int">
+      <button class="marca" type="button" data-ir="inicio">
+        <span class="icono" aria-hidden="true">📖</span>${esc(estado.config.marca || "Ruta de estudio")}
+      </button>
+      <div class="barra-fin">${derecha}</div>
+    </div>`;
+}
+
+/* == vista: catalogo de modulos ============================================ */
+
+function vistaInicio() {
+  estado.quiz = null;
+  const progreso = leerProgreso();
+  const total = estado.modulos.reduce((n, m) => n + m.preguntas.length, 0);
+
+  const tarjetas = estado.modulos
+    .map((m, i) => {
+      const nota = progreso[m.id];
+      const etiqueta = m.etiqueta || `Módulo ${m.orden ?? i + 1}`;
+      const insignias = [
+        nota ? `<span class="marca-nota ${nota.mejor >= m.notaMinima ? "aprobado" : ""}">Mejor: ${Number(nota.mejor) || 0}%</span>` : "",
+        m.origen === "local" ? `<span class="marca-nota local">Solo en este navegador</span>` : "",
+      ].join("");
+
+      return `
+        <button class="tarjeta" type="button" data-modulo="${esc(m.id)}">
+          <span class="tarjeta-cab">
+            <span class="etiqueta">${esc(etiqueta)}</span>
+            <span class="flecha" aria-hidden="true">→</span>
+          </span>
+          <h2>${esc(m.titulo)}</h2>
+          <p>${esc(m.descripcion)}</p>
+          <span class="tarjeta-pie">
+            <span>${plural(m.preguntas.length, "pregunta", "preguntas")}</span>
+            ${insignias}
+          </span>
+        </button>`;
+    })
+    .join("");
+
+  const avisos = estado.errores.length
+    ? `<div class="error-carga">
+         <h2>Algún módulo no se pudo cargar</h2>
+         ${estado.errores.map((e) => `<p>${esc(e)}</p>`).join("")}
+       </div>`
+    : "";
+
+  pintar(`
+    <h1>${esc(estado.config.titulo)}</h1>
+    <p class="subtitulo">${esc(estado.config.descripcion)}</p>
+    <span class="pastilla">${plural(estado.modulos.length, "módulo", "módulos")} · ${plural(total, "pregunta", "preguntas")}</span>
+
+    <div class="rejilla">
+      ${tarjetas}
+      ${
+        sePuedeSubir()
+          ? `<button class="tarjeta fantasma" type="button" data-ir="subir">
+               <span class="tarjeta-cab">
+                 <span class="etiqueta">Nuevo</span>
+                 <span class="flecha" aria-hidden="true">+</span>
+               </span>
+               <h2>Añadir un módulo</h2>
+               <p>Sube un archivo JSON con tus preguntas o copia la plantilla.</p>
+             </button>`
+          : ""
+      }
+    </div>
+    ${avisos}`);
+
+  app.querySelectorAll("[data-modulo]").forEach((btn) => {
+    btn.addEventListener("click", () => empezarModulo(btn.dataset.modulo));
+  });
+}
+
+/* == cuestionario ========================================================== */
+
+function empezarModulo(id) {
+  const modulo = estado.modulos.find((m) => m.id === id);
+  if (!modulo) return vistaInicio();
+
+  let preguntas = modulo.barajarPreguntas ? barajar(modulo.preguntas) : [...modulo.preguntas];
+
+  if (modulo.barajarOpciones) {
+    preguntas = preguntas.map((p) => {
+      const orden = barajar(p.opciones.map((_, i) => i));
+      return {
+        ...p,
+        opciones: orden.map((i) => p.opciones[i]),
+        correctas: p.correctas.map((c) => orden.indexOf(c)).sort((a, b) => a - b),
+      };
+    });
+  }
+
+  estado.quiz = {
+    modulo,
+    preguntas,
+    indice: 0,
+    seleccion: [],
+    comprobada: false,
+    historial: [], // { pregunta, elegidas, acierto }
+  };
+
+  history.pushState({ vista: "quiz" }, "");
+  vistaQuiz();
+}
+
+function vistaQuiz() {
+  const q = estado.quiz;
+  if (!q) return vistaInicio();
+
+  const pregunta = q.preguntas[q.indice];
+  const numero = q.indice + 1;
+  const totales = q.preguntas.length;
+  const pct = Math.round(((numero - 1) / totales) * 100);
+
+  const cuantas = pregunta.correctas.length;
+  const tipo = pregunta.multiple
+    ? `Selecciona las ${cuantas} correctas`
+    : "Selecciona una opción";
+
+  // El enunciado puede traer varios párrafos: los previos son el contexto y el
+  // último es la pregunta en sí.
+  const parrafos = pregunta.enunciado.split(/\n{2,}/).filter((t) => t.trim());
+  const enunciado = parrafos.pop() || pregunta.enunciado;
+  const contexto = parrafos.map((t) => `<p class="contexto">${esc(t)}</p>`).join("");
+
+  const opciones = pregunta.opciones
+    .map((texto, i) => `
+      <label class="opcion" data-indice="${i}">
+        <input type="${pregunta.multiple ? "checkbox" : "radio"}" name="opcion" value="${i}" />
+        <span class="letra" aria-hidden="true">${letra(i)}</span>
+        <span class="texto">${esc(texto)}</span>
+      </label>`)
+    .join("");
+
+  pintar(`
+    <button class="volver" type="button" data-salir>← Salir del módulo</button>
+
+    <div class="quiz-cab">
+      <h2>${esc(q.modulo.titulo)}</h2>
+      <span class="quiz-meta">Pregunta ${numero} de ${totales}</span>
+    </div>
+    <div class="progreso"><i id="barra-progreso"></i></div>
+
+    <section class="panel">
+      <span class="tipo-nota">${tipo}</span>
+      ${contexto}
+      <p class="enunciado">${esc(enunciado)}</p>
+
+      <fieldset class="opciones" id="opciones">
+        <legend class="solo-lector">${esc(enunciado)}</legend>
+        ${opciones}
+      </fieldset>
+
+      <div id="zona-feedback" aria-live="polite"></div>
+
+      <div class="acciones">
+        <button class="btn" type="button" id="comprobar" disabled>Comprobar respuesta</button>
+        <span class="aviso" id="aviso">${
+          pregunta.multiple
+            ? `Marcadas 0 de ${cuantas}. Hay que acertar todas.`
+            : "No podrás volver a esta pregunta."
+        }</span>
+      </div>
+    </section>`);
+
+  app.querySelector("#barra-progreso").style.width = `${pct}%`;
+
+  const contenedor = app.querySelector("#opciones");
+  const botonComprobar = app.querySelector("#comprobar");
+
+  const aviso = app.querySelector("#aviso");
+
+  contenedor.addEventListener("change", () => {
+    if (q.comprobada) return;
+    const marcadas = [...contenedor.querySelectorAll("input:checked")].map((el) => Number(el.value));
+    q.seleccion = marcadas;
+    contenedor.querySelectorAll(".opcion").forEach((el) => {
+      el.classList.toggle("marcada", marcadas.includes(Number(el.dataset.indice)));
+    });
+
+    if (pregunta.multiple) {
+      // Se responde con el conjunto completo: no hay aciertos parciales.
+      botonComprobar.disabled = marcadas.length !== cuantas;
+      aviso.textContent = `Marcadas ${marcadas.length} de ${cuantas}. Hay que acertar todas.`;
+    } else {
+      botonComprobar.disabled = marcadas.length === 0;
+    }
+  });
+
+  botonComprobar.addEventListener("click", comprobar);
+  app.querySelector("[data-salir]").addEventListener("click", salirDelModulo);
+}
+
+function comprobar() {
+  const q = estado.quiz;
+  const pregunta = q.preguntas[q.indice];
+  const elegidas = [...q.seleccion].sort((a, b) => a - b);
+  const acierto = mismoConjunto(elegidas, pregunta.correctas);
+
+  q.comprobada = true;
+  q.historial.push({ pregunta, elegidas, acierto });
+
+  const contenedor = app.querySelector("#opciones");
+  contenedor.classList.add("resuelto");
+  contenedor.querySelectorAll("input").forEach((el) => (el.disabled = true));
+
+  contenedor.querySelectorAll(".opcion").forEach((el) => {
+    const i = Number(el.dataset.indice);
+    const esCorrecta = pregunta.correctas.includes(i);
+    const elegida = elegidas.includes(i);
+    if (esCorrecta) {
+      el.classList.add("correcta");
+      el.insertAdjacentHTML("beforeend", `<span class="pista">Correcta</span>`);
+    } else if (elegida) {
+      el.classList.add("fallada");
+      el.insertAdjacentHTML("beforeend", `<span class="pista">Tu respuesta</span>`);
+    }
+  });
+
+  const solucion = pregunta.correctas.map((i) => letra(i)).join(", ");
+  const explicacion = pregunta.explicacion
+    ? `<p class="porque"><b>Por qué:</b> ${esc(pregunta.explicacion)}</p>`
+    : "";
+
+  app.querySelector("#zona-feedback").innerHTML = `
+    <div class="feedback ${acierto ? "bien" : "mal"}">
+      <strong>${acierto ? "¡Correcto!" : "Incorrecto"}</strong>
+      <p>Respuesta correcta: <b>${solucion}</b> — ${esc(
+        pregunta.correctas.map((i) => pregunta.opciones[i]).join(" · ")
+      )}</p>
+      ${explicacion}
+    </div>`;
+
+  const ultima = q.indice === q.preguntas.length - 1;
+  const acciones = app.querySelector(".acciones");
+  acciones.innerHTML = `
+    <button class="btn" type="button" id="siguiente">${ultima ? "Ver resultados" : "Siguiente pregunta →"}</button>`;
+
+  const siguiente = acciones.querySelector("#siguiente");
+  siguiente.addEventListener("click", () => {
+    if (ultima) return vistaResultados();
+    q.indice += 1;
+    q.seleccion = [];
+    q.comprobada = false;
+    vistaQuiz();
+  });
+  siguiente.focus();
+}
+
+function salirDelModulo() {
+  const q = estado.quiz;
+  if (intentoVivo() && !confirm("Si sales ahora perderás las respuestas de este intento. ¿Salir?")) return;
+  estado.quiz = null;
+  vistaInicio();
+}
+
+/* == vista: resultados ===================================================== */
+
+function vistaResultados() {
+  const q = estado.quiz;
+  if (!q) return vistaInicio();
+
+  const total = q.historial.length;
+  const aciertos = q.historial.filter((h) => h.acierto).length;
+  const porcentaje = total ? Math.round((aciertos / total) * 100) : 0;
+  const aprobado = porcentaje >= q.modulo.notaMinima;
+  q.terminado = true;
+
+  guardarProgreso(q.modulo.id, { aciertos, total, porcentaje });
+
+  const repaso = q.historial
+    .map((h, i) => {
+      const tuya = h.elegidas.length
+        ? h.elegidas.map((x) => `${letra(x)}. ${esc(h.pregunta.opciones[x])}`).join("<br>")
+        : "Sin responder";
+      const buena = h.pregunta.correctas
+        .map((x) => `${letra(x)}. ${esc(h.pregunta.opciones[x])}`)
+        .join("<br>");
+      const porque = h.pregunta.explicacion
+        ? `<dt>Por qué</dt><dd>${esc(h.pregunta.explicacion)}</dd>`
+        : "";
+
+      return `
+        <article class="repaso-item ${h.acierto ? "bien" : "mal"}">
+          <h3>${i + 1}. ${esc(soloPregunta(h.pregunta.enunciado))}</h3>
+          <dl>
+            <dt>Tu respuesta</dt>
+            <dd class="${h.acierto ? "ok" : "no"}">${tuya}</dd>
+            ${h.acierto ? "" : `<dt>Respuesta correcta</dt><dd class="ok">${buena}</dd>`}
+            ${porque}
+          </dl>
+        </article>`;
+    })
+    .join("");
+
+  pintar(`
+    <section class="panel">
+      <div class="marcador">
+        <div class="nota" id="nota"><span>${porcentaje}%</span></div>
+        <div class="marcador-txt">
+          <h2>${aprobado ? "¡Módulo superado!" : "Sigue repasando"}</h2>
+          <p>Has acertado <b>${aciertos}</b> de <b>${total}</b> preguntas de
+             <b>${esc(q.modulo.titulo)}</b>. Mínimo para superarlo: ${q.modulo.notaMinima}%.</p>
+        </div>
+      </div>
+      <div class="acciones">
+        <button class="btn" type="button" id="repetir">Repetir módulo</button>
+        <button class="btn fantasma" type="button" data-ir="inicio">Volver a los módulos</button>
+      </div>
+    </section>
+
+    <h2 class="titulo-seccion">Repaso de las respuestas</h2>
+    <div class="repaso">${repaso}</div>`);
+
+  app.querySelector("#nota").style.setProperty("--pct", porcentaje);
+  app.querySelector("#repetir").addEventListener("click", () => empezarModulo(q.modulo.id));
+}
+
+/* == vista: subir modulos ================================================== */
+
+const PLANTILLA = {
+  id: "mi-modulo-1",
+  modulo: 1,
+  titulo: "Título del módulo",
+  descripcion: "Una línea describiendo qué se repasa aquí.",
+  barajarPreguntas: false,
+  barajarOpciones: false,
+  preguntas: [
+    {
+      pregunta: "¿Pregunta de una sola respuesta?",
+      opciones: ["Opción A", "Opción B", "Opción C", "Opción D"],
+      correcta: "B",
+      explicacion: "Aquí explicas por qué B es la correcta (este campo es opcional).",
+    },
+    {
+      pregunta: "¿Pregunta con varias respuestas correctas?",
+      opciones: ["Opción A", "Opción B", "Opción C", "Opción D"],
+      correcta: ["A", "C"],
+    },
+  ],
+};
+
+function vistaSubir() {
+  if (!sePuedeSubir()) return vistaInicio();
+  estado.quiz = null;
+
+  pintar(`
+    <button class="volver" type="button" data-ir="inicio">← Volver a los módulos</button>
+    <h1 class="titulo-menor">Añadir un módulo</h1>
+    <p class="subtitulo">
+      Pega o suelta un archivo JSON para probarlo aquí mismo. Se guarda solo en este navegador.
+      Para que lo vea todo el mundo, copia el archivo en la carpeta <code>modules/</code> y añádelo a
+      <code>modules/index.json</code>.
+    </p>
+
+    <div class="suelta" id="suelta">
+      <p>Arrastra aquí un archivo <b>.json</b> o selecciónalo</p>
+      <input type="file" id="archivo" accept=".json,application/json" class="solo-lector" />
+      <button class="btn" type="button" id="elegir">Elegir archivo</button>
+      <button class="btn fantasma" type="button" id="plantilla">Descargar plantilla</button>
+    </div>
+
+    <label for="json" class="ayuda"><b>Contenido del módulo</b></label>
+    <textarea class="json" id="json" spellcheck="false"
+      placeholder="Pega aquí el JSON del módulo...">${esc(JSON.stringify(PLANTILLA, null, 2))}</textarea>
+
+    <div id="resultado-validacion"></div>
+
+    <div class="acciones separado">
+      <button class="btn fantasma" type="button" id="validar">Validar</button>
+      <button class="btn" type="button" id="anadir">Añadir a este navegador</button>
+    </div>
+
+    <h2 class="titulo-seccion pequeno">Formato</h2>
+    <p class="ayuda">
+      Campos obligatorios: <code>titulo</code>, <code>preguntas</code>, y en cada pregunta
+      <code>pregunta</code>, <code>opciones</code> y <code>correcta</code>.
+      <code>explicacion</code> es opcional. Para varias respuestas correctas usa una lista:
+      <code>"correcta": ["A", "C"]</code>. También valen el texto exacto de la opción y los
+      sinónimos en inglés (<code>question</code>, <code>options</code>, <code>answer</code>,
+      <code>explanation</code>).
+    </p>
+
+    <div id="lista-locales"></div>`);
+
+  const caja = app.querySelector("#json");
+  const zona = app.querySelector("#suelta");
+  const archivo = app.querySelector("#archivo");
+
+  const validar = () => {
+    const salida = app.querySelector("#resultado-validacion");
+    let bruto;
+    try {
+      bruto = JSON.parse(caja.value);
+    } catch (e) {
+      salida.innerHTML = `<ul class="lista-errores"><li>JSON mal formado: ${esc(e.message)}</li></ul>`;
+      return null;
+    }
+    const { ok, modulo, errores } = normalizarModulo(bruto);
+    if (!ok) {
+      salida.innerHTML = `<ul class="lista-errores">${errores.map((e) => `<li>${esc(e)}</li>`).join("")}</ul>`;
+      return null;
+    }
+    const conExplicacion = modulo.preguntas.filter((p) => p.explicacion).length;
+    salida.innerHTML = `<div class="exito">
+      <b>Todo correcto.</b> ${esc(modulo.titulo)} · ${plural(modulo.preguntas.length, "pregunta", "preguntas")}
+      (${conExplicacion} con explicación).</div>`;
+    return { bruto, modulo };
+  };
+
+  const cargarArchivo = (file) => {
+    if (!file) return;
+    const lector = new FileReader();
+    lector.onload = () => {
+      caja.value = String(lector.result);
+      validar();
+    };
+    lector.readAsText(file);
+  };
+
+  app.querySelector("#elegir").addEventListener("click", () => archivo.click());
+  archivo.addEventListener("change", () => cargarArchivo(archivo.files[0]));
+
+  ["dragenter", "dragover"].forEach((ev) =>
+    zona.addEventListener(ev, (e) => {
+      e.preventDefault();
+      zona.classList.add("encima");
+    })
+  );
+  ["dragleave", "drop"].forEach((ev) =>
+    zona.addEventListener(ev, (e) => {
+      e.preventDefault();
+      zona.classList.remove("encima");
+    })
+  );
+  zona.addEventListener("drop", (e) => cargarArchivo(e.dataTransfer?.files?.[0]));
+
+  app.querySelector("#plantilla").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(PLANTILLA, null, 2)], { type: "application/json" });
+    const enlace = Object.assign(document.createElement("a"), {
+      href: URL.createObjectURL(blob),
+      download: "modulo-plantilla.json",
+    });
+    enlace.click();
+    URL.revokeObjectURL(enlace.href);
+  });
+
+  app.querySelector("#validar").addEventListener("click", validar);
+
+  app.querySelector("#anadir").addEventListener("click", async () => {
+    const valido = validar();
+    if (!valido) return;
+    guardarLocal(valido.bruto, valido.modulo.id);
+    await recargarCatalogo();
+    vistaSubir();
+    app.querySelector("#resultado-validacion").innerHTML =
+      `<div class="exito"><b>Módulo añadido.</b> Ya aparece en la lista de módulos de este navegador.</div>`;
+  });
+
+  pintarLocales();
+}
+
+function pintarLocales() {
+  const zona = app.querySelector("#lista-locales");
+  if (!zona) return;
+  const locales = leerLocales();
+  if (!locales.length) {
+    zona.innerHTML = "";
+    return;
+  }
+  zona.innerHTML = `
+    <h2 class="titulo-seccion pequeno">Módulos de este navegador</h2>
+    <div class="tabla-locales">
+      ${locales
+        .map(
+          (m) => `<div class="fila-local">
+            <span class="nombre"><b>${esc(m.titulo)}</b> · ${plural(m.preguntas.length, "pregunta", "preguntas")}</span>
+            <button class="btn fantasma pequeno" type="button" data-borrar="${esc(m.id)}">Quitar</button>
+          </div>`
+        )
+        .join("")}
+    </div>`;
+
+  zona.querySelectorAll("[data-borrar]").forEach((btn) =>
+    btn.addEventListener("click", async () => {
+      borrarLocal(btn.dataset.borrar);
+      await recargarCatalogo();
+      vistaSubir();
+    })
+  );
+}
+
+/* == arranque ============================================================== */
+
+async function recargarCatalogo() {
+  const { config, modulos, errores } = await cargarCatalogo();
+  estado.config = config;
+  estado.modulos = modulos;
+  estado.errores = errores;
+  document.title = config.marca || "Ruta de estudio";
+}
+
+// Navegacion global (marca, "volver", "añadir modulo")
+document.addEventListener("click", (e) => {
+  const destino = e.target.closest("[data-ir]")?.dataset.ir;
+  if (!destino) return;
+  if (intentoVivo()) {
+    if (!confirm("Si sales ahora perderás las respuestas de este intento. ¿Salir?")) return;
+    estado.quiz = null;
+  }
+  if (destino === "inicio") vistaInicio();
+  if (destino === "subir") vistaSubir();
+});
+
+// El boton "atras" del navegador no debe devolver a una pregunta ya contestada.
+window.addEventListener("popstate", () => {
+  if (intentoVivo()) {
+    if (!confirm("Si sales ahora perderás las respuestas de este intento. ¿Salir?")) {
+      history.pushState({ vista: "quiz" }, "");
+      return;
+    }
+  }
+  estado.quiz = null;
+  vistaInicio();
+});
+
+(async function iniciar() {
+  estado.usuario = await sesion();
+  await recargarCatalogo();
+  pintarBarra();
+  vistaInicio();
+})();
+
+  </script>
+</body>
+</html>

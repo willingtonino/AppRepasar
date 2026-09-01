@@ -2,6 +2,7 @@
   "marca": "Ruta de estudio AWS",
   "titulo": "¿Qué módulo quieres estudiar?",
   "descripcion": "Selecciona un módulo. Recibirás retroalimentación inmediata y podrás repetirlo cuantas veces necesites.",
+  "permitirSubida": "local",
   "modulos": [
     "01-introduccion-nube.json",
     "02-computacion-nube.json",

@@ -111,6 +111,8 @@ function configPorDefecto() {
     titulo: "¿Qué módulo quieres estudiar?",
     descripcion:
       "Selecciona un módulo. Recibirás retroalimentación inmediata y podrás repetirlo cuantas veces necesites.",
+    // true | false | "local" (solo al abrirlo en tu equipo, no en el sitio publicado)
+    permitirSubida: "local",
   };
 }
 

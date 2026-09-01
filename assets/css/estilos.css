@@ -522,6 +522,11 @@ h1 {
   color: var(--texto-tenue);
 }
 
+.titulo-seccion { margin: 32px 0 0; }
+.titulo-seccion.pequeno { margin-top: 36px; font-size: 1.25rem; }
+.titulo-menor { font-size: clamp(1.8rem, 5vw, 2.6rem); }
+.acciones.separado { margin-top: 16px; }
+
 /* Resultados --------------------------------------------------------------- */
 .marcador {
   display: flex;
